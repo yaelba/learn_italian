@@ -1313,7 +1313,7 @@
 
   const player = {
     name: 'Explorer',
-    scenes: Object.fromEntries(SCENES.map(s => [s.id, {learned:new Set(), matched:new Set(), quizIdx:0, quizOrder:[]}])),
+    scenes: Object.fromEntries(SCENES.map(s => [s.id, {learned:new Set(), identified:new Set(), matched:new Set(), quizIdx:0, quizOrder:[]}])),
   };
   function currentProgress(){ return player.scenes[currentScene().id]; }
   let mode = 'explore';
@@ -1423,10 +1423,22 @@
   }
 
   function renderProgress(){
-    const learnedCount = currentProgress().learned.size;
-    progressFill.style.width = (learnedCount / currentWords().length * 100) + '%';
-    progressLabel.textContent = `${learnedCount} / ${currentWords().length} scoperte`;
-    const allLearned = debugUnlock || learnedCount >= currentWords().length;
+    const p = currentProgress();
+    const total = currentWords().length;
+    let count, label;
+    if(mode === 'quiz'){
+      count = p.identified.size;
+      label = 'identificate';
+    } else if(mode === 'match'){
+      count = p.matched.size;
+      label = 'abbinate';
+    } else {
+      count = p.learned.size;
+      label = 'scoperte';
+    }
+    progressFill.style.width = (count / total * 100) + '%';
+    progressLabel.textContent = `${count} / ${total} ${label}`;
+    const allLearned = debugUnlock || p.learned.size >= total;
     quizModeBtn.disabled = !allLearned;
     quizModeBtn.title = allLearned ? '' : 'Scopri tutte le parole prima di iniziare il quiz';
     matchModeBtn.disabled = !allLearned;
@@ -1668,6 +1680,8 @@
       showToast(`Esatto! ${w.it} ✓`);
       const p = currentProgress();
       p.quizIdx += 1;
+      p.identified.add(currentQuizWord);
+      renderProgress();
       setTimeout(() => { el.classList.remove('correct-flash'); nextQuizWord(); }, 1500);
     } else {
       el.classList.add('wrong-flash');
@@ -1788,6 +1802,7 @@
       showToast(`Abbinato! ${w.it} ✓`);
       renderMatchPool();
       renderPlacedTags();
+      renderProgress();
       if(currentProgress().matched.size >= currentWords().length){
         setTimeout(() => showToast('Tutte le parole abbinate! 🎉'), 900);
       }
@@ -1801,6 +1816,7 @@
     currentProgress().matched.clear();
     renderMatchPool();
     renderPlacedTags();
+    renderProgress();
     showToast('Ricominciato — reset!');
   }
 
@@ -1830,6 +1846,7 @@
       btn.classList.add('active');
       stageEl.classList.toggle('mode-match', mode === 'match');
       renderHotspotStates();
+      renderProgress();
       renderModePrompt();
     });
   });
