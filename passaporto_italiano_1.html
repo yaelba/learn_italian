@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il Castello — Passaporto Italiano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --parchment: #EDE3D0;
+    --parchment-deep: #E1D3B8;
+    --ink: #2A2420;
+    --terracotta: #A6432E;
+    --terracotta-deep: #8B3A2A;
+    --teal: #2F4858;
+    --gold: #B8892B;
+    --olive: #57623E;
+    --stamp-red: #9C3B2E;
+    --shadow: rgba(42,36,32,0.18);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse at top left, rgba(184,137,43,0.08), transparent 55%),
+      radial-gradient(ellipse at bottom right, rgba(47,72,88,0.10), transparent 55%),
+      #DCEEDA;
+    font-family:'Source Sans 3', sans-serif;
+    color:var(--ink);
+    padding:24px 16px 60px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .page{
+    position:relative;
+    width:100%;
+    max-width:920px;
+  }
+
+  header{
+    text-align:center;
+    margin-bottom:18px;
+  }
+
+  .scene-nav{
+    display:grid;
+    grid-template-columns: 30px 1fr 30px;
+    align-items:center;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .scene-nav .eyebrow{ margin-bottom:0; text-align:center; }
+  .scene-nav-btn{
+    border:1.5px solid var(--parchment-deep);
+    background:#F6F0E3;
+    color:var(--teal);
+    border-radius:999px;
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:background 0.15s ease;
+  }
+  .scene-nav-btn:hover{ background:rgba(47,72,88,0.08); }
+  .scene-nav-btn:disabled{
+    opacity:0.3;
+    cursor:not-allowed;
+    background:#F6F0E3;
+  }
+
+  .debug-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    font-size:11px;
+    color:#b3a68f;
+    margin-bottom:14px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .debug-toggle input{ cursor:pointer; }
+
+  .eyebrow{
+    font-size:19px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--teal);
+    font-weight:700;
+    margin-bottom:14px;
+  }
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:700;
+    font-size:clamp(28px,5vw,44px);
+    margin:0 0 6px;
+    color:var(--terracotta-deep);
+    letter-spacing:-0.01em;
+  }
+
+  .subtitle{
+    font-size:15px;
+    color:#5c534a;
+    max-width:520px;
+    margin:0 auto;
+  }
+  .subtitle .en{
+    display:block;
+    font-size:12.5px;
+    color:#8a8071;
+    margin-top:4px;
+  }
+
+  .corner-btn{
+    position:absolute;
+    top:16px;
+    right:16px;
+    z-index:100;
+    background:var(--teal);
+    color:#F6F0E3;
+    border:none;
+    border-radius:999px;
+    padding:10px 18px;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    box-shadow:0 6px 16px -6px var(--shadow);
+  }
+  .corner-btn:hover{ background:#25404f; }
+
+  .translate-page{
+    position:relative;
+    display:none;
+    max-width:640px;
+    margin:0 auto;
+    padding:70px 20px 60px;
+  }
+  .translate-page.show{ display:block; }
+
+  .back-btn{
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:100;
+    background:#F6F0E3;
+    border:1.5px solid var(--parchment-deep);
+    color:var(--teal);
+    border-radius:999px;
+    padding:10px 18px;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    box-shadow:0 6px 16px -6px var(--shadow);
+  }
+  .back-btn:hover{ background:rgba(47,72,88,0.08); }
+
+  .translate-direction-row{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+  }
+  .translate-direction-btn{
+    background:#F6F0E3;
+    border:1.5px solid var(--parchment-deep);
+    color:var(--ink);
+    border-radius:999px;
+    padding:9px 16px;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+    transition:all 0.15s ease;
+  }
+  .translate-direction-btn.active{
+    background:var(--teal);
+    border-color:var(--teal);
+    color:#F6F0E3;
+  }
+  .translate-direction-btn:hover:not(.active){ background:#efe6d2; }
+
+  .translate-card{
+    background:#fffaf0;
+    border:1.5px solid var(--parchment-deep);
+    border-radius:20px;
+    padding:36px 28px;
+    text-align:center;
+    box-shadow:0 14px 34px -18px var(--shadow);
+  }
+  .translate-prompt{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(28px,6vw,42px);
+    color:var(--terracotta-deep);
+    margin-bottom:30px;
+  }
+  .translate-options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .translate-option{
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600;
+    font-size:16px;
+    padding:16px 12px;
+    border-radius:12px;
+    border:1.5px solid var(--parchment-deep);
+    background:#F6F0E3;
+    color:var(--ink);
+    cursor:pointer;
+    transition:all 0.15s ease;
+  }
+  .translate-option:hover:not(:disabled){ background:#efe6d2; }
+  .translate-option:disabled{ cursor:default; }
+  .translate-option.correct{
+    background:var(--olive);
+    border-color:var(--olive);
+    color:#F6F0E3;
+  }
+  .translate-option.wrong{
+    background:#c0413a;
+    border-color:#c0413a;
+    color:#F6F0E3;
+  }
+  @media (max-width: 420px){
+    .translate-options{ grid-template-columns:1fr; }
+  }
+
+  .voice-picker{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-size:12px;
+    color:#7a7062;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .voice-picker select{
+    font-family:'Source Sans 3', sans-serif;
+    font-size:12px;
+    padding:4px 8px;
+    border-radius:6px;
+    border:1px solid var(--parchment-deep);
+    background:#F6F0E3;
+    color:var(--ink);
+    max-width:220px;
+  }
+  .voice-picker-msg{
+    display:none;
+    font-style:italic;
+    color:#a89b82;
+  }
+
+  .mode-row{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+
+  .mode-btn{
+    border:none;
+    background:none;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    color:#7a7062;
+    padding:8px 4px;
+    cursor:pointer;
+    border-bottom:2.5px solid transparent;
+  }
+  .mode-btn.active{
+    color:var(--terracotta-deep);
+    border-bottom-color:var(--terracotta-deep);
+  }
+  .mode-btn:disabled{
+    color:#c9bfae;
+    cursor:not-allowed;
+  }
+
+  .stage{
+    background:#F6F0E3;
+    border:1px solid var(--parchment-deep);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 18px 40px -20px var(--shadow);
+    position:relative;
+  }
+
+  .prompt-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:16px;
+    min-height:44px;
+    flex-wrap:wrap;
+  }
+
+  .prompt-with-replay{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .prompt-text{
+    font-family:'Fraunces', serif;
+    font-size:20px;
+    font-weight:600;
+    color:var(--teal);
+  }
+  .prompt-text .en{
+    display:block;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:400;
+    font-size:13px;
+    color:#8a8071;
+    margin-top:2px;
+  }
+
+  .replay-btn{
+    border:1.5px solid var(--teal);
+    background:none;
+    color:var(--teal);
+    border-radius:999px;
+    padding:8px 16px;
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+  }
+  .replay-btn:hover{ background:rgba(47,72,88,0.08); }
+
+  .scene-wrap{
+    position:relative;
+    border-radius:12px;
+    overflow:hidden;
+    background:linear-gradient(180deg, #cfe3e6 0%, #dcebd9 55%, #cbd9b8 100%);
+  }
+
+  svg{ display:block; width:100%; height:auto; }
+  .scene-svg{ display:none; }
+  .scene-svg.scene-active{ display:block; }
+
+  .hotspot{ cursor:pointer; }
+  .hotspot .hit-outline{
+    fill:transparent;
+    stroke:transparent;
+    stroke-width:3;
+    transition:stroke 0.15s ease, fill 0.15s ease;
+  }
+  .hotspot:hover .hit-outline{
+    stroke: var(--gold);
+    fill: rgba(184,137,43,0.10);
+  }
+  .hotspot.learned .hit-outline{
+    stroke: rgba(87,98,62,0.55);
+  }
+  .hotspot.correct-flash .hit-outline{
+    fill: rgba(87,98,62,0.35);
+    stroke: var(--olive);
+  }
+  .hotspot.wrong-flash .hit-outline{
+    fill: rgba(156,59,46,0.30);
+    stroke: var(--stamp-red);
+  }
+  .hotspot.target-hint .hit-outline{
+    stroke: var(--terracotta);
+    stroke-dasharray: 6 4;
+  }
+
+  .label-chip{
+    position:absolute;
+    background:var(--ink);
+    color:#F6F0E3;
+    font-size:12.5px;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:6px;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 0.15s ease, top 0.15s ease, left 0.15s ease;
+    white-space:nowrap;
+    z-index:5;
+  }
+  .label-chip.show{ opacity:1; }
+
+  .chip-dot{
+    position:absolute;
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--ink);
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 0.15s ease;
+    z-index:4;
+  }
+  .chip-dot.show{ opacity:0.85; }
+
+  .chip-connector{
+    position:absolute;
+    height:2px;
+    background:var(--ink);
+    opacity:0;
+    transform-origin:0 50%;
+    pointer-events:none;
+    transition:opacity 0.15s ease;
+    z-index:4;
+  }
+  .chip-connector.show{ opacity:0.4; }
+
+  .match-tags-layer{
+    position:absolute;
+    inset:0;
+    display:none;
+    pointer-events:none;
+  }
+  .stage.mode-match .match-tags-layer{ display:block; }
+
+  .placed-tag{
+    position:absolute;
+    background:var(--olive);
+    color:#F6F0E3;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:13px;
+    padding:5px 10px;
+    border-radius:6px;
+    white-space:nowrap;
+    pointer-events:none;
+    z-index:2;
+  }
+  .placed-dot{
+    position:absolute;
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--olive);
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    z-index:1;
+  }
+  .placed-line{
+    position:absolute;
+    height:2px;
+    background:var(--olive);
+    opacity:0.5;
+    transform-origin:0 50%;
+    pointer-events:none;
+    z-index:1;
+  }
+
+  .reset-match-btn{ display:none; }
+  .stage.mode-match .reset-match-btn{ display:inline-flex; }
+
+  .chip-pool{
+    display:none;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    margin-top:16px;
+    padding:14px;
+    background:var(--parchment);
+    border:1.5px dashed var(--parchment-deep);
+    border-radius:12px;
+    min-height:54px;
+  }
+  .stage.mode-match .chip-pool{ display:flex; }
+
+  .word-chip{
+    background:#F6F0E3;
+    border:1.5px solid var(--teal);
+    color:var(--teal);
+    border-radius:999px;
+    padding:8px 16px;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    cursor:grab;
+    touch-action:none;
+    user-select:none;
+  }
+  .word-chip.dragging{ opacity:0.35; }
+  .word-chip.floating{
+    position:fixed;
+    z-index:60;
+    pointer-events:none;
+    box-shadow:0 14px 30px -10px var(--shadow);
+    transform:translate(-50%,-50%);
+  }
+  .chip-pool-done{
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    color:var(--olive);
+  }
+
+  .footer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:16px;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .progress-track{
+    flex:1;
+    min-width:160px;
+    height:8px;
+    background:var(--parchment-deep);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:linear-gradient(90deg, var(--olive), var(--gold));
+    width:0%;
+    transition:width 0.3s ease;
+  }
+  .progress-label{
+    font-size:12.5px;
+    color:#7a7062;
+    font-weight:600;
+    white-space:nowrap;
+  }
+
+  .passport{
+    margin-top:26px;
+    background:#F6F0E3;
+    border:1px solid var(--parchment-deep);
+    border-radius:18px;
+    padding:20px 22px;
+  }
+  .passport h2{
+    font-family:'Fraunces', serif;
+    font-size:16px;
+    margin:0 0 12px;
+    color:var(--teal);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .stamp-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .stamp{
+    width:64px; height:64px;
+    border-radius:50%;
+    border:2px solid var(--stamp-red);
+    color:var(--stamp-red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:10px;
+    text-align:center;
+    line-height:1.15;
+    transform:rotate(-8deg);
+    opacity:0.92;
+    padding:4px;
+    background:rgba(156,59,46,0.04);
+  }
+  .stamp.empty{
+    border-style:dashed;
+    border-color:#cbbfa9;
+    color:#cbbfa9;
+    transform:none;
+    background:none;
+  }
+
+  .toast{
+    position:fixed;
+    bottom:26px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--ink);
+    color:#F6F0E3;
+    padding:12px 22px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:14px;
+    opacity:0;
+    transition:all 0.25s ease;
+    pointer-events:none;
+    z-index:20;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  @media (max-width:600px){
+    .stage{padding:14px;}
+    .prompt-bar{flex-direction:column; align-items:flex-start;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+<button id="openTranslateBtn" class="corner-btn">🔤 Traduci / Translate</button>
+
+<div class="page" id="mainGamePage">
+
+  <header>
+    <h1>Il Passaporto Italiano</h1>
+    <p class="subtitle">Un gioco di vocabolario costruito attorno al nostro viaggio in Italia<span class="en">A vocabulary game built around our trip to Italy</span></p>
+  </header>
+
+  <div class="voice-picker" id="voicePickerRow">
+    <label for="voiceSelect">🔊 Voce italiana / Italian voice</label>
+    <select id="voiceSelect"></select>
+    <span class="voice-picker-msg" id="voiceMsg"></span>
+  </div>
+
+  <div class="mode-row">
+    <button class="mode-btn active" data-mode="explore">Esplora — Discover</button>
+    <button class="mode-btn" data-mode="quiz" id="quizModeBtn" disabled>Ascolta e tocca — Listen &amp; tap</button>
+    <button class="mode-btn" data-mode="match" id="matchModeBtn" disabled>Abbina — Match</button>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="scene-nav">
+      <button class="scene-nav-btn" id="scenePrevBtn" title="Tappa precedente / Previous stop">←</button>
+      <div class="eyebrow" id="sceneLabel">Tappa 1: Le Difese del Castello</div>
+      <button class="scene-nav-btn" id="sceneNextBtn" title="Tappa successiva / Next stop">→</button>
+    </div>
+    <label class="debug-toggle">
+      <input type="checkbox" id="debugUnlockToggle"> 🛠 Debug: sblocca tutte le tappe / unlock all scenes
+    </label>
+    <div class="prompt-bar">
+      <div class="prompt-with-replay">
+        <div class="prompt-text" id="promptText">
+          Tocca un punto qualsiasi della scena per scoprirne il nome.
+          <span class="en">Tap any part of the scene to discover its name.</span>
+        </div>
+        <button class="replay-btn" id="replayBtn" title="Ripeti / Repeat">🔊 Ripeti</button>
+      </div>
+      <button class="replay-btn reset-match-btn" id="resetMatchBtn" title="Ricomincia / Reset">↺ Ricomincia</button>
+    </div>
+
+    <div class="scene-wrap" id="sceneWrap">
+      <!-- SVG scene 3: same castle as scene 1, with battlements and arrow slits as new hotspots -->
+      <svg id="scene-castello2" class="scene-svg scene-active" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+        <!-- sky -->
+        <rect x="0" y="0" width="800" height="360" fill="#cfe3e6"/>
+        <!-- distant hills -->
+        <path d="M0,300 Q120,260 260,290 T520,280 T800,300 L800,360 L0,360 Z" fill="#b9d3c2"/>
+        <!-- ground -->
+        <rect x="0" y="358" width="800" height="202" fill="#c9d6ab"/>
+        <path d="M0,358 Q200,340 400,358 T800,358 L800,420 L0,420 Z" fill="#bcc99a"/>
+
+        <!-- MOAT (fossato) -->
+        <g class="hotspot" data-word="fossato" data-article="il" data-en="moat">
+          <path d="M60,430 Q400,470 740,430 L740,500 Q400,540 60,500 Z" fill="#7fa9bd"/>
+          <path d="M100,445 Q400,478 700,445" stroke="#a9cede" stroke-width="4" fill="none" opacity="0.6"/>
+          <path class="hit-outline" d="M60,430 Q400,470 740,430 L740,500 Q400,540 60,500 Z"/>
+        </g>
+
+        <!-- DRAWBRIDGE (ponte levatoio) -->
+        <g class="hotspot" data-word="ponte levatoio" data-article="il" data-en="drawbridge">
+          <rect x="355" y="410" width="90" height="90" fill="#8a6236"/>
+          <line x1="365" y1="410" x2="365" y2="500" stroke="#6b4a28" stroke-width="3"/>
+          <line x1="385" y1="410" x2="385" y2="500" stroke="#6b4a28" stroke-width="3"/>
+          <line x1="405" y1="410" x2="405" y2="500" stroke="#6b4a28" stroke-width="3"/>
+          <line x1="425" y1="410" x2="425" y2="500" stroke="#6b4a28" stroke-width="3"/>
+          <rect class="hit-outline" x="355" y="410" width="90" height="90"/>
+        </g>
+
+        <!-- MAIN WALL (mura) -->
+        <g class="hotspot" data-word="mura" data-article="le" data-en="walls">
+          <rect x="180" y="230" width="440" height="190" fill="#cbb992"/>
+          <rect x="180" y="230" width="440" height="14" fill="#b8a37c"/>
+          <rect class="hit-outline" x="180" y="230" width="440" height="190"/>
+        </g>
+
+        <!-- BATTLEMENTS (i merli) — pulled out of the wall as its own hotspot -->
+        <g class="hotspot" data-word="merli" data-article="i" data-en="battlements">
+          <g fill="#cbb992">
+            <rect x="190" y="205" width="24" height="26"/>
+            <rect x="238" y="205" width="24" height="26"/>
+            <rect x="286" y="205" width="24" height="26"/>
+            <rect x="334" y="205" width="24" height="26"/>
+            <rect x="446" y="205" width="24" height="26"/>
+            <rect x="494" y="205" width="24" height="26"/>
+            <rect x="542" y="205" width="24" height="26"/>
+            <rect x="590" y="205" width="24" height="26"/>
+          </g>
+          <rect class="hit-outline" x="180" y="197" width="440" height="37"/>
+        </g>
+
+        <!-- ARROW SLIT / SHOOTING HOLE (la feritoia) — new -->
+        <g class="hotspot" data-word="feritoia" data-article="la" data-en="arrow slit">
+          <rect x="256" y="290" width="8" height="56" rx="3" fill="#2A2420"/>
+          <rect class="hit-outline" x="240" y="276" width="40" height="84"/>
+        </g>
+        <!-- decorative second slit, not interactive, for visual texture -->
+        <rect x="536" y="290" width="7" height="52" rx="3" fill="#3a3228" opacity="0.85"/>
+
+        <!-- GATE (portone) -->
+        <g class="hotspot" data-word="portone" data-article="il" data-en="main gate">
+          <path d="M362,420 L362,350 Q400,310 438,350 L438,420 Z" fill="#4a3420"/>
+          <path d="M370,420 L370,352 Q400,320 430,352 L430,420 Z" fill="#5c4126"/>
+          <line x1="400" y1="322" x2="400" y2="420" stroke="#2f2013" stroke-width="3"/>
+          <circle cx="392" cy="390" r="3" fill="#d9c68f"/>
+          <path class="hit-outline" d="M355,420 L355,346 Q400,300 445,346 L445,420 Z"/>
+        </g>
+
+        <!-- LEFT TOWER with WINDOW (finestra) -->
+        <g>
+          <rect x="130" y="120" width="90" height="290" fill="#b9a578"/>
+          <g fill="#b9a578">
+            <rect x="136" y="105" width="16" height="20"/>
+            <rect x="162" y="105" width="16" height="20"/>
+            <rect x="188" y="105" width="16" height="20"/>
+            <rect x="206" y="105" width="12" height="20"/>
+          </g>
+          <g class="hotspot" data-word="finestra" data-article="la" data-en="window">
+            <path d="M162,200 L162,240 Q175,230 188,240 L188,200 Z" fill="#2f4858"/>
+            <path class="hit-outline" d="M155,192 L155,246 Q175,230 195,246 L195,192 Z"/>
+          </g>
+        </g>
+
+        <!-- RIGHT TOWER (torre) with FLAG (bandiera) -->
+        <g class="hotspot" data-word="torre" data-article="la" data-en="tower">
+          <rect x="590" y="90" width="100" height="320" fill="#c2ae82"/>
+          <g fill="#c2ae82">
+            <rect x="596" y="74" width="18" height="20"/>
+            <rect x="624" y="74" width="18" height="20"/>
+            <rect x="652" y="74" width="18" height="20"/>
+            <rect x="672" y="74" width="14" height="20"/>
+          </g>
+          <path d="M615,200 L615,244 Q640,232 665,244 L665,200 Z" fill="#2f4858"/>
+          <rect class="hit-outline" x="590" y="70" width="100" height="340"/>
+        </g>
+
+        <g class="hotspot" data-word="bandiera" data-article="la" data-en="flag">
+          <line x1="640" y1="40" x2="640" y2="90" stroke="#4a3420" stroke-width="3"/>
+          <path d="M640,42 L682,54 L640,66 Z" fill="#A6432E"/>
+          <rect class="hit-outline" x="632" y="34" width="60" height="42"/>
+        </g>
+
+      </svg>
+
+      <!-- SVG scene 4: Italian restaurant table, viewed from above -->
+      <svg id="scene-ristorante" class="scene-svg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="ginghamPattern" width="44" height="44" patternUnits="userSpaceOnUse">
+            <rect width="44" height="44" fill="#f4ead9"/>
+            <rect width="44" height="14" fill="#c0413a" opacity="0.32"/>
+            <rect width="14" height="44" fill="#c0413a" opacity="0.32"/>
+          </pattern>
+        </defs>
+        <!-- tablecloth -->
+        <rect x="0" y="0" width="800" height="560" fill="url(#ginghamPattern)"/>
+
+        <!-- PIZZA -->
+        <g class="hotspot" data-word="pizza" data-article="la" data-en="pizza">
+          <circle cx="220" cy="320" r="130" fill="#e8b45a"/>
+          <circle cx="220" cy="320" r="112" fill="#c23b2e"/>
+          <circle cx="180" cy="280" r="26" fill="#faf6ea" opacity="0.92"/>
+          <circle cx="260" cy="300" r="30" fill="#faf6ea" opacity="0.92"/>
+          <circle cx="210" cy="360" r="24" fill="#faf6ea" opacity="0.92"/>
+          <circle cx="270" cy="360" r="20" fill="#faf6ea" opacity="0.92"/>
+          <circle cx="160" cy="340" r="18" fill="#faf6ea" opacity="0.92"/>
+          <circle cx="200" cy="250" r="12" fill="#A6432E"/>
+          <circle cx="270" cy="260" r="12" fill="#A6432E"/>
+          <circle cx="150" cy="310" r="12" fill="#A6432E"/>
+          <circle cx="240" cy="380" r="12" fill="#A6432E"/>
+          <circle cx="180" cy="380" r="10" fill="#A6432E"/>
+          <path d="M230,300 Q245,290 250,305 Q240,315 230,300 Z" fill="#57623E"/>
+          <path d="M180,330 Q195,320 200,335 Q190,345 180,330 Z" fill="#57623E"/>
+          <rect class="hit-outline" x="90" y="190" width="260" height="260"/>
+        </g>
+
+        <!-- SPAGHETTI BOLOGNESE -->
+        <g class="hotspot" data-word="spaghetti" data-article="gli" data-en="spaghetti bolognese">
+          <!-- plate -->
+          <circle cx="560" cy="300" r="125" fill="#f8f4ea"/>
+          <circle cx="560" cy="300" r="125" fill="none" stroke="#e0d6c0" stroke-width="3"/>
+          <circle cx="560" cy="300" r="104" fill="#f2ecdd"/>
+
+          <!-- pasta nest: ring of tagliatelle strands -->
+          <g stroke-linecap="round" fill="none">
+            <path d="M560,205 Q588,225 560,248" stroke="#e3bd5e" stroke-width="15"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#f0cd72" stroke-width="15" transform="rotate(30 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#d6a94c" stroke-width="15" transform="rotate(60 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#e3bd5e" stroke-width="15" transform="rotate(90 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#f0cd72" stroke-width="15" transform="rotate(120 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#d6a94c" stroke-width="15" transform="rotate(150 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#e3bd5e" stroke-width="15" transform="rotate(180 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#f0cd72" stroke-width="15" transform="rotate(210 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#d6a94c" stroke-width="15" transform="rotate(240 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#e3bd5e" stroke-width="15" transform="rotate(270 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#f0cd72" stroke-width="15" transform="rotate(300 560 300)"/>
+            <path d="M560,205 Q588,225 560,248" stroke="#d6a94c" stroke-width="15" transform="rotate(330 560 300)"/>
+          </g>
+
+          <!-- a few salami/pepperoni slices tucked into the pasta -->
+          <ellipse cx="500" cy="235" rx="12" ry="9" fill="#A6432E" transform="rotate(-20 500 235)"/>
+          <ellipse cx="628" cy="250" rx="11" ry="8" fill="#A6432E" transform="rotate(15 628 250)"/>
+          <ellipse cx="480" cy="345" rx="11" ry="8" fill="#A6432E" transform="rotate(30 480 345)"/>
+          <ellipse cx="630" cy="355" rx="12" ry="9" fill="#A6432E" transform="rotate(-10 630 355)"/>
+
+          <!-- chunky meat sauce mound -->
+          <path d="M510,270 Q525,240 560,245 Q600,238 615,265 Q630,290 610,315 Q615,340 585,350 Q555,360 525,345 Q500,335 500,305 Q495,285 510,270 Z" fill="#9c3b2e"/>
+          <path d="M525,280 Q545,265 570,270 Q595,275 600,295 Q605,315 585,325 Q560,335 535,320 Q515,310 520,290 Z" fill="#8B3A2A" opacity="0.7"/>
+          <circle cx="535" cy="290" r="6" fill="#6b2c1f"/>
+          <circle cx="575" cy="285" r="7" fill="#6b2c1f"/>
+          <circle cx="590" cy="310" r="5" fill="#6b2c1f"/>
+          <circle cx="550" cy="320" r="6" fill="#6b2c1f"/>
+          <circle cx="565" cy="300" r="5" fill="#6b2c1f"/>
+          <circle cx="520" cy="300" r="4" fill="#6b2c1f"/>
+
+          <!-- basil leaves -->
+          <path d="M555,265 Q538,250 555,236 Q574,248 560,268 Z" fill="#5c8a44"/>
+          <path d="M580,275 Q597,261 613,272 Q602,289 582,282 Z" fill="#4f7a3a"/>
+
+          <!-- parmesan flecks -->
+          <circle cx="520" cy="320" r="2" fill="#f8f4ea"/>
+          <circle cx="595" cy="315" r="2" fill="#f8f4ea"/>
+          <circle cx="600" cy="285" r="2" fill="#f8f4ea"/>
+          <circle cx="545" cy="335" r="2" fill="#f8f4ea"/>
+
+          <rect class="hit-outline" x="435" y="175" width="250" height="250"/>
+        </g>
+
+        <!-- FORCHETTA (fork) -->
+        <g class="hotspot" data-word="forchetta" data-article="la" data-en="fork">
+          <rect x="386" y="260" width="10" height="150" rx="4" fill="#8a8f94"/>
+          <rect x="378" y="190" width="4" height="75" rx="2" fill="#8a8f94"/>
+          <rect x="388" y="185" width="4" height="80" rx="2" fill="#8a8f94"/>
+          <rect x="398" y="190" width="4" height="75" rx="2" fill="#8a8f94"/>
+          <path d="M376,262 Q391,250 402,262 L400,270 L380,270 Z" fill="#8a8f94"/>
+          <rect class="hit-outline" x="368" y="180" width="46" height="240"/>
+        </g>
+
+        <!-- COLTELLO (knife) -->
+        <g class="hotspot" data-word="coltello" data-article="il" data-en="knife">
+          <path d="M712,185 Q722,185 724,220 L724,300 L710,300 L710,220 Q710,185 712,185 Z" fill="#c9cdd1"/>
+          <rect x="708" y="300" width="18" height="110" rx="6" fill="#6b4a28"/>
+          <rect class="hit-outline" x="700" y="180" width="36" height="240"/>
+        </g>
+
+        <!-- BICCHIERE (glass) -->
+        <g class="hotspot" data-word="bicchiere" data-article="il" data-en="glass">
+          <circle cx="220" cy="100" r="32" fill="#dbe9ea" opacity="0.4"/>
+          <circle cx="220" cy="100" r="32" fill="none" stroke="#8fb3b8" stroke-width="3"/>
+          <circle cx="220" cy="100" r="10" fill="#e8f2f2" opacity="0.5"/>
+          <rect class="hit-outline" x="184" y="64" width="72" height="72"/>
+        </g>
+
+        <!-- CARAFFA (water jug) -->
+        <g class="hotspot" data-word="caraffa" data-article="la" data-en="water jug">
+          <!-- main body, looking down into the jug -->
+          <circle cx="650" cy="95" r="54" fill="#cfe3e6" opacity="0.65" stroke="#5f8a92" stroke-width="3"/>
+          <circle cx="648" cy="96" r="38" fill="#9cc3c9" opacity="0.4"/>
+          <!-- pour channel continuing into the spout -->
+          <path d="M684,84 Q702,90 690,100 Q678,94 684,84 Z" fill="#9cc3c9" opacity="0.4"/>
+          <!-- stubby handle -->
+          <rect x="548" y="80" width="55" height="30" rx="13" fill="#cfe3e6" opacity="0.65" stroke="#5f8a92" stroke-width="3"/>
+          <!-- pointed pour spout -->
+          <path d="M696,74 Q724,64 727,90 Q724,114 696,104 Z" fill="#cfe3e6" opacity="0.65" stroke="#5f8a92" stroke-width="3"/>
+          <rect class="hit-outline" x="540" y="32" width="200" height="126"/>
+        </g>
+
+        <!-- CUCCHIAIO (spoon) -->
+        <g class="hotspot" data-word="cucchiaio" data-article="il" data-en="spoon">
+          <ellipse cx="765" cy="205" rx="16" ry="24" fill="#8a8f94"/>
+          <rect x="759" y="225" width="12" height="185" rx="5" fill="#8a8f94"/>
+          <rect class="hit-outline" x="745" y="180" width="40" height="240"/>
+        </g>
+
+        <!-- CUCCHIAINO (teaspoon) -->
+        <g class="hotspot" data-word="cucchiaino" data-article="il" data-en="teaspoon">
+          <ellipse cx="522" cy="172" rx="20" ry="11" fill="#8a8f94"/>
+          <rect x="540" y="167" width="42" height="10" rx="5" fill="#8a8f94"/>
+          <rect class="hit-outline" x="497" y="155" width="90" height="38"/>
+        </g>
+
+        <!-- TOVAGLIOLO (napkin) -->
+        <g class="hotspot" data-word="tovagliolo" data-article="il" data-en="napkin">
+          <rect x="360" y="440" width="62" height="62" fill="#f6f0e3" stroke="#d8cba8" stroke-width="2" transform="rotate(45 391 471)"/>
+          <line x1="391" y1="440" x2="391" y2="502" stroke="#d8cba8" stroke-width="2" transform="rotate(45 391 471)"/>
+          <rect class="hit-outline" x="350" y="430" width="82" height="82"/>
+        </g>
+
+      </svg>
+
+      <!-- SVG scene 3: an open backpack and its contents -->
+      <svg id="scene-zaino" class="scene-svg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+        <!-- floor / rug backdrop -->
+        <rect x="0" y="0" width="800" height="560" fill="#f4ecd9"/>
+        <ellipse cx="400" cy="300" rx="380" ry="250" fill="#dce8ea"/>
+        <ellipse cx="400" cy="300" rx="380" ry="250" fill="none" stroke="#c3d6d9" stroke-width="6" stroke-dasharray="14 10"/>
+
+        <!-- ZAINO (backpack) -->
+        <g class="hotspot" data-word="zaino" data-article="lo" data-en="backpack">
+          <path d="M125,208 Q88,320 118,435" fill="none" stroke="#2b4a63" stroke-width="16" stroke-linecap="round"/>
+          <path d="M275,208 Q312,320 282,435" fill="none" stroke="#2b4a63" stroke-width="16" stroke-linecap="round"/>
+          <path d="M130,205 Q140,120 200,105 Q260,120 270,205 Z" fill="#4a7597"/>
+          <rect x="110" y="200" width="180" height="250" rx="35" fill="#3E6680"/>
+          <path d="M125,205 Q200,175 285,205 Q285,225 200,235 Q115,225 115,205 Z" fill="#1c2e3d"/>
+          <rect x="130" y="360" width="140" height="80" rx="16" fill="#356085"/>
+          <path d="M140,368 L260,368" fill="none" stroke="#20222a" stroke-width="2" stroke-dasharray="4 4"/>
+          <circle cx="200" cy="400" r="6" fill="#20222a" opacity="0.5"/>
+          <circle cx="125" cy="208" r="7" fill="#2b4a63"/>
+          <circle cx="118" cy="435" r="7" fill="#2b4a63"/>
+          <circle cx="275" cy="208" r="7" fill="#2b4a63"/>
+          <circle cx="282" cy="435" r="7" fill="#2b4a63"/>
+          <rect class="hit-outline" x="80" y="95" width="245" height="380"/>
+        </g>
+
+        <!-- FUMETTO (comic book) -->
+        <g class="hotspot" data-word="fumetto" data-article="il" data-en="comic book" transform="rotate(-8 440 155)">
+          <defs>
+            <radialGradient id="fumettoGlow" cx="50%" cy="52%" r="55%">
+              <stop offset="0%" stop-color="#6fae74"/>
+              <stop offset="100%" stop-color="#0d1f16"/>
+            </radialGradient>
+          </defs>
+          <rect x="395" y="100" width="90" height="115" fill="#0d1f16"/>
+          <circle cx="440" cy="150" r="42" fill="url(#fumettoGlow)"/>
+          <path d="M395,190 L403,178 L410,190 L418,170 L426,190 L434,182 L440,190 L448,174 L456,190 L464,180 L472,190 L480,176 L485,190 Z" fill="#071009"/>
+          <rect x="432" y="184" width="16" height="6" fill="#3a4d3f"/>
+          <!-- dog silhouette: ears, snout, body, tail -->
+          <path d="M430,150 Q424,137 431,132 Q436,140 437,146 Z" fill="#071009"/>
+          <path d="M450,150 Q456,137 449,132 Q444,140 443,146 Z" fill="#071009"/>
+          <circle cx="440" cy="148" r="9" fill="#071009"/>
+          <ellipse cx="440" cy="155" rx="5" ry="3.5" fill="#071009"/>
+          <path d="M431,157 Q440,152 449,157 L447,182 L433,182 Z" fill="#071009"/>
+          <path d="M431,159 Q414,168 420,188 L433,182 Z" fill="#071009" opacity="0.9"/>
+          <path d="M449,159 Q466,168 460,188 L447,182 Z" fill="#071009" opacity="0.9"/>
+          <path d="M447,178 Q457,182 453,190" fill="none" stroke="#071009" stroke-width="3" stroke-linecap="round"/>
+          <text x="440" y="118" text-anchor="middle" font-family="'Fraunces', serif" font-weight="700" font-size="13" fill="#f0f7ec" stroke="#071009" stroke-width="2" paint-order="stroke">SUPER CANE</text>
+          <rect x="395" y="100" width="90" height="115" fill="none" stroke="#071009" stroke-width="3"/>
+          <rect class="hit-outline" x="385" y="90" width="110" height="135"/>
+        </g>
+
+        <!-- BORRACCIA (water bottle) -->
+        <g class="hotspot" data-word="borraccia" data-article="la" data-en="water bottle">
+          <rect x="530" y="110" width="60" height="140" rx="18" fill="#2E8A96"/>
+          <rect x="545" y="85" width="30" height="30" rx="8" fill="#20606A"/>
+          <rect x="530" y="150" width="60" height="14" fill="#1c4d54" opacity="0.4"/>
+          <rect x="538" y="130" width="10" height="100" rx="5" fill="#ffffff" opacity="0.25"/>
+          <rect class="hit-outline" x="520" y="78" width="80" height="182"/>
+        </g>
+
+        <!-- TABLET -->
+        <g class="hotspot" data-word="tablet" data-article="il" data-en="tablet">
+          <rect x="655" y="120" width="110" height="150" rx="14" fill="#2f3440"/>
+          <rect x="666" y="132" width="88" height="112" rx="6" fill="#bcd9e0"/>
+          <rect x="678" y="144" width="24" height="24" rx="5" fill="#E27D60"/>
+          <rect x="708" y="144" width="24" height="24" rx="5" fill="#4f9ea8"/>
+          <rect x="678" y="174" width="24" height="24" rx="5" fill="#F4C94B"/>
+          <rect x="708" y="174" width="24" height="24" rx="5" fill="#7a9e5c"/>
+          <circle cx="710" cy="260" r="5" fill="#5a6270"/>
+          <rect class="hit-outline" x="645" y="115" width="130" height="165"/>
+        </g>
+
+        <!-- CAPPELLO (hat) -->
+        <g class="hotspot" data-word="cappello" data-article="il" data-en="hat">
+          <path d="M400,340 Q400,270 460,265 Q520,270 520,340 Z" fill="#E27D60"/>
+          <path d="M400,340 Q460,360 520,340 L520,352 Q460,372 400,352 Z" fill="#c96548"/>
+          <path d="M400,352 Q370,355 365,372 Q400,375 410,358 Z" fill="#c96548"/>
+          <circle cx="460" cy="268" r="6" fill="#a8503a"/>
+          <rect class="hit-outline" x="360" y="255" width="170" height="130"/>
+        </g>
+
+        <!-- PANINO (sandwich) -->
+        <g class="hotspot" data-word="panino" data-article="il" data-en="sandwich">
+          <rect x="562" y="320" width="130" height="46" rx="20" fill="#D9A45B"/>
+          <rect x="572" y="322" width="110" height="30" rx="14" fill="#E0A65E" opacity="0.5"/>
+          <rect x="565" y="366" width="124" height="14" fill="#F4B93C"/>
+          <path d="M565,366 L555,380 L575,380 Z" fill="#F7C55A"/>
+          <rect x="562" y="380" width="130" height="46" rx="20" fill="#D9A45B"/>
+          <rect x="572" y="382" width="110" height="30" rx="14" fill="#E0A65E" opacity="0.5"/>
+          <rect x="562" y="320" width="130" height="106" rx="26" fill="none" stroke="#c9924a" stroke-width="2" opacity="0.6"/>
+          <rect class="hit-outline" x="548" y="310" width="158" height="130"/>
+        </g>
+
+        <!-- CUBO DI RUBIK -->
+        <g class="hotspot" data-word="cubo di rubik" data-article="il" data-en="Rubik's cube">
+          <polygon points="400,420 490,420 512,398 422,398" fill="#F1C40F"/>
+          <polygon points="490,420 490,510 512,488 512,398" fill="#4C9A54"/>
+          <rect x="400" y="420" width="30" height="30" fill="#C0392B"/>
+          <rect x="430" y="420" width="30" height="30" fill="#F4F4F4"/>
+          <rect x="460" y="420" width="30" height="30" fill="#2E6DA4"/>
+          <rect x="400" y="450" width="30" height="30" fill="#E8912D"/>
+          <rect x="430" y="450" width="30" height="30" fill="#F1C40F"/>
+          <rect x="460" y="450" width="30" height="30" fill="#4C9A54"/>
+          <rect x="400" y="480" width="30" height="30" fill="#2E6DA4"/>
+          <rect x="430" y="480" width="30" height="30" fill="#C0392B"/>
+          <rect x="460" y="480" width="30" height="30" fill="#F4F4F4"/>
+          <rect x="400" y="420" width="90" height="90" fill="none" stroke="#20222a" stroke-width="3"/>
+          <polygon points="400,420 490,420 512,398 422,398" fill="none" stroke="#20222a" stroke-width="2"/>
+          <polygon points="490,420 490,510 512,488 512,398" fill="none" stroke="#20222a" stroke-width="2"/>
+          <rect class="hit-outline" x="395" y="393" width="122" height="122"/>
+        </g>
+
+      </svg>
+
+      <!-- SVG scene 4: the ice cream shop counter -->
+      <svg id="scene-gelateria" class="scene-svg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="awningStripe" width="80" height="70" patternUnits="userSpaceOnUse">
+            <rect width="80" height="70" fill="#ffffff"/>
+            <rect width="40" height="70" fill="#F7D9DE"/>
+          </pattern>
+        </defs>
+        <!-- wall / awning backdrop -->
+        <rect x="0" y="0" width="800" height="560" fill="#F5E9DC"/>
+        <rect x="0" y="0" width="800" height="70" fill="url(#awningStripe)"/>
+        <rect x="0" y="66" width="800" height="6" fill="#e0c9c0"/>
+        <!-- shop sign (decorative, not a hotspot) -->
+        <rect x="290" y="14" width="220" height="46" rx="10" fill="#3C8151" stroke="#2c6140" stroke-width="3"/>
+        <text x="400" y="45" text-anchor="middle" font-family="'Fraunces', serif" font-weight="700" font-size="26" fill="#fdf8ee" letter-spacing="1">GELATO</text>
+        <!-- counter -->
+        <rect x="0" y="380" width="800" height="140" fill="#E5DFD3"/>
+        <rect x="0" y="380" width="800" height="8" fill="#c9c0ac"/>
+        <rect x="0" y="520" width="800" height="40" fill="#8a6236"/>
+
+        <!-- GELATO AL CIOCCOLATO -->
+        <g class="hotspot" data-word="cioccolato" data-article="il" data-en="chocolate ice cream">
+          <circle cx="115" cy="255" r="72" fill="#cfd3d6"/>
+          <circle cx="115" cy="255" r="72" fill="none" stroke="#a8adb2" stroke-width="4"/>
+          <circle cx="115" cy="255" r="60" fill="#6B3A21"/>
+          <path d="M60,238 Q115,220 170,238 Q142,255 115,242 Q88,255 60,238 Z" fill="#8B4F2E" opacity="0.6"/>
+          <ellipse cx="97" cy="238" rx="20" ry="13" fill="#8B4F2E" opacity="0.5"/>
+          <rect class="hit-outline" x="38" y="173" width="154" height="164"/>
+        </g>
+
+        <!-- GELATO ALLA VANIGLIA -->
+        <g class="hotspot" data-word="vaniglia" data-article="il" data-en="vanilla ice cream">
+          <circle cx="305" cy="255" r="72" fill="#cfd3d6"/>
+          <circle cx="305" cy="255" r="72" fill="none" stroke="#a8adb2" stroke-width="4"/>
+          <circle cx="305" cy="255" r="60" fill="#F3E5C0"/>
+          <path d="M250,238 Q305,220 360,238 Q332,255 305,242 Q278,255 250,238 Z" fill="#E8D6A0" opacity="0.7"/>
+          <ellipse cx="287" cy="238" rx="20" ry="13" fill="#E8D6A0" opacity="0.6"/>
+          <rect class="hit-outline" x="228" y="173" width="154" height="164"/>
+        </g>
+
+        <!-- GELATO ALLA FRAGOLA -->
+        <g class="hotspot" data-word="fragola" data-article="il" data-en="strawberry ice cream">
+          <circle cx="495" cy="255" r="72" fill="#cfd3d6"/>
+          <circle cx="495" cy="255" r="72" fill="none" stroke="#a8adb2" stroke-width="4"/>
+          <circle cx="495" cy="255" r="60" fill="#D94F6E"/>
+          <path d="M440,238 Q495,220 550,238 Q522,255 495,242 Q468,255 440,238 Z" fill="#F08CA0" opacity="0.6"/>
+          <circle cx="470" cy="230" r="3" fill="#F4C94B"/>
+          <circle cx="510" cy="225" r="3" fill="#F4C94B"/>
+          <circle cx="525" cy="248" r="3" fill="#F4C94B"/>
+          <circle cx="465" cy="255" r="3" fill="#F4C94B"/>
+          <circle cx="500" cy="265" r="3" fill="#F4C94B"/>
+          <ellipse cx="477" cy="238" rx="20" ry="13" fill="#F08CA0" opacity="0.5"/>
+          <rect class="hit-outline" x="418" y="173" width="154" height="164"/>
+        </g>
+
+        <!-- GELATO ALLA STRACCIATELLA -->
+        <g class="hotspot" data-word="stracciatella" data-article="il" data-en="stracciatella ice cream">
+          <circle cx="685" cy="255" r="72" fill="#cfd3d6"/>
+          <circle cx="685" cy="255" r="72" fill="none" stroke="#a8adb2" stroke-width="4"/>
+          <circle cx="685" cy="255" r="60" fill="#F8F4E8"/>
+          <path d="M650,220 L656,232 L646,236 Z" fill="#3A2418"/>
+          <path d="M700,215 L710,224 L698,230 Z" fill="#3A2418"/>
+          <path d="M715,250 L724,258 L712,262 Z" fill="#3A2418"/>
+          <path d="M665,265 L674,272 L662,277 Z" fill="#3A2418"/>
+          <path d="M695,280 L704,288 L692,292 Z" fill="#3A2418"/>
+          <path d="M645,255 L653,262 L642,266 Z" fill="#3A2418"/>
+          <ellipse cx="665" cy="238" rx="20" ry="13" fill="#eee6d3" opacity="0.6"/>
+          <rect class="hit-outline" x="608" y="173" width="154" height="164"/>
+        </g>
+
+        <!-- CONO (cone only) -->
+        <g class="hotspot" data-word="cono" data-article="il" data-en="ice cream cone">
+          <path d="M130,520 L85,410 L175,410 Z" fill="#D9A45B"/>
+          <path d="M95,425 L165,425 M100,445 L160,445 M105,465 L155,465 M110,485 L150,485" stroke="#B9834A" stroke-width="2"/>
+          <path d="M92,415 L110,520 M168,415 L150,520 M130,410 L130,520" stroke="#B9834A" stroke-width="2" opacity="0.6"/>
+          <rect class="hit-outline" x="60" y="400" width="140" height="130"/>
+        </g>
+
+        <!-- UNA PALLINA (single scoop, drawn after the cone so it wins the small overlap where the scoop visually sits in the cone) -->
+        <g class="hotspot" data-word="una pallina" data-article="una" data-en="one scoop">
+          <circle cx="130" cy="390" r="48" fill="#E8899B"/>
+          <ellipse cx="112" cy="372" rx="16" ry="10" fill="#F4B4C0" opacity="0.7"/>
+          <rect class="hit-outline" x="75" y="335" width="110" height="95"/>
+        </g>
+
+        <!-- COPPETTA (cup only) -->
+        <g class="hotspot" data-word="coppetta" data-article="la" data-en="ice cream cup">
+          <path d="M240,430 L260,520 L340,520 L360,430 Z" fill="#f6f0e3"/>
+          <path d="M240,430 L360,430 L356,442 L244,442 Z" fill="#e3dac2"/>
+          <rect class="hit-outline" x="225" y="430" width="150" height="95"/>
+        </g>
+
+        <!-- DUE PALLINE (two scoops, drawn after the cup so they win the small overlap) -->
+        <g class="hotspot" data-word="due palline" data-article="due" data-en="two scoops">
+          <circle cx="270" cy="410" r="38" fill="#6B3A21"/>
+          <circle cx="330" cy="405" r="40" fill="#F3E5C0"/>
+          <ellipse cx="258" cy="398" rx="13" ry="9" fill="#8B4F2E" opacity="0.6"/>
+          <ellipse cx="318" cy="392" rx="14" ry="9" fill="#E8D6A0" opacity="0.6"/>
+          <rect class="hit-outline" x="225" y="360" width="150" height="95"/>
+        </g>
+
+        <!-- 1 EURO COIN -->
+        <g class="hotspot" data-word="euro" data-article="la" data-en="1 euro coin">
+          <circle cx="460" cy="460" r="36" fill="#D4AF37"/>
+          <circle cx="460" cy="460" r="24" fill="#C9CDD1"/>
+          <circle cx="460" cy="460" r="24" fill="none" stroke="#9aa0a6" stroke-width="2"/>
+          <text x="460" y="467" text-anchor="middle" font-family="'Fraunces', serif" font-weight="700" font-size="18" fill="#5a6270">1€</text>
+          <rect class="hit-outline" x="418" y="418" width="84" height="84"/>
+        </g>
+
+        <!-- 5 CENT COIN -->
+        <g class="hotspot" data-word="cinque centesimi" data-article="la" data-en="5 cent coin">
+          <circle cx="535" cy="480" r="24" fill="#C87F4A"/>
+          <circle cx="535" cy="480" r="24" fill="none" stroke="#9c5f34" stroke-width="2"/>
+          <text x="535" y="486" text-anchor="middle" font-family="'Fraunces', serif" font-weight="700" font-size="13" fill="#5c3a1e">5c</text>
+          <rect class="hit-outline" x="505" y="450" width="60" height="60"/>
+        </g>
+
+        <!-- 100 EURO BILL -->
+        <g class="hotspot" data-word="cento euro" data-article="la" data-en="100 euro bill">
+          <rect x="580" y="430" width="170" height="85" rx="6" fill="#3C8151"/>
+          <rect x="592" y="442" width="146" height="61" rx="4" fill="none" stroke="#bcd9c4" stroke-width="2"/>
+          <circle cx="625" cy="472" r="22" fill="#bcd9c4" opacity="0.5"/>
+          <text x="700" y="480" text-anchor="middle" font-family="'Fraunces', serif" font-weight="700" font-size="24" fill="#e9f5ee">100</text>
+          <rect class="hit-outline" x="570" y="420" width="190" height="105"/>
+        </g>
+
+      </svg>
+
+      <!-- SVG scene 5: on the road, driver's perspective -->
+      <svg id="scene-strada" class="scene-svg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+        <!-- sky -->
+        <rect x="0" y="0" width="800" height="200" fill="#cfe3e6"/>
+        <path d="M0,170 Q200,150 400,165 T800,170 L800,200 L0,200 Z" fill="#b9d3c2"/>
+
+        <!-- SOLE (sun) -->
+        <g class="hotspot" data-word="sole" data-article="il" data-en="sun">
+          <defs>
+            <radialGradient id="sunGrad" cx="35%" cy="35%" r="70%">
+              <stop offset="0%" stop-color="#FCE18A"/>
+              <stop offset="100%" stop-color="#F4C94B"/>
+            </radialGradient>
+          </defs>
+          <circle cx="710" cy="70" r="34" fill="url(#sunGrad)"/>
+          <rect class="hit-outline" x="668" y="28" width="84" height="84"/>
+        </g>
+
+        <!-- NUVOLA (cloud) -->
+        <g class="hotspot" data-word="nuvola" data-article="la" data-en="cloud">
+          <ellipse cx="150" cy="70" rx="38" ry="24" fill="#ffffff" opacity="0.95"/>
+          <ellipse cx="190" cy="65" rx="46" ry="28" fill="#ffffff" opacity="0.95"/>
+          <ellipse cx="225" cy="75" rx="32" ry="20" fill="#ffffff" opacity="0.95"/>
+          <ellipse cx="165" cy="82" rx="40" ry="18" fill="#ffffff" opacity="0.95"/>
+          <rect class="hit-outline" x="100" y="38" width="165" height="70"/>
+        </g>
+
+        <!-- MONTAGNA (mountain) — summer Dolomites: green slopes, exposed grey rock up top, no snow -->
+        <g class="hotspot" data-word="montagna" data-article="la" data-en="mountain">
+          <path d="M460,175 L545,90 L630,175 Z" fill="#6b8a52"/>
+          <path d="M511,124 L545,90 L579,124 Z" fill="#9a958a"/>
+          <rect class="hit-outline" x="450" y="82" width="190" height="101"/>
+        </g>
+
+        <!-- grass either side of the road -->
+        <rect x="0" y="195" width="800" height="365" fill="#8fae6a"/>
+
+        <!-- STRADA (road) -->
+        <g class="hotspot" data-word="strada" data-article="la" data-en="road">
+          <path d="M120,560 L385,195 L415,195 L680,560 Z" fill="#5c6068"/>
+          <line x1="128" y1="558" x2="386" y2="198" stroke="#e8e2d0" stroke-width="3" opacity="0.7"/>
+          <line x1="672" y1="558" x2="414" y2="198" stroke="#e8e2d0" stroke-width="3" opacity="0.7"/>
+          <path d="M395,555 L405,555 L400.2,196 L399.8,196 Z" fill="#F4E9B8"/>
+          <path class="hit-outline" d="M120,560 L385,195 L415,195 L680,560 Z"/>
+        </g>
+
+        <!-- MACCHINA (car), driving in the right lane, rear view -->
+        <g class="hotspot" data-word="macchina" data-article="la" data-en="car">
+          <path d="M405,420 L405,395 Q405,360 440,352 Q470,346 500,352 Q535,360 535,395 L535,420 Z" fill="#B23A2E" stroke="#1c1c1c" stroke-width="3"/>
+          <path d="M430,352 L510,352 L500,372 L440,372 Z" fill="#232323"/>
+          <line x1="450" y1="356" x2="465" y2="368" stroke="#ffffff" stroke-width="2" opacity="0.45"/>
+          <line x1="410" y1="372" x2="530" y2="372" stroke="#7a2620" stroke-width="2" opacity="0.6"/>
+          <path d="M405,378 L405,405 Q405,412 412,412 L430,412 L430,378 Z" fill="#7a2620"/>
+          <path d="M405,378 L405,398 L418,398 L424,378 Z" fill="#f4a6a0" opacity="0.85"/>
+          <path d="M535,378 L535,405 Q535,412 528,412 L510,412 L510,378 Z" fill="#7a2620"/>
+          <path d="M535,378 L535,398 L522,398 L516,378 Z" fill="#f4a6a0" opacity="0.85"/>
+          <ellipse cx="420" cy="420" rx="12" ry="7" fill="#1c1c1c"/>
+          <ellipse cx="520" cy="420" rx="12" ry="7" fill="#1c1c1c"/>
+          <ellipse cx="450" cy="415" rx="8" ry="5" fill="#2a2a2a" stroke="#111111" stroke-width="1"/>
+          <ellipse cx="490" cy="415" rx="8" ry="5" fill="#2a2a2a" stroke="#111111" stroke-width="1"/>
+          <rect class="hit-outline" x="400" y="344" width="140" height="82"/>
+        </g>
+
+
+        <!-- ALBERO (tree) -->
+        <g class="hotspot" data-word="albero" data-article="l'" data-en="tree">
+          <rect x="175" y="380" width="20" height="80" fill="#6b4a28"/>
+          <circle cx="150" cy="350" r="38" fill="#4b7a3a"/>
+          <circle cx="225" cy="345" r="40" fill="#4b7a3a"/>
+          <circle cx="185" cy="325" r="55" fill="#5c8a44"/>
+          <rect class="hit-outline" x="105" y="265" width="165" height="200"/>
+        </g>
+
+        <!-- CARTELLO (road sign) -->
+        <g class="hotspot" data-word="cartello" data-article="il" data-en="sign">
+          <rect x="635" y="290" width="10" height="170" fill="#8a8f94"/>
+          <path d="M640,220 L600,290 L680,290 Z" fill="#fdf8ee" stroke="#c0413a" stroke-width="8" stroke-linejoin="round"/>
+          <rect x="637" y="250" width="6" height="24" fill="#2A2420"/>
+          <circle cx="640" cy="280" r="3.5" fill="#2A2420"/>
+          <rect class="hit-outline" x="590" y="210" width="100" height="260"/>
+        </g>
+
+      </svg>
+      <div class="chip-connector" id="labelLine"></div>
+      <div class="chip-dot" id="labelDot"></div>
+      <div class="label-chip" id="labelChip"></div>
+      <div class="match-tags-layer" id="matchTagsLayer"></div>
+    </div>
+
+    <div class="chip-pool" id="chipPool"></div>
+
+    <div class="footer-row">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">0 / 7 scoperte</div>
+    </div>
+  </div>
+
+  <div class="passport">
+    <h2>📖 Passaporto di <span id="passportName">Explorer 1</span></h2>
+    <div class="stamp-grid" id="stampGrid"></div>
+  </div>
+
+</div>
+
+<div class="translate-page" id="translatePage">
+  <button id="backFromTranslateBtn" class="back-btn">← Torna alle scene / Back</button>
+  <div class="translate-direction-row" id="translateDirectionRow">
+    <button class="translate-direction-btn active" data-direction="it-en">Italiano → Inglese</button>
+    <button class="translate-direction-btn" data-direction="en-it">Inglese → Italiano</button>
+  </div>
+  <div class="translate-card">
+    <div class="translate-prompt" id="translatePrompt"></div>
+    <div class="translate-options" id="translateOptions"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const SCENES = [
+    {
+      id: 'castello2',
+      eyebrow: 'Tappa 1: Le Difese del Castello',
+      words: [
+        {id:'torre', article:'la', it:'la torre', en:'tower'},
+        {id:'bandiera', article:'la', it:'la bandiera', en:'flag'},
+        {id:'portone', article:'il', it:'il portone', en:'main gate'},
+        {id:'ponte levatoio', article:'il', it:'il ponte levatoio', en:'drawbridge'},
+        {id:'mura', article:'le', it:'le mura', en:'walls'},
+        {id:'fossato', article:'il', it:'il fossato', en:'moat'},
+        {id:'finestra', article:'la', it:'la finestra', en:'window'},
+        {id:'merli', article:'i', it:'i merli', en:'battlements'},
+        {id:'feritoia', article:'la', it:'la feritoia', en:'arrow slit'},
+      ],
+    },
+    {
+      id: 'ristorante',
+      eyebrow: 'Tappa 2: Al Ristorante',
+      words: [
+        {id:'pizza', article:'la', it:'la pizza', en:'pizza'},
+        {id:'spaghetti', article:'gli', it:'gli spaghetti al ragù', en:'spaghetti bolognese'},
+        {id:'forchetta', article:'la', it:'la forchetta', en:'fork'},
+        {id:'coltello', article:'il', it:'il coltello', en:'knife'},
+        {id:'cucchiaio', article:'il', it:'il cucchiaio', en:'spoon'},
+        {id:'cucchiaino', article:'il', it:'il cucchiaino', en:'teaspoon'},
+        {id:'bicchiere', article:'il', it:'il bicchiere', en:'glass'},
+        {id:'caraffa', article:'la', it:'la caraffa', en:'water jug'},
+        {id:'tovagliolo', article:'il', it:'il tovagliolo', en:'napkin'},
+      ],
+    },
+    {
+      id: 'zaino',
+      eyebrow: 'Tappa 3: Lo Zaino',
+      words: [
+        {id:'zaino', article:'lo', it:'lo zaino', en:'backpack'},
+        {id:'fumetto', article:'il', it:'il fumetto', en:'comic book'},
+        {id:'borraccia', article:'la', it:'la borraccia', en:'water bottle'},
+        {id:'tablet', article:'il', it:'il tablet', en:'tablet'},
+        {id:'cappello', article:'il', it:'il cappello', en:'hat'},
+        {id:'panino', article:'il', it:'il panino', en:'sandwich'},
+        {id:'cubo di rubik', article:'il', it:'il cubo di Rubik', en:"Rubik's cube"},
+      ],
+    },
+    {
+      id: 'gelateria',
+      eyebrow: 'Tappa 4: La Gelateria',
+      words: [
+        {id:'cioccolato', article:'il', it:'il gelato al cioccolato', en:'chocolate ice cream'},
+        {id:'vaniglia', article:'il', it:'il gelato alla vaniglia', en:'vanilla ice cream'},
+        {id:'fragola', article:'il', it:'il gelato alla fragola', en:'strawberry ice cream'},
+        {id:'stracciatella', article:'il', it:'il gelato alla stracciatella', en:'stracciatella ice cream'},
+        {id:'cono', article:'il', it:'il cono', en:'ice cream cone'},
+        {id:'una pallina', article:'una', it:'una pallina', en:'one scoop'},
+        {id:'coppetta', article:'la', it:'la coppetta', en:'ice cream cup'},
+        {id:'due palline', article:'due', it:'due palline', en:'two scoops'},
+        {id:'euro', article:'la', it:'la moneta da un euro', en:'1 euro coin'},
+        {id:'cento euro', article:'la', it:'la banconota da cento euro', en:'100 euro bill'},
+        {id:'cinque centesimi', article:'la', it:'la moneta da cinque centesimi', en:'5 cent coin'},
+      ],
+    },
+    {
+      id: 'strada',
+      eyebrow: 'Tappa 5: Sulla Strada',
+      words: [
+        {id:'strada', article:'la', it:'la strada', en:'road'},
+        {id:'macchina', article:'la', it:'la macchina', en:'car'},
+        {id:'albero', article:"l'", it:"l'albero", en:'tree'},
+        {id:'cartello', article:'il', it:'il cartello', en:'sign'},
+        {id:'sole', article:'il', it:'il sole', en:'sun'},
+        {id:'nuvola', article:'la', it:'la nuvola', en:'cloud'},
+        {id:'montagna', article:'la', it:'la montagna', en:'mountain'},
+      ],
+    },
+  ];
+
+  function buildAllWordsPool(){
+    const seen = new Set();
+    const pool = [];
+    SCENES.forEach(scene => {
+      scene.words.forEach(w => {
+        const key = w.it + '|' + w.en;
+        if(seen.has(key)) return;
+        seen.add(key);
+        pool.push({ it: w.it, en: w.en });
+      });
+    });
+    return pool;
+  }
+  const ALL_WORDS = buildAllWordsPool();
+
+  let currentSceneIndex = 0;
+  function currentScene(){ return SCENES[currentSceneIndex]; }
+  function currentWords(){ return currentScene().words; }
+  function currentSvg(){ return document.getElementById('scene-' + currentScene().id); }
+
+  const player = {
+    name: 'Explorer',
+    scenes: Object.fromEntries(SCENES.map(s => [s.id, {learned:new Set(), matched:new Set(), quizIdx:0, quizOrder:[]}])),
+  };
+  function currentProgress(){ return player.scenes[currentScene().id]; }
+  let mode = 'explore';
+  let currentQuizWord = null;
+  let voicesReady = false;
+  let dragChip = null;
+  let debugUnlock = false;
+
+  const promptText = document.getElementById('promptText');
+  const replayBtn = document.getElementById('replayBtn');
+  const labelChip = document.getElementById('labelChip');
+  const labelDot = document.getElementById('labelDot');
+  const labelLine = document.getElementById('labelLine');
+  const matchTagsLayer = document.getElementById('matchTagsLayer');
+  const sceneWrap = document.getElementById('sceneWrap');
+  const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
+  const passportName = document.getElementById('passportName');
+  const stampGrid = document.getElementById('stampGrid');
+  const toastEl = document.getElementById('toast');
+  const quizModeBtn = document.getElementById('quizModeBtn');
+  const matchModeBtn = document.getElementById('matchModeBtn');
+  const stageEl = document.getElementById('stage');
+  const chipPool = document.getElementById('chipPool');
+  const sceneLabel = document.getElementById('sceneLabel');
+  const scenePrevBtn = document.getElementById('scenePrevBtn');
+  const sceneNextBtn = document.getElementById('sceneNextBtn');
+  const voiceSelect = document.getElementById('voiceSelect');
+  const voiceMsg = document.getElementById('voiceMsg');
+
+  let selectedVoiceURI = null;
+
+  function speak(text){
+    try{
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'it-IT';
+      u.rate = 0.88;
+      const voices = window.speechSynthesis.getVoices();
+      let itVoice = selectedVoiceURI ? voices.find(v => v.voiceURI === selectedVoiceURI) : null;
+      if(!itVoice){
+        itVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('it'));
+      }
+      if(itVoice) u.voice = itVoice;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }catch(e){ /* speech synthesis unavailable */ }
+  }
+
+  function populateVoiceOptions(){
+    const voices = window.speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('it'));
+    if(voices.length === 0){
+      voiceSelect.style.display = 'none';
+      voiceMsg.style.display = 'inline';
+      voiceMsg.textContent = 'Nessuna voce italiana trovata su questo dispositivo / No Italian voice found on this device';
+      return;
+    }
+    voiceSelect.style.display = 'inline-block';
+    voiceMsg.style.display = 'none';
+    voiceSelect.innerHTML = '';
+    voices.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v.voiceURI;
+      opt.textContent = v.name;
+      voiceSelect.appendChild(opt);
+    });
+    if(!selectedVoiceURI || !voices.some(v => v.voiceURI === selectedVoiceURI)){
+      selectedVoiceURI = voices[0].voiceURI;
+    }
+    voiceSelect.value = selectedVoiceURI;
+  }
+
+  voiceSelect.addEventListener('change', () => {
+    selectedVoiceURI = voiceSelect.value;
+    speak('Ciao! Benvenuto.');
+  });
+
+  if('speechSynthesis' in window){
+    populateVoiceOptions();
+    window.speechSynthesis.onvoiceschanged = () => { voicesReady = true; populateVoiceOptions(); };
+  } else {
+    voiceSelect.style.display = 'none';
+    voiceMsg.style.display = 'inline';
+    voiceMsg.textContent = 'La sintesi vocale non è supportata da questo browser / Speech synthesis isn\'t supported by this browser';
+  }
+
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=> toastEl.classList.remove('show'), 1600);
+  }
+
+  function renderHotspotStates(){
+    currentSvg().querySelectorAll('.hotspot').forEach(el => {
+      const word = el.getAttribute('data-word');
+      el.classList.toggle('learned', currentProgress().learned.has(word));
+      el.classList.remove('correct-flash','wrong-flash','target-hint');
+    });
+  }
+
+  function renderSceneNav(){
+    sceneLabel.textContent = currentScene().eyebrow;
+    const discoverDone = debugUnlock || currentProgress().learned.size >= currentWords().length;
+    scenePrevBtn.disabled = currentSceneIndex === 0;
+    sceneNextBtn.disabled = currentSceneIndex === SCENES.length - 1 ? true : !discoverDone;
+    sceneNextBtn.title = discoverDone ? '' : 'Scopri tutte le parole di questa tappa per continuare';
+  }
+
+  function renderProgress(){
+    const learnedCount = currentProgress().learned.size;
+    progressFill.style.width = (learnedCount / currentWords().length * 100) + '%';
+    progressLabel.textContent = `${learnedCount} / ${currentWords().length} scoperte`;
+    const allLearned = debugUnlock || learnedCount >= currentWords().length;
+    quizModeBtn.disabled = !allLearned;
+    quizModeBtn.title = allLearned ? '' : 'Scopri tutte le parole prima di iniziare il quiz';
+    matchModeBtn.disabled = !allLearned;
+    matchModeBtn.title = allLearned ? '' : "Scopri tutte le parole prima di iniziare l'abbinamento";
+    renderSceneNav();
+  }
+
+  function renderPassport(){
+    passportName.textContent = player.name;
+    stampGrid.innerHTML = '';
+    currentWords().forEach(w => {
+      const stamp = document.createElement('div');
+      const has = currentProgress().learned.has(w.id);
+      stamp.className = 'stamp' + (has ? '' : ' empty');
+      stamp.textContent = has ? w.it.toUpperCase() : '?';
+      stampGrid.appendChild(stamp);
+    });
+  }
+
+  function setPrompt(html){
+    promptText.innerHTML = html;
+  }
+
+  function renderModePrompt(){
+    replayBtn.style.display = mode === 'quiz' ? '' : 'none';
+    if(mode === 'explore'){
+      setPrompt('Tocca un punto qualsiasi della scena per scoprirne il nome.<span class="en">Tap any part of the scene to discover its name.</span>');
+      currentQuizWord = null;
+    } else if(mode === 'quiz'){
+      nextQuizWord();
+    } else if(mode === 'match'){
+      currentQuizWord = null;
+      setPrompt('Trascina ogni parola sul punto giusto del castello.<span class="en">Drag each word onto the matching part of the castle.</span>');
+      renderMatchPool();
+      renderPlacedTags();
+    }
+  }
+
+  function renderAll(){
+    stageEl.classList.toggle('mode-match', mode === 'match');
+    renderHotspotStates();
+    renderProgress();
+    renderPassport();
+    renderModePrompt();
+  }
+
+  // --- Explore mode ---
+  // --- Shared callout positioning: anchor dot + connector line + clamped box ---
+  const HOTSPOT_OVERLAP_THRESHOLD = 0.3; // a chip may cover up to this fraction of an undiscovered item before it's considered "blocking" it
+
+  function rectsOverlap(a, b){
+    return !(b.left > a.left + a.width || b.left + b.width < a.left || b.top > a.top + a.height || b.top + b.height < a.top);
+  }
+
+  function overlapFraction(box, otherRect){
+    const overlapW = Math.max(0, Math.min(box.left + box.width, otherRect.left + otherRect.width) - Math.max(box.left, otherRect.left));
+    const overlapH = Math.max(0, Math.min(box.top + box.height, otherRect.top + otherRect.height) - Math.max(box.top, otherRect.top));
+    const otherArea = otherRect.width * otherRect.height;
+    if(otherArea <= 0) return 0;
+    return (overlapW * overlapH) / otherArea;
+  }
+
+  // Used by both Explore and Match: every OTHER item's hotspot frame is
+  // protected, whether it's been discovered/matched yet or not.
+  function getHotspotObstacles(excludeWordId){
+    const svg = currentSvg();
+    const wrapRect = sceneWrap.getBoundingClientRect();
+    const obstacles = [];
+    svg.querySelectorAll('.hotspot').forEach(el => {
+      const word = el.getAttribute('data-word');
+      if(word === excludeWordId) return;
+      const r = el.getBoundingClientRect();
+      obstacles.push({
+        left: r.left - wrapRect.left,
+        top: r.top - wrapRect.top,
+        width: r.width,
+        height: r.height,
+      });
+    });
+    return obstacles;
+  }
+
+  function computeCalloutPosition(hotspotEl, boxWidth, boxHeight, avoidRects, hotspotObstacles){
+    const rect = hotspotEl.getBoundingClientRect();
+    const wrapRect = sceneWrap.getBoundingClientRect();
+    const anchorTopX = rect.left - wrapRect.left + rect.width/2;
+    const anchorTopY = rect.top - wrapRect.top;
+    const anchorBottomX = anchorTopX;
+    const anchorBottomY = rect.bottom - wrapRect.top;
+    const margin = 8;
+    avoidRects = avoidRects || [];
+    hotspotObstacles = hotspotObstacles || [];
+
+    function clamp(pos){
+      return {
+        left: Math.min(wrapRect.width - boxWidth - margin, Math.max(margin, pos.left)),
+        top: Math.min(wrapRect.height - boxHeight - margin, Math.max(margin, pos.top)),
+      };
+    }
+
+    // 8 positions around a given anchor point, at a given gap distance.
+    function candidatesForAnchor(ax, ay, gap){
+      return [
+        { left: ax - boxWidth/2,      top: ay - gap - boxHeight, anchorX: ax, anchorY: ay }, // above
+        { left: ax - boxWidth/2,      top: ay + gap,             anchorX: ax, anchorY: ay }, // below
+        { left: ax + gap,             top: ay - boxHeight/2,     anchorX: ax, anchorY: ay }, // right
+        { left: ax - gap - boxWidth,  top: ay - boxHeight/2,     anchorX: ax, anchorY: ay }, // left
+        { left: ax + gap,             top: ay - gap - boxHeight, anchorX: ax, anchorY: ay }, // above-right
+        { left: ax - gap - boxWidth,  top: ay - gap - boxHeight, anchorX: ax, anchorY: ay }, // above-left
+        { left: ax + gap,             top: ay + gap,             anchorX: ax, anchorY: ay }, // below-right
+        { left: ax - gap - boxWidth,  top: ay + gap,             anchorX: ax, anchorY: ay }, // below-left
+      ];
+    }
+
+    function blockedByChips(pos){
+      const box = { left: pos.left, top: pos.top, width: boxWidth, height: boxHeight };
+      return avoidRects.some(r => rectsOverlap(r, box));
+    }
+    function maxHotspotOverlap(pos){
+      const box = { left: pos.left, top: pos.top, width: boxWidth, height: boxHeight };
+      let worst = 0;
+      hotspotObstacles.forEach(r => { const f = overlapFraction(box, r); if(f > worst) worst = f; });
+      return worst;
+    }
+
+    // Try both anchors (top and bottom of the hotspot) at increasing gap distances,
+    // picking whichever candidate conceals the least of any other item. Only escalate
+    // the distance if nothing at the current distance clears the 30% threshold.
+    const gaps = [12, 24, 40, 60, 90];
+    let best = null;
+    let bestOverlap = Infinity;
+
+    for(const gap of gaps){
+      const pool = [
+        ...candidatesForAnchor(anchorTopX, anchorTopY, gap),
+        ...candidatesForAnchor(anchorBottomX, anchorBottomY, gap),
+      ];
+      for(const c of pool){
+        const clamped = clamp(c);
+        if(blockedByChips(clamped)) continue;
+        const overlap = maxHotspotOverlap(clamped);
+        if(overlap < bestOverlap){
+          bestOverlap = overlap;
+          best = { anchorX: c.anchorX, anchorY: c.anchorY, boxLeft: clamped.left, boxTop: clamped.top };
+        }
+      }
+      if(best && bestOverlap < HOTSPOT_OVERLAP_THRESHOLD) break;
+    }
+
+    if(!best){
+      // every candidate at every distance was blocked by another chip — fall back
+      // to the closest above-anchor spot regardless, rather than returning nothing
+      const clamped = clamp(candidatesForAnchor(anchorTopX, anchorTopY, gaps[0])[0]);
+      best = { anchorX: anchorTopX, anchorY: anchorTopY, boxLeft: clamped.left, boxTop: clamped.top };
+    }
+
+    return best;
+  }
+
+  function pointConnector(lineEl, anchorX, anchorY, boxLeft, boxTop, boxWidth, boxHeight){
+    const boxCenterX = boxLeft + boxWidth/2;
+    const boxCenterY = boxTop + boxHeight/2;
+    const dx = boxCenterX - anchorX;
+    const dy = boxCenterY - anchorY;
+    const length = Math.sqrt(dx*dx + dy*dy);
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    lineEl.style.left = anchorX + 'px';
+    lineEl.style.top = anchorY + 'px';
+    lineEl.style.width = length + 'px';
+    lineEl.style.transform = `rotate(${angle}deg)`;
+  }
+
+  function showLabelChip(el, text){
+    labelChip.textContent = text;
+    const boxWidth = labelChip.offsetWidth;
+    const boxHeight = labelChip.offsetHeight;
+    // Same obstacle-avoidance strategy as Match mode: don't cover more than
+    // 30% of another item's frame. No other chips to avoid here since
+    // Explore only ever shows one popup at a time.
+    const pos = computeCalloutPosition(el, boxWidth, boxHeight, [], getHotspotObstacles(el.getAttribute('data-word')));
+
+    labelChip.style.left = pos.boxLeft + 'px';
+    labelChip.style.top = pos.boxTop + 'px';
+    labelChip.classList.add('show');
+
+    labelDot.style.left = pos.anchorX + 'px';
+    labelDot.style.top = pos.anchorY + 'px';
+    labelDot.classList.add('show');
+
+    pointConnector(labelLine, pos.anchorX, pos.anchorY, pos.boxLeft, pos.boxTop, boxWidth, boxHeight);
+    labelLine.classList.add('show');
+
+    clearTimeout(showLabelChip._t);
+    showLabelChip._t = setTimeout(()=> {
+      labelChip.classList.remove('show');
+      labelDot.classList.remove('show');
+      labelLine.classList.remove('show');
+    }, 1800);
+  }
+
+  function handleExploreClick(el){
+    const wordId = el.getAttribute('data-word');
+    const w = currentWords().find(x => x.id === wordId);
+    if(!w) return;
+    const isNew = !currentProgress().learned.has(wordId);
+    currentProgress().learned.add(wordId);
+    speak(w.it);
+    showLabelChip(el, `${w.it} — ${w.en}`);
+    setPrompt(`${w.it} <span class="en">${w.en}</span>`);
+    replayBtn.dataset.lastWord = w.it;
+    el.classList.add('learned');
+    renderProgress();
+    renderPassport();
+    if(isNew){
+      showToast(`Nuova parola: ${w.it} ✓`);
+    }
+  }
+
+  // --- Quiz mode ---
+  function nextQuizWord(){
+    const p = currentProgress();
+    if(p.quizOrder.length === 0 || p.quizIdx >= p.quizOrder.length){
+      p.quizOrder = currentWords().map(w => w.id).sort(() => Math.random() - 0.5);
+      p.quizIdx = 0;
+    }
+    currentQuizWord = p.quizOrder[p.quizIdx];
+    const w = currentWords().find(x => x.id === currentQuizWord);
+    setPrompt(`Trova: <strong>${w.it}</strong><span class="en">Find the matching part of the castle.</span>`);
+    currentSvg().querySelectorAll('.hotspot').forEach(el => el.classList.remove('correct-flash','wrong-flash'));
+    speak(w.it);
+  }
+
+  function handleQuizClick(el){
+    const wordId = el.getAttribute('data-word');
+    const w = currentWords().find(x => x.id === currentQuizWord);
+    if(wordId === currentQuizWord){
+      el.classList.add('correct-flash');
+      speak(w.it);
+      showToast(`Esatto! ${w.it} ✓`);
+      const p = currentProgress();
+      p.quizIdx += 1;
+      setTimeout(() => { el.classList.remove('correct-flash'); nextQuizWord(); }, 1500);
+    } else {
+      el.classList.add('wrong-flash');
+      showToast('Riprova — try again');
+      setTimeout(() => el.classList.remove('wrong-flash'), 500);
+    }
+  }
+
+  // --- Match mode (drag words onto the scene) ---
+  function renderMatchPool(){
+    const p = currentProgress();
+    chipPool.innerHTML = '';
+    const remaining = currentWords().filter(w => !p.matched.has(w.id));
+    if(remaining.length === 0){
+      const done = document.createElement('div');
+      done.className = 'chip-pool-done';
+      done.textContent = 'Tutte le parole abbinate ✓ — All matched';
+      chipPool.appendChild(done);
+      return;
+    }
+    remaining.forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'word-chip';
+      chip.textContent = w.it;
+      chip.setAttribute('data-word', w.id);
+      chip.addEventListener('pointerdown', (e) => startDrag(e, chip, w.id));
+      chipPool.appendChild(chip);
+    });
+  }
+
+  function renderPlacedTags(){
+    matchTagsLayer.innerHTML = '';
+    const svg = currentSvg();
+    const placedRects = [];
+    currentProgress().matched.forEach(wordId => {
+      const hotspotEl = svg.querySelector(`.hotspot[data-word="${wordId}"]`);
+      const w = currentWords().find(x => x.id === wordId);
+      if(!hotspotEl || !w) return;
+
+      const tag = document.createElement('div');
+      tag.className = 'placed-tag';
+      tag.textContent = w.it;
+      tag.style.visibility = 'hidden';
+      matchTagsLayer.appendChild(tag);
+      const boxWidth = tag.offsetWidth;
+      const boxHeight = tag.offsetHeight;
+
+      const pos = computeCalloutPosition(hotspotEl, boxWidth, boxHeight, placedRects, getHotspotObstacles(wordId));
+      tag.style.left = pos.boxLeft + 'px';
+      tag.style.top = pos.boxTop + 'px';
+      tag.style.visibility = 'visible';
+
+      const dot = document.createElement('div');
+      dot.className = 'placed-dot';
+      dot.style.left = pos.anchorX + 'px';
+      dot.style.top = pos.anchorY + 'px';
+      matchTagsLayer.appendChild(dot);
+
+      const line = document.createElement('div');
+      line.className = 'placed-line';
+      pointConnector(line, pos.anchorX, pos.anchorY, pos.boxLeft, pos.boxTop, boxWidth, boxHeight);
+      matchTagsLayer.appendChild(line);
+
+      placedRects.push({left: pos.boxLeft, top: pos.boxTop, width: boxWidth, height: boxHeight});
+    });
+  }
+
+  function startDrag(e, chipEl, wordId){
+    e.preventDefault();
+    const floatEl = chipEl.cloneNode(true);
+    floatEl.classList.add('floating');
+    floatEl.style.left = e.clientX + 'px';
+    floatEl.style.top = e.clientY + 'px';
+    document.body.appendChild(floatEl);
+    chipEl.classList.add('dragging');
+    dragChip = { el: chipEl, wordId, floatEl, startX: e.clientX, startY: e.clientY, moved: false };
+    document.addEventListener('pointermove', onDragMove);
+    document.addEventListener('pointerup', onDragEnd);
+    document.addEventListener('pointercancel', onDragEnd);
+  }
+
+  function onDragMove(e){
+    if(!dragChip) return;
+    dragChip.floatEl.style.left = e.clientX + 'px';
+    dragChip.floatEl.style.top = e.clientY + 'px';
+    const dx = e.clientX - dragChip.startX;
+    const dy = e.clientY - dragChip.startY;
+    if(Math.sqrt(dx*dx + dy*dy) > 6){
+      dragChip.moved = true;
+    }
+  }
+
+  function onDragEnd(e){
+    if(!dragChip) return;
+    document.removeEventListener('pointermove', onDragMove);
+    document.removeEventListener('pointerup', onDragEnd);
+    document.removeEventListener('pointercancel', onDragEnd);
+
+    const { el: chipEl, wordId, floatEl, moved } = dragChip;
+    const w = currentWords().find(x => x.id === wordId);
+    floatEl.remove();
+    chipEl.classList.remove('dragging');
+
+    if(!moved){
+      // a tap, not a drag: just pronounce the word, no drop to evaluate
+      if(w) speak(w.it);
+      dragChip = null;
+      return;
+    }
+
+    const target = document.elementFromPoint(e.clientX, e.clientY);
+    const hotspotEl = target ? target.closest('.hotspot') : null;
+
+    if(hotspotEl && hotspotEl.getAttribute('data-word') === wordId){
+      currentProgress().matched.add(wordId);
+      speak(w.it);
+      replayBtn.dataset.lastWord = w.it;
+      showToast(`Abbinato! ${w.it} ✓`);
+      renderMatchPool();
+      renderPlacedTags();
+      if(currentProgress().matched.size >= currentWords().length){
+        setTimeout(() => showToast('Tutte le parole abbinate! 🎉'), 900);
+      }
+    } else {
+      showToast('Riprova — try again');
+    }
+    dragChip = null;
+  }
+
+  function resetMatch(){
+    currentProgress().matched.clear();
+    renderMatchPool();
+    renderPlacedTags();
+    showToast('Ricominciato — reset!');
+  }
+
+  document.getElementById('resetMatchBtn').addEventListener('click', resetMatch);
+
+  document.querySelectorAll('.hotspot').forEach(el => {
+    el.addEventListener('click', () => {
+      if(mode === 'explore') handleExploreClick(el);
+      else if(mode === 'quiz') handleQuizClick(el);
+    });
+  });
+
+  replayBtn.addEventListener('click', () => {
+    if(mode === 'quiz' && currentQuizWord){
+      const w = currentWords().find(x => x.id === currentQuizWord);
+      speak(w.it);
+    } else if(replayBtn.dataset.lastWord){
+      speak(replayBtn.dataset.lastWord);
+    }
+  });
+
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(btn.disabled) return;
+      mode = btn.getAttribute('data-mode');
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      stageEl.classList.toggle('mode-match', mode === 'match');
+      renderHotspotStates();
+      renderModePrompt();
+    });
+  });
+
+  function goToScene(idx){
+    if(idx < 0 || idx >= SCENES.length) return;
+    if(!debugUnlock && idx > currentSceneIndex && currentProgress().learned.size < currentWords().length) return;
+    currentSceneIndex = idx;
+    mode = 'explore';
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === 'explore'));
+    document.querySelectorAll('.scene-svg').forEach(svg => svg.classList.toggle('scene-active', svg.id === 'scene-' + currentScene().id));
+    stageEl.classList.remove('mode-match');
+    renderAll();
+  }
+
+  scenePrevBtn.addEventListener('click', () => goToScene(currentSceneIndex - 1));
+  sceneNextBtn.addEventListener('click', () => goToScene(currentSceneIndex + 1));
+
+  document.getElementById('debugUnlockToggle').addEventListener('change', (e) => {
+    debugUnlock = e.target.checked;
+    renderProgress();
+  });
+
+  // --- Translate mode: standalone multiple-choice quiz over ALL scenes' words ---
+  const mainGamePage = document.getElementById('mainGamePage');
+  const translatePage = document.getElementById('translatePage');
+  const openTranslateBtn = document.getElementById('openTranslateBtn');
+  const backFromTranslateBtn = document.getElementById('backFromTranslateBtn');
+  const translatePrompt = document.getElementById('translatePrompt');
+  const translateOptions = document.getElementById('translateOptions');
+  let currentTranslateTask = null;
+  let translateDirection = 'it-en';
+
+  function pickTranslateTask(){
+    const pool = ALL_WORDS;
+    const correctIdx = Math.floor(Math.random() * pool.length);
+    const correct = pool[correctIdx];
+    const usedIdx = new Set([correctIdx]);
+    const distractors = [];
+    while(distractors.length < 3 && usedIdx.size < pool.length){
+      const di = Math.floor(Math.random() * pool.length);
+      if(usedIdx.has(di)) continue;
+      usedIdx.add(di);
+      distractors.push(pool[di]);
+    }
+    const options = [correct, ...distractors].sort(() => Math.random() - 0.5);
+    return { correct, options };
+  }
+
+  function renderTranslateTask(){
+    currentTranslateTask = pickTranslateTask();
+    const promptField = translateDirection === 'it-en' ? 'it' : 'en';
+    const optionField = translateDirection === 'it-en' ? 'en' : 'it';
+    translatePrompt.textContent = currentTranslateTask.correct[promptField];
+    translateOptions.innerHTML = '';
+    currentTranslateTask.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'translate-option';
+      btn.textContent = opt[optionField];
+      btn.addEventListener('click', () => handleTranslateAnswer(btn, opt));
+      translateOptions.appendChild(btn);
+    });
+    // Only speak the Italian word here when it IS the prompt (it-en mode).
+    // In en-it mode the Italian word is the hidden answer, so speaking it
+    // now would give it away — it's spoken instead after a correct pick.
+    if(translateDirection === 'it-en'){
+      speak(currentTranslateTask.correct.it);
+    }
+  }
+
+  function handleTranslateAnswer(btn, opt){
+    const isCorrect = opt === currentTranslateTask.correct;
+    const optionField = translateDirection === 'it-en' ? 'en' : 'it';
+    Array.from(translateOptions.children).forEach(b => { b.disabled = true; });
+    if(isCorrect){
+      btn.classList.add('correct');
+      showToast(`Esatto! ${currentTranslateTask.correct.it} = ${currentTranslateTask.correct.en} ✓`);
+      if(translateDirection === 'en-it'){
+        speak(currentTranslateTask.correct.it);
+      }
+    } else {
+      btn.classList.add('wrong');
+      Array.from(translateOptions.children).forEach(b => {
+        if(b.textContent === currentTranslateTask.correct[optionField]) b.classList.add('correct');
+      });
+      showToast('Riprova — try again');
+    }
+    setTimeout(renderTranslateTask, isCorrect ? 1200 : 1800);
+  }
+
+  document.querySelectorAll('.translate-direction-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      translateDirection = btn.getAttribute('data-direction');
+      document.querySelectorAll('.translate-direction-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderTranslateTask();
+    });
+  });
+
+  openTranslateBtn.addEventListener('click', () => {
+    mainGamePage.style.display = 'none';
+    openTranslateBtn.style.display = 'none';
+    translatePage.classList.add('show');
+    renderTranslateTask();
+  });
+
+  backFromTranslateBtn.addEventListener('click', () => {
+    translatePage.classList.remove('show');
+    mainGamePage.style.display = '';
+    openTranslateBtn.style.display = '';
+  });
+
+  renderAll();
+})();
+</script>
+
+</body>
+</html>
