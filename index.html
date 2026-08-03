@@ -1274,82 +1274,22 @@
 <div class="toast" id="toast"></div>
 
 <script>
-(function(){
-  const SCENES = [
-    {
-      id: 'castello2',
-      eyebrow: 'Tappa 1: Le Difese del Castello',
-      words: [
-        {id:'torre', article:'la', it:'la torre', en:'tower'},
-        {id:'bandiera', article:'la', it:'la bandiera', en:'flag'},
-        {id:'portone', article:'il', it:'il portone', en:'main gate'},
-        {id:'ponte levatoio', article:'il', it:'il ponte levatoio', en:'drawbridge'},
-        {id:'mura', article:'le', it:'le mura', en:'walls'},
-        {id:'fossato', article:'il', it:'il fossato', en:'moat'},
-        {id:'finestra', article:'la', it:'la finestra', en:'window'},
-        {id:'merli', article:'i', it:'i merli', en:'battlements'},
-        {id:'feritoia', article:'la', it:'la feritoia', en:'arrow slit'},
-      ],
-    },
-    {
-      id: 'ristorante',
-      eyebrow: 'Tappa 2: Al Ristorante',
-      words: [
-        {id:'pizza', article:'la', it:'la pizza', en:'pizza'},
-        {id:'spaghetti', article:'gli', it:'gli spaghetti al ragù', en:'spaghetti bolognese'},
-        {id:'forchetta', article:'la', it:'la forchetta', en:'fork'},
-        {id:'coltello', article:'il', it:'il coltello', en:'knife'},
-        {id:'cucchiaio', article:'il', it:'il cucchiaio', en:'spoon'},
-        {id:'cucchiaino', article:'il', it:'il cucchiaino', en:'teaspoon'},
-        {id:'bicchiere', article:'il', it:'il bicchiere', en:'glass'},
-        {id:'caraffa', article:'la', it:'la caraffa', en:'water jug'},
-        {id:'tovagliolo', article:'il', it:'il tovagliolo', en:'napkin'},
-      ],
-    },
-    {
-      id: 'zaino',
-      eyebrow: 'Tappa 3: Lo Zaino',
-      words: [
-        {id:'zaino', article:'lo', it:'lo zaino', en:'backpack'},
-        {id:'fumetto', article:'il', it:'il fumetto', en:'comic book'},
-        {id:'borraccia', article:'la', it:'la borraccia', en:'water bottle'},
-        {id:'tablet', article:'il', it:'il tablet', en:'tablet'},
-        {id:'cappello', article:'il', it:'il cappello', en:'hat'},
-        {id:'panino', article:'il', it:'il panino', en:'sandwich'},
-        {id:'cubo di rubik', article:'il', it:'il cubo di Rubik', en:"Rubik's cube"},
-      ],
-    },
-    {
-      id: 'gelateria',
-      eyebrow: 'Tappa 4: La Gelateria',
-      words: [
-        {id:'cioccolato', article:'il', it:'il gelato al cioccolato', en:'chocolate ice cream'},
-        {id:'vaniglia', article:'il', it:'il gelato alla vaniglia', en:'vanilla ice cream'},
-        {id:'fragola', article:'il', it:'il gelato alla fragola', en:'strawberry ice cream'},
-        {id:'stracciatella', article:'il', it:'il gelato alla stracciatella', en:'stracciatella ice cream'},
-        {id:'cono', article:'il', it:'il cono', en:'ice cream cone'},
-        {id:'una pallina', article:'una', it:'una pallina', en:'one scoop'},
-        {id:'coppetta', article:'la', it:'la coppetta', en:'ice cream cup'},
-        {id:'due palline', article:'due', it:'due palline', en:'two scoops'},
-        {id:'euro', article:'la', it:'la moneta da un euro', en:'1 euro coin'},
-        {id:'cento euro', article:'la', it:'la banconota da cento euro', en:'100 euro bill'},
-        {id:'cinque centesimi', article:'la', it:'la moneta da cinque centesimi', en:'5 cent coin'},
-      ],
-    },
-    {
-      id: 'strada',
-      eyebrow: 'Tappa 5: Sulla Strada',
-      words: [
-        {id:'strada', article:'la', it:'la strada', en:'road'},
-        {id:'macchina', article:'la', it:'la macchina', en:'car'},
-        {id:'albero', article:"l'", it:"l'albero", en:'tree'},
-        {id:'cartello', article:'il', it:'il cartello', en:'sign'},
-        {id:'sole', article:'il', it:'il sole', en:'sun'},
-        {id:'nuvola', article:'la', it:'la nuvola', en:'cloud'},
-        {id:'montagna', article:'la', it:'la montagna', en:'mountain'},
-      ],
-    },
-  ];
+(async function(){
+  let SCENES;
+  try {
+    const res = await fetch('scenes.json');
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    SCENES = await res.json();
+  } catch(err) {
+    document.body.innerHTML =
+      '<div style="max-width:640px;margin:80px auto;padding:24px;font-family:sans-serif;text-align:center;color:#8B3A2A;">' +
+      '<h1 style="margin-bottom:12px;">Impossibile caricare i dati del gioco</h1>' +
+      '<p>Could not load scenes.json — the game can\'t start without it. ' +
+      'Make sure this page is served over http(s) and scenes.json is present alongside it.</p>' +
+      '<p style="font-size:0.85em;color:#555;">' + (err && err.message ? err.message : err) + '</p>' +
+      '</div>';
+    return;
+  }
 
   function buildAllWordsPool(){
     const seen = new Set();
