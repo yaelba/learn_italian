@@ -1313,7 +1313,7 @@
 
   const player = {
     name: 'Explorer',
-    scenes: Object.fromEntries(SCENES.map(s => [s.id, {learned:new Set(), identified:new Set(), matched:new Set(), quizIdx:0, quizOrder:[]}])),
+    scenes: Object.fromEntries(SCENES.map(s => [s.id, {learned:new Set(), identified:new Set(), matched:new Set(), quizIdx:0, quizOrder:[], mode:'explore'}])),
   };
   function currentProgress(){ return player.scenes[currentScene().id]; }
   let mode = 'explore';
@@ -1842,6 +1842,7 @@
     btn.addEventListener('click', () => {
       if(btn.disabled) return;
       mode = btn.getAttribute('data-mode');
+      currentProgress().mode = mode;
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       stageEl.classList.toggle('mode-match', mode === 'match');
@@ -1855,10 +1856,13 @@
     if(idx < 0 || idx >= SCENES.length) return;
     if(!debugUnlock && idx > currentSceneIndex && currentProgress().learned.size < currentWords().length) return;
     currentSceneIndex = idx;
-    mode = 'explore';
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === 'explore'));
+    const p = currentProgress();
+    const unlocked = debugUnlock || p.learned.size >= currentWords().length;
+    mode = unlocked ? p.mode : 'explore';
+    p.mode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
     document.querySelectorAll('.scene-svg').forEach(svg => svg.classList.toggle('scene-active', svg.id === 'scene-' + currentScene().id));
-    stageEl.classList.remove('mode-match');
+    stageEl.classList.toggle('mode-match', mode === 'match');
     renderAll();
   }
 
