@@ -33,6 +33,28 @@ Instead, add a second scene type:
 Both types share the same data contract (`id`, `words[]`, per-word article/it/en) and
 the same quiz/match/translate logic. Only the hotspot rendering + hit-testing differs.
 
+**Photo hotspot overlap: smaller box on top.** Bounding boxes from real photos routinely
+overlap (a cushion box nested inside an armchair box; adjacent appliances with sliver
+overlaps) — this isn't a detection error, it reflects real object arrangement. Since
+`type: 'photo'` hotspots are flat rectangles, only one can catch a tap in a shared
+region, so the renderer needs a deterministic stacking rule: render hotspots smallest-area-first,
+so smaller/nested boxes always render on top and stay tappable. This is a heuristic (it
+assumes smaller area correlates with "more specific," which holds for nesting but is
+arbitrary for two similar-sized items that merely touch at an edge) — acceptable for now,
+revisit if it causes real mis-taps.
+
+**Content-generation agent: box-detection feasibility confirmed.** A single-shot request to
+`claude-opus-5` — the photo plus a list of item names, structured output via
+`output_config.format`/`client.messages.parse()` returning `{id, x, y, w, h}` per item —
+correctly located 18/18 test items across three photos (living room, two kitchen counters),
+including crowded/adjacent objects. No iterative crop-and-verify loop needed. Two prompting
+notes from testing: (1) when a scene has multiple instances of the same item (several lemons
+in a bowl), explicitly instruct the model to pick **one** instance and box only it — without
+this, entangled/touching instances (a banana bunch) get boxed as one big cluster instead of
+a single item. (2) Source photo resolution/quality doesn't matter — hotspot coordinates are
+percentage-based, so phone photos should be downscaled before sending (saves tokens, no
+accuracy cost). Feasibility script: `agent/test_bbox_feasibility.py`.
+
 **Data loading: assume online, fail loudly.** Scene data now lives in `scenes.json` and is
 loaded via `fetch()` on startup instead of being inlined in the HTML — this is what "light
 repo + hosting" (goal 1) needs, since editing scene data no longer means editing a
