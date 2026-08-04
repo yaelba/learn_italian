@@ -1,0 +1,9 @@
+name: learn_italian
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13.14
+  - anthropic=0.120.2
+  - python-dotenv=1.2.2
+  - pillow=12.3.0
+  - pydantic=2.13.4
