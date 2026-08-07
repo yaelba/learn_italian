@@ -55,6 +55,22 @@ a single item. (2) Source photo resolution/quality doesn't matter — hotspot co
 percentage-based, so phone photos should be downscaled before sending (saves tokens, no
 accuracy cost). Feasibility script: `agent/test_bbox_feasibility.py`.
 
+**Content-generation agent: intermittent empty results on photos with people.** When a
+scene includes real people — specifically, a request localizing a child ("boy") and pieces
+of their clothing — the model occasionally returned a validly-shaped but empty `hotspots: []`
+result instead of the expected boxes, with no error or refusal reason surfaced. Two immediate
+reruns of the identical input both succeeded fully. Likely cause: Claude's safety classifiers
+apply extra caution to requests that precisely localize a minor's body/clothing in an image,
+even for completely benign photos (here, a family photo of kids at a pool), and can behave
+probabilistically rather than deterministically — not a reflection of anything wrong with the
+photo or the request. `agent/test_bbox_feasibility.py` was updated to never fail silently: it
+checks `stop_reason` for a hard refusal, and separately warns loudly whenever any requested
+item — or all of them — comes back with no box, instead of just saving a boxless image with no
+indication anything went wrong. Practical implication: since source photos for this project will
+likely often include people, expect this to recur occasionally; the workaround is simply to
+rerun. Not designing further around it for now — revisit if it turns out to happen often enough
+to be disruptive.
+
 **Data loading: assume online, fail loudly.** Scene data now lives in `scenes.json` and is
 loaded via `fetch()` on startup instead of being inlined in the HTML — this is what "light
 repo + hosting" (goal 1) needs, since editing scene data no longer means editing a

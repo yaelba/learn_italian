@@ -63,7 +63,7 @@ def detect_hotspots(client: anthropic.Anthropic, image_bytes: bytes, items: list
         }],
         output_format=DetectionResult,
     )
-    return response.parsed_output
+    return response
 
 
 def draw_boxes(image_path: str, result: DetectionResult, out_path: str) -> None:
@@ -92,10 +92,30 @@ def main() -> None:
 
     client = anthropic.Anthropic()
     image_bytes = load_and_resize(photo_path)
-    result = detect_hotspots(client, image_bytes, items)
+    response = detect_hotspots(client, image_bytes, items)
+
+    if response.stop_reason == "refusal":
+        print("REFUSED: the model declined this request (stop_reason='refusal').")
+        if response.stop_details:
+            print(f"  category: {response.stop_details.category}")
+            print(f"  explanation: {response.stop_details.explanation}")
+        sys.exit(1)
+
+    result = response.parsed_output
+    if result is None:
+        print(f"No structured output returned (stop_reason={response.stop_reason!r}). Nothing to draw.")
+        sys.exit(1)
 
     for hs in result.hotspots:
         print(hs)
+
+    found_ids = {hs.id for hs in result.hotspots}
+    missing = [item for item in items if item not in found_ids]
+    if missing:
+        print(f"\nWARNING: no box returned for: {', '.join(missing)}")
+    if not result.hotspots:
+        print("WARNING: zero hotspots returned — the annotated image will have no boxes at all. "
+              "This can happen intermittently (e.g. on photos of people); try rerunning.")
 
     out_path = photo_path.rsplit(".", 1)[0] + "_annotated.jpeg"
     draw_boxes(photo_path, result, out_path)
