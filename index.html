@@ -124,11 +124,15 @@
     margin-top:4px;
   }
 
+  .top-btn-row{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:18px;
+  }
   .corner-btn{
-    position:absolute;
-    top:16px;
-    right:16px;
-    z-index:100;
     background:var(--teal);
     color:#F6F0E3;
     border:none;
@@ -168,6 +172,129 @@
     box-shadow:0 6px 16px -6px var(--shadow);
   }
   .back-btn:hover{ background:rgba(47,72,88,0.08); }
+
+  .new-scene-page{
+    position:relative;
+    display:none;
+    max-width:640px;
+    margin:0 auto;
+    padding:70px 20px 60px;
+  }
+  .new-scene-page.show{ display:block; }
+
+  .new-scene-card{
+    background:#fffaf0;
+    border:1.5px solid var(--parchment-deep);
+    border-radius:20px;
+    padding:32px 28px;
+    box-shadow:0 14px 34px -18px var(--shadow);
+    text-align:left;
+  }
+  .new-scene-card h2{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    color:var(--terracotta-deep);
+    margin:0 0 6px;
+  }
+  .new-scene-card h2 .en{
+    display:block;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:400;
+    font-size:13px;
+    color:#8a8071;
+    margin-top:2px;
+  }
+  .new-scene-field{ margin-top:22px; }
+  .new-scene-field label{
+    display:block;
+    font-weight:600;
+    font-size:14px;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  .new-scene-field .field-hint{
+    display:block;
+    font-size:12px;
+    color:#8a8071;
+    margin-top:4px;
+  }
+  .new-scene-field input[type="file"]{
+    font-family:'Source Sans 3', sans-serif;
+    font-size:13px;
+  }
+  .new-scene-field textarea{
+    width:100%;
+    box-sizing:border-box;
+    font-family:'Source Sans 3', sans-serif;
+    font-size:14px;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1.5px solid var(--parchment-deep);
+    background:#F6F0E3;
+    color:var(--ink);
+    resize:vertical;
+    min-height:110px;
+  }
+  .new-scene-preview{
+    display:none;
+    max-width:100%;
+    max-height:220px;
+    border-radius:12px;
+    margin-top:10px;
+    border:1.5px solid var(--parchment-deep);
+  }
+  .new-scene-preview.show{ display:block; }
+
+  .new-scene-generate-btn{
+    margin-top:24px;
+    background:var(--terracotta-deep);
+    color:#F6F0E3;
+    border:none;
+    border-radius:999px;
+    padding:12px 22px;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .new-scene-generate-btn:hover:not(:disabled){ background:var(--terracotta); }
+  .new-scene-generate-btn:disabled{ opacity:0.45; cursor:not-allowed; }
+
+  .new-scene-output{
+    display:none;
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1.5px dashed var(--parchment-deep);
+  }
+  .new-scene-output.show{ display:block; }
+
+  .new-scene-command{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    background:#2A2420;
+    color:#e8e0d0;
+    border-radius:10px;
+    padding:14px 16px;
+    margin-top:8px;
+    font-family:monospace;
+    font-size:13px;
+    overflow-x:auto;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+  .new-scene-copy-btn{
+    flex-shrink:0;
+    border:1.5px solid #e8e0d0;
+    background:none;
+    color:#e8e0d0;
+    border-radius:999px;
+    padding:6px 14px;
+    font-weight:600;
+    font-size:12px;
+    cursor:pointer;
+  }
+  .new-scene-copy-btn:hover{ background:rgba(255,255,255,0.08); }
 
   .translate-direction-row{
     display:flex;
@@ -624,8 +751,6 @@
 </style>
 </head>
 <body>
-<button id="openTranslateBtn" class="corner-btn">🔤 Traduci / Translate</button>
-
 <div class="page" id="mainGamePage">
 
   <header>
@@ -637,6 +762,11 @@
     <label for="voiceSelect">🔊 Voce italiana / Italian voice</label>
     <select id="voiceSelect"></select>
     <span class="voice-picker-msg" id="voiceMsg"></span>
+  </div>
+
+  <div class="top-btn-row">
+    <button id="openTranslateBtn" class="corner-btn">🔤 Traduci / Translate</button>
+    <button id="openNewSceneBtn" class="corner-btn">🖼️ Nuova scena / New scene</button>
   </div>
 
   <div class="stage" id="stage">
@@ -1267,6 +1397,37 @@
   <div class="translate-card">
     <div class="translate-prompt" id="translatePrompt"></div>
     <div class="translate-options" id="translateOptions"></div>
+  </div>
+</div>
+
+<div class="new-scene-page" id="newScenePage">
+  <button id="backFromNewSceneBtn" class="back-btn">← Torna alle scene / Back</button>
+  <div class="new-scene-card">
+    <h2>Nuova scena da una foto<span class="en">New scene from a photo</span></h2>
+
+    <div class="new-scene-field">
+      <label for="newSceneFile">📷 Foto / Photo</label>
+      <input type="file" id="newSceneFile" accept="image/*">
+      <img id="newScenePreview" class="new-scene-preview" alt="">
+    </div>
+
+    <div class="new-scene-field">
+      <label for="newSceneWords">🔤 Oggetti nella foto / Objects in the photo</label>
+      <textarea id="newSceneWords" placeholder="one item per line, e.g.&#10;armchair&#10;plant&#10;tv"></textarea>
+      <span class="field-hint">One item per line, in English.</span>
+    </div>
+
+    <button id="newSceneGenerateBtn" class="new-scene-generate-btn" disabled>Genera comando / Generate command</button>
+
+    <div class="new-scene-output" id="newSceneOutput">
+      <span class="field-hint">
+        Save the photo as <code id="newScenePhotoPath">test-photos/…</code>, then run:
+      </span>
+      <div class="new-scene-command">
+        <code id="newSceneCommand"></code>
+        <button id="newSceneCopyBtn" class="new-scene-copy-btn">Copy</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1950,7 +2111,6 @@
 
   openTranslateBtn.addEventListener('click', () => {
     mainGamePage.style.display = 'none';
-    openTranslateBtn.style.display = 'none';
     translatePage.classList.add('show');
     renderTranslateTask();
   });
@@ -1958,7 +2118,101 @@
   backFromTranslateBtn.addEventListener('click', () => {
     translatePage.classList.remove('show');
     mainGamePage.style.display = '';
-    openTranslateBtn.style.display = '';
+  });
+
+  // --- New scene mode: package a photo + word list into a ready-to-run command
+  // for agent/test_bbox_feasibility.py. No API calls happen in the browser —
+  // the API key stays server-side, only ever used when the script is run locally. ---
+  const newScenePage = document.getElementById('newScenePage');
+  const openNewSceneBtn = document.getElementById('openNewSceneBtn');
+  const backFromNewSceneBtn = document.getElementById('backFromNewSceneBtn');
+  const newSceneFile = document.getElementById('newSceneFile');
+  const newScenePreview = document.getElementById('newScenePreview');
+  const newSceneWords = document.getElementById('newSceneWords');
+  const newSceneGenerateBtn = document.getElementById('newSceneGenerateBtn');
+  const newSceneOutput = document.getElementById('newSceneOutput');
+  const newScenePhotoPath = document.getElementById('newScenePhotoPath');
+  const newSceneCommand = document.getElementById('newSceneCommand');
+  const newSceneCopyBtn = document.getElementById('newSceneCopyBtn');
+
+  function shellQuote(str){
+    return "'" + str.replace(/'/g, `'\\''`) + "'";
+  }
+
+  function updateNewSceneGenerateEnabled(){
+    const hasFile = newSceneFile.files.length > 0;
+    const hasWords = newSceneWords.value.trim().length > 0;
+    newSceneGenerateBtn.disabled = !(hasFile && hasWords);
+  }
+
+  newSceneFile.addEventListener('change', () => {
+    const file = newSceneFile.files[0];
+    if(file){
+      newScenePreview.src = URL.createObjectURL(file);
+      newScenePreview.classList.add('show');
+    } else {
+      newScenePreview.classList.remove('show');
+    }
+    newSceneOutput.classList.remove('show');
+    updateNewSceneGenerateEnabled();
+  });
+
+  newSceneWords.addEventListener('input', () => {
+    newSceneOutput.classList.remove('show');
+    updateNewSceneGenerateEnabled();
+  });
+
+  newSceneGenerateBtn.addEventListener('click', () => {
+    const file = newSceneFile.files[0];
+    const words = newSceneWords.value.split('\n').map(w => w.trim()).filter(Boolean);
+    if(!file || words.length === 0) return;
+
+    const photoPath = `test-photos/${file.name}`;
+    const args = [photoPath, ...words].map(shellQuote).join(' ');
+    newScenePhotoPath.textContent = photoPath;
+    newSceneCommand.textContent = `conda activate learn_italian\npython agent/test_bbox_feasibility.py ${args}`;
+    newSceneOutput.classList.add('show');
+  });
+
+  function selectNewSceneCommandText(){
+    const range = document.createRange();
+    range.selectNodeContents(newSceneCommand);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  // Fallback for contexts where the modern async Clipboard API is blocked
+  // (e.g. a page opened via file://, which most browsers treat as insecure).
+  // execCommand('copy') is deprecated but still broadly supported and isn't
+  // subject to the same secure-context restriction.
+  function legacyCopyNewSceneCommand(){
+    selectNewSceneCommandText();
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch(e) { copied = false; }
+    showToast(copied
+      ? 'Comando copiato ✓ / Command copied ✓'
+      : 'Copia automatica non riuscita: testo selezionato, usa Cmd/Ctrl+C');
+  }
+
+  newSceneCopyBtn.addEventListener('click', () => {
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(newSceneCommand.textContent).then(() => {
+        showToast('Comando copiato ✓ / Command copied ✓');
+      }).catch(legacyCopyNewSceneCommand);
+    } else {
+      legacyCopyNewSceneCommand();
+    }
+  });
+
+  openNewSceneBtn.addEventListener('click', () => {
+    mainGamePage.style.display = 'none';
+    newScenePage.classList.add('show');
+  });
+
+  backFromNewSceneBtn.addEventListener('click', () => {
+    newScenePage.classList.remove('show');
+    mainGamePage.style.display = '';
   });
 
   renderAll();
