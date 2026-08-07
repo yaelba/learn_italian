@@ -489,8 +489,11 @@
   }
 
   svg{ display:block; width:100%; height:auto; }
-  .scene-svg{ display:none; }
-  .scene-svg.scene-active{ display:block; }
+  .scene-panel{ display:none; }
+  .scene-panel.scene-active{ display:block; }
+
+  .photo-scene{ position:relative; }
+  .photo-scene img{ display:block; width:100%; height:auto; }
 
   .hotspot{ cursor:pointer; }
   .hotspot .hit-outline{
@@ -517,6 +520,36 @@
   .hotspot.target-hint .hit-outline{
     stroke: var(--terracotta);
     stroke-dasharray: 6 4;
+  }
+
+  /* Photo-scene hotspots are plain divs (no SVG shape to style), so the
+     same states are expressed via border/background on the div itself. */
+  .hotspot.photo-hotspot{
+    position:absolute;
+    box-sizing:border-box;
+    border-radius:8px;
+    border:3px solid transparent;
+    background:transparent;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .hotspot.photo-hotspot:hover{
+    border-color: var(--gold);
+    background: rgba(184,137,43,0.10);
+  }
+  .hotspot.photo-hotspot.learned{
+    border-color: rgba(87,98,62,0.55);
+  }
+  .hotspot.photo-hotspot.correct-flash{
+    background: rgba(87,98,62,0.35);
+    border-color: var(--olive);
+  }
+  .hotspot.photo-hotspot.wrong-flash{
+    background: rgba(156,59,46,0.30);
+    border-color: var(--stamp-red);
+  }
+  .hotspot.photo-hotspot.target-hint{
+    border-color: var(--terracotta);
+    border-style:dashed;
   }
 
   .label-chip{
@@ -796,7 +829,7 @@
 
     <div class="scene-wrap" id="sceneWrap">
       <!-- SVG scene 3: same castle as scene 1, with battlements and arrow slits as new hotspots -->
-      <svg id="scene-castello2" class="scene-svg scene-active" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+      <svg id="scene-castello2" class="scene-panel scene-active" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
         <!-- sky -->
         <rect x="0" y="0" width="800" height="360" fill="#cfe3e6"/>
         <!-- distant hills -->
@@ -898,7 +931,7 @@
       </svg>
 
       <!-- SVG scene 4: Italian restaurant table, viewed from above -->
-      <svg id="scene-ristorante" class="scene-svg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+      <svg id="scene-ristorante" class="scene-panel" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="ginghamPattern" width="44" height="44" patternUnits="userSpaceOnUse">
             <rect width="44" height="44" fill="#f4ead9"/>
@@ -1043,7 +1076,7 @@
       </svg>
 
       <!-- SVG scene 3: an open backpack and its contents -->
-      <svg id="scene-zaino" class="scene-svg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+      <svg id="scene-zaino" class="scene-panel" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
         <!-- floor / rug backdrop -->
         <rect x="0" y="0" width="800" height="560" fill="#f4ecd9"/>
         <ellipse cx="400" cy="300" rx="380" ry="250" fill="#dce8ea"/>
@@ -1156,7 +1189,7 @@
       </svg>
 
       <!-- SVG scene 4: the ice cream shop counter -->
-      <svg id="scene-gelateria" class="scene-svg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+      <svg id="scene-gelateria" class="scene-panel" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="awningStripe" width="80" height="70" patternUnits="userSpaceOnUse">
             <rect width="80" height="70" fill="#ffffff"/>
@@ -1285,7 +1318,7 @@
       </svg>
 
       <!-- SVG scene 5: on the road, driver's perspective -->
-      <svg id="scene-strada" class="scene-svg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+      <svg id="scene-strada" class="scene-panel" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
         <!-- sky -->
         <rect x="0" y="0" width="800" height="200" fill="#cfe3e6"/>
         <path d="M0,170 Q200,150 400,165 T800,170 L800,200 L0,200 Z" fill="#b9d3c2"/>
@@ -1469,7 +1502,7 @@
   let currentSceneIndex = 0;
   function currentScene(){ return SCENES[currentSceneIndex]; }
   function currentWords(){ return currentScene().words; }
-  function currentSvg(){ return document.getElementById('scene-' + currentScene().id); }
+  function currentSceneEl(){ return document.getElementById('scene-' + currentScene().id); }
 
   const player = {
     name: 'Explorer',
@@ -1503,6 +1536,45 @@
   const sceneNextBtn = document.getElementById('sceneNextBtn');
   const voiceSelect = document.getElementById('voiceSelect');
   const voiceMsg = document.getElementById('voiceMsg');
+
+  // type:'photo' scenes have no hand-authored markup (unlike the illustrated
+  // SVGs already in the page) — build their DOM once from scene data: a
+  // background <img> plus one hotspot <div> per word, positioned by the
+  // word's {x,y,w,h} percentages. Hotspots are appended smallest-area-first
+  // so nested/overlapping ones (e.g. a cushion inside an armchair) stay on
+  // top and stay tappable — see brief.md's "smaller box on top" decision.
+  function buildPhotoScenePanels(){
+    SCENES.forEach(scene => {
+      if(scene.type !== 'photo') return;
+      const panel = document.createElement('div');
+      panel.className = 'scene-panel photo-scene';
+      panel.id = 'scene-' + scene.id;
+
+      const img = document.createElement('img');
+      img.src = scene.image;
+      img.alt = scene.eyebrow || '';
+      panel.appendChild(img);
+
+      // Later DOM siblings paint on top (no z-index in play), so append
+      // largest-area first and smallest last, keeping nested/smaller
+      // hotspots (e.g. a cushion inside an armchair) on top and tappable.
+      const words = [...scene.words].sort((a, b) => (b.w * b.h) - (a.w * a.h));
+      words.forEach(w => {
+        const hotspot = document.createElement('div');
+        hotspot.className = 'hotspot photo-hotspot';
+        hotspot.setAttribute('data-word', w.id);
+        hotspot.setAttribute('data-article', w.article);
+        hotspot.setAttribute('data-en', w.en);
+        hotspot.style.left = w.x + '%';
+        hotspot.style.top = w.y + '%';
+        hotspot.style.width = w.w + '%';
+        hotspot.style.height = w.h + '%';
+        panel.appendChild(hotspot);
+      });
+
+      sceneWrap.appendChild(panel);
+    });
+  }
 
   let selectedVoiceURI = null;
 
@@ -1567,7 +1639,7 @@
   }
 
   function renderHotspotStates(){
-    currentSvg().querySelectorAll('.hotspot').forEach(el => {
+    currentSceneEl().querySelectorAll('.hotspot').forEach(el => {
       const word = el.getAttribute('data-word');
       el.classList.toggle('learned', currentProgress().learned.has(word));
       el.classList.remove('correct-flash','wrong-flash','target-hint');
@@ -1664,10 +1736,10 @@
   // Used by both Explore and Match: every OTHER item's hotspot frame is
   // protected, whether it's been discovered/matched yet or not.
   function getHotspotObstacles(excludeWordId){
-    const svg = currentSvg();
+    const sceneEl = currentSceneEl();
     const wrapRect = sceneWrap.getBoundingClientRect();
     const obstacles = [];
-    svg.querySelectorAll('.hotspot').forEach(el => {
+    sceneEl.querySelectorAll('.hotspot').forEach(el => {
       const word = el.getAttribute('data-word');
       if(word === excludeWordId) return;
       const r = el.getBoundingClientRect();
@@ -1827,7 +1899,7 @@
     currentQuizWord = p.quizOrder[p.quizIdx];
     const w = currentWords().find(x => x.id === currentQuizWord);
     setPrompt(`Trova: <strong>${w.it}</strong><span class="en">Find the matching part of the castle.</span>`);
-    currentSvg().querySelectorAll('.hotspot').forEach(el => el.classList.remove('correct-flash','wrong-flash'));
+    currentSceneEl().querySelectorAll('.hotspot').forEach(el => el.classList.remove('correct-flash','wrong-flash'));
     speak(w.it);
   }
 
@@ -1874,10 +1946,10 @@
 
   function renderPlacedTags(){
     matchTagsLayer.innerHTML = '';
-    const svg = currentSvg();
+    const sceneEl = currentSceneEl();
     const placedRects = [];
     currentProgress().matched.forEach(wordId => {
-      const hotspotEl = svg.querySelector(`.hotspot[data-word="${wordId}"]`);
+      const hotspotEl = sceneEl.querySelector(`.hotspot[data-word="${wordId}"]`);
       const w = currentWords().find(x => x.id === wordId);
       if(!hotspotEl || !w) return;
 
@@ -1982,11 +2054,13 @@
 
   document.getElementById('resetMatchBtn').addEventListener('click', resetMatch);
 
-  document.querySelectorAll('.hotspot').forEach(el => {
-    el.addEventListener('click', () => {
-      if(mode === 'explore') handleExploreClick(el);
-      else if(mode === 'quiz') handleQuizClick(el);
-    });
+  // Delegated (not attached per-element) so dynamically-built photo-scene
+  // hotspots are covered too, regardless of when they're created.
+  sceneWrap.addEventListener('click', (e) => {
+    const el = e.target.closest('.hotspot');
+    if(!el) return;
+    if(mode === 'explore') handleExploreClick(el);
+    else if(mode === 'quiz') handleQuizClick(el);
   });
 
   replayBtn.addEventListener('click', () => {
@@ -2021,7 +2095,7 @@
     mode = unlocked ? p.mode : 'explore';
     p.mode = mode;
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
-    document.querySelectorAll('.scene-svg').forEach(svg => svg.classList.toggle('scene-active', svg.id === 'scene-' + currentScene().id));
+    document.querySelectorAll('.scene-panel').forEach(el => el.classList.toggle('scene-active', el.id === 'scene-' + currentScene().id));
     stageEl.classList.toggle('mode-match', mode === 'match');
     renderAll();
   }
@@ -2215,6 +2289,7 @@
     mainGamePage.style.display = '';
   });
 
+  buildPhotoScenePanels();
   renderAll();
 })();
 </script>
