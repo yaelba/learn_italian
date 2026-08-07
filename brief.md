@@ -53,7 +53,7 @@ in a bowl), explicitly instruct the model to pick **one** instance and box only 
 this, entangled/touching instances (a banana bunch) get boxed as one big cluster instead of
 a single item. (2) Source photo resolution/quality doesn't matter — hotspot coordinates are
 percentage-based, so phone photos should be downscaled before sending (saves tokens, no
-accuracy cost). Feasibility script: `agent/test_bbox_feasibility.py`.
+accuracy cost). Feasibility script (since renamed/extended, see below): `agent/generate_scene.py`.
 
 **Content-generation agent: intermittent empty results on photos with people.** When a
 scene includes real people — specifically, a request localizing a child ("boy") and pieces
@@ -63,13 +63,24 @@ reruns of the identical input both succeeded fully. Likely cause: Claude's safet
 apply extra caution to requests that precisely localize a minor's body/clothing in an image,
 even for completely benign photos (here, a family photo of kids at a pool), and can behave
 probabilistically rather than deterministically — not a reflection of anything wrong with the
-photo or the request. `agent/test_bbox_feasibility.py` was updated to never fail silently: it
-checks `stop_reason` for a hard refusal, and separately warns loudly whenever any requested
-item — or all of them — comes back with no box, instead of just saving a boxless image with no
-indication anything went wrong. Practical implication: since source photos for this project will
-likely often include people, expect this to recur occasionally; the workaround is simply to
-rerun. Not designing further around it for now — revisit if it turns out to happen often enough
-to be disruptive.
+photo or the request. The script (then still named `test_bbox_feasibility.py`) was updated to
+never fail silently: it checks `stop_reason` for a hard refusal, and separately warns loudly
+whenever any requested item — or all of them — comes back with no box, instead of just saving a
+boxless image with no indication anything went wrong. Practical implication: since source photos
+for this project will likely often include people, expect this to recur occasionally; the
+workaround is simply to rerun. Not designing further around it for now — revisit if it turns out
+to happen often enough to be disruptive.
+
+**Content-generation agent: script now also produces translations.** Renamed
+`test_bbox_feasibility.py` → `agent/generate_scene.py` to reflect its evolved role — no longer
+just a localization test, but the actual per-scene generation step. The same single API call now
+also returns each item's Italian translation and article (`{id, article, it, en, x, y, w, h}`
+per hotspot), matching the existing word data contract exactly (`id` is the Italian noun/phrase
+with its leading article stripped, e.g. `"la torre"` → `"torre"`, mirroring the convention already
+used by hand-authored illustrated scenes). Output is now a `<photo>_words.json` file — a
+ready-to-paste `words` array — alongside the existing annotated debug image. Still not produced:
+the wrapping scene object (`id`, `eyebrow`, `image` path) and the `type: 'photo'` renderer itself
+— both remain open next steps.
 
 **Data loading: assume online, fail loudly.** Scene data now lives in `scenes.json` and is
 loaded via `fetch()` on startup instead of being inlined in the HTML — this is what "light

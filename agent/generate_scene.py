@@ -1,11 +1,13 @@
-"""Isolated feasibility test: given a photo and a list of item names,
-can the model localize each one as a bounding box accurately enough
-to use as a hotspot region?
+"""Given a photo and a list of English item names, produce a ready-to-paste
+`words` array for a scenes.json `type: 'photo'` scene entry: each item's
+Italian translation (with article) and its hotspot as a percentage-based
+bounding box.
 
-Usage: python test_bbox_feasibility.py <photo_path> <item1> <item2> ...
+Usage: python generate_scene.py <photo_path> <item1> <item2> ...
 """
 import base64
 import io
+import json
 import sys
 
 import anthropic
@@ -19,11 +21,14 @@ MAX_DIMENSION = 1024  # phone photos are far larger than needed; downscale to sa
 
 
 class Hotspot(BaseModel):
-    id: str
-    x: float  # % of image width, left edge of box
-    y: float  # % of image height, top edge of box
-    w: float  # % of image width
-    h: float  # % of image height
+    id: str       # Italian noun/phrase without its leading article, e.g. "poltrona"
+    article: str  # e.g. "la", "il", "lo", "le", "i", "l'", "una", "due"
+    it: str       # full Italian phrase including the article, e.g. "la poltrona"
+    en: str       # English gloss, matching the requested item
+    x: float      # % of image width, left edge of box
+    y: float      # % of image height, top edge of box
+    w: float      # % of image width
+    h: float      # % of image height
 
 
 class DetectionResult(BaseModel):
@@ -49,14 +54,20 @@ def detect_hotspots(client: anthropic.Anthropic, image_bytes: bytes, items: list
             "content": [
                 {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": b64}},
                 {"type": "text", "text": (
-                    "Locate each of the following items in the photo. For each one, give a tight "
-                    "bounding box as percentages of the image width/height (0-100). The origin (0,0) "
-                    "is the top-left corner of the image; x increases rightward, y increases downward. "
-                    "x,y is the box's top-left corner; w,h is its width/height.\n\n"
+                    "Locate each of the following items in the photo, and translate each one to Italian. "
+                    "For each item, give a tight bounding box as percentages of the image width/height "
+                    "(0-100). The origin (0,0) is the top-left corner of the image; x increases rightward, "
+                    "y increases downward. x,y is the box's top-left corner; w,h is its width/height.\n\n"
                     "If multiple instances of an item appear in the photo (e.g. several bananas in a "
                     "bunch, several lemons in a bowl), pick ONE single representative instance and draw "
                     "the tightest possible box around just that one instance. Never box a whole cluster "
                     "or group of instances together, even if they visually overlap or touch each other.\n\n"
+                    "For each item also provide:\n"
+                    "- en: the English name, matching the requested item below\n"
+                    "- it: the Italian translation including its article (e.g. \"la torre\")\n"
+                    "- article: just the article alone (e.g. \"la\")\n"
+                    "- id: the Italian noun/phrase from 'it' with the leading article removed "
+                    "(e.g. \"la torre\" -> \"torre\"; \"l'albero\" -> \"albero\")\n\n"
                     f"Items:\n{items_list}"
                 )},
             ],
@@ -78,7 +89,7 @@ def draw_boxes(image_path: str, result: DetectionResult, out_path: str) -> None:
         right = left + hs.w / 100 * w
         bottom = top + hs.h / 100 * h
         draw.rectangle([left, top, right, bottom], outline=color, width=4)
-        draw.text((left + 4, top + 4), hs.id, fill=color)
+        draw.text((left + 4, top + 4), f"{hs.en} / {hs.it}", fill=color)
     img.save(out_path)
 
 
@@ -107,19 +118,24 @@ def main() -> None:
         sys.exit(1)
 
     for hs in result.hotspots:
-        print(hs)
+        print(f"{hs.en:20s} -> {hs.it}")
 
-    found_ids = {hs.id for hs in result.hotspots}
-    missing = [item for item in items if item not in found_ids]
+    found_en = {hs.en for hs in result.hotspots}
+    missing = [item for item in items if item not in found_en]
     if missing:
         print(f"\nWARNING: no box returned for: {', '.join(missing)}")
     if not result.hotspots:
         print("WARNING: zero hotspots returned — the annotated image will have no boxes at all. "
               "This can happen intermittently (e.g. on photos of people); try rerunning.")
 
+    words_path = photo_path.rsplit(".", 1)[0] + "_words.json"
+    with open(words_path, "w", encoding="utf-8") as f:
+        json.dump([hs.model_dump() for hs in result.hotspots], f, ensure_ascii=False, indent=2)
+    print(f"\nSaved words array to {words_path} — paste into scenes.json under the scene's \"words\" key.")
+
     out_path = photo_path.rsplit(".", 1)[0] + "_annotated.jpeg"
     draw_boxes(photo_path, result, out_path)
-    print(f"\nSaved annotated image to {out_path}")
+    print(f"Saved annotated image to {out_path}")
 
 
 if __name__ == "__main__":

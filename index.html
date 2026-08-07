@@ -2121,7 +2121,7 @@
   });
 
   // --- New scene mode: package a photo + word list into a ready-to-run command
-  // for agent/test_bbox_feasibility.py. No API calls happen in the browser —
+  // for agent/generate_scene.py. No API calls happen in the browser —
   // the API key stays server-side, only ever used when the script is run locally. ---
   const newScenePage = document.getElementById('newScenePage');
   const openNewSceneBtn = document.getElementById('openNewSceneBtn');
@@ -2170,7 +2170,7 @@
     const photoPath = `test-photos/${file.name}`;
     const args = [photoPath, ...words].map(shellQuote).join(' ');
     newScenePhotoPath.textContent = photoPath;
-    newSceneCommand.textContent = `conda activate learn_italian\npython agent/test_bbox_feasibility.py ${args}`;
+    newSceneCommand.textContent = `conda activate learn_italian\npython agent/generate_scene.py ${args}`;
     newSceneOutput.classList.add('show');
   });
 
