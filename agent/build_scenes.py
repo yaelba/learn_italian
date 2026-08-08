@@ -19,7 +19,13 @@ processes what's actually new. Retries automatically (a few times) if a
 result comes back empty/partial before giving up on that line — see
 brief.md's note on intermittent empty results on photos with people.
 
-Usage: python build_scenes.py <word_list_file>
+Pass -f/--force to ignore all of that and re-detect every line in the file
+from scratch, even photos that already have a scene with every requested
+word present. For an existing scene, the freshly detected words replace
+its current words[] entirely (rather than appending), so nothing gets
+duplicated.
+
+Usage: python build_scenes.py [-f] <word_list_file>
 """
 import base64
 import json
@@ -135,11 +141,15 @@ def unique_id(base_id: str, existing_ids: set) -> str:
 
 
 def main() -> None:
-    if len(sys.argv) < 2:
-        print(f"Usage: python {sys.argv[0]} <word_list_file>")
+    args = sys.argv[1:]
+    force = "-f" in args or "--force" in args
+    args = [a for a in args if a not in ("-f", "--force")]
+
+    if len(args) < 1:
+        print(f"Usage: python {sys.argv[0]} [-f] <word_list_file>")
         sys.exit(1)
 
-    entries = parse_word_list(Path(sys.argv[1]))
+    entries = parse_word_list(Path(args[0]))
     if not entries:
         print("No entries found in word list file.")
         sys.exit(1)
@@ -155,12 +165,13 @@ def main() -> None:
 
         if existing_scene:
             have_en = {w["en"] for w in existing_scene["words"]}
-            new_items = [i for i in items if i not in have_en]
+            new_items = list(items) if force else [i for i in items if i not in have_en]
             if not new_items:
                 skipped.append(name)
                 print(f"[skip] {name}: no new words (scene '{existing_scene['id']}' already has all requested items)")
                 continue
-            label = f"{name} (adding to existing scene '{existing_scene['id']}')"
+            label = (f"{name} (force re-detecting existing scene '{existing_scene['id']}')" if force
+                      else f"{name} (adding to existing scene '{existing_scene['id']}')")
         else:
             new_items = items
             label = name
@@ -201,9 +212,14 @@ def main() -> None:
             print(f"  {hs.en:20s} -> {hs.it}")
 
         if existing_scene:
-            existing_scene["words"].extend([hs.model_dump() for hs in result.hotspots])
-            extended.append((name, existing_scene["id"], [hs.en for hs in result.hotspots]))
-            print(f"[extended] {name}: added {len(result.hotspots)} item(s) to '{existing_scene['id']}'")
+            if force:
+                existing_scene["words"] = [hs.model_dump() for hs in result.hotspots]
+                extended.append((name, existing_scene["id"], [hs.en for hs in result.hotspots]))
+                print(f"[updated] {name}: re-detected {len(result.hotspots)} item(s) for '{existing_scene['id']}'")
+            else:
+                existing_scene["words"].extend([hs.model_dump() for hs in result.hotspots])
+                extended.append((name, existing_scene["id"], [hs.en for hs in result.hotspots]))
+                print(f"[extended] {name}: added {len(result.hotspots)} item(s) to '{existing_scene['id']}'")
             continue
 
         scene_id = unique_id(slugify(result.scene_title), existing_ids)
