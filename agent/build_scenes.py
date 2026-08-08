@@ -2,10 +2,12 @@
 
 For each `photo-name: item1, item2, ...` line (matching the format of
 test-photos/word_lists.txt):
-  - If the photo has no scene yet: detects + translates every item, derives
-    a scene id/eyebrow from a model-suggested Italian scene title
-    (auto-numbering "Tappa N", auto-disambiguating id collisions), copies
-    the photo from test-photos/ into photos/, and appends the new scene.
+  - If the photo has no scene yet: detects + translates every item, sets
+    the scene id to the photo's filename stem (e.g. "library-1", matching
+    the name used in word_lists.txt; auto-disambiguated if it collides
+    with an existing id), derives the eyebrow from a model-suggested
+    Italian scene title (auto-numbering "Tappa N"), copies the photo from
+    test-photos/ into photos/, and appends the new scene.
   - If the photo already has a scene: compares against its existing words
     (by English name) and only detects the ones that are actually new,
     appending them to that scene's words[]. Words already present are
@@ -16,16 +18,40 @@ test-photos/word_lists.txt):
 So word_lists.txt is meant to just grow over time — add new lines for new
 photos, or add more items to an existing line — and re-running only ever
 processes what's actually new. Retries automatically (a few times) if a
-result comes back empty/partial before giving up on that line — see
-brief.md's note on intermittent empty results on photos with people.
+result comes back empty/partial, or if any box's coordinates fall outside
+0-100 (i.e. the model returned raw pixels instead of the requested
+percentages) — the offending box is discarded and treated like a missing
+item, so a bad response never silently ends up on disk. See brief.md's
+note on intermittent empty results on photos with people.
 
 Pass -f/--force to ignore all of that and re-detect every line in the file
 from scratch, even photos that already have a scene with every requested
 word present. For an existing scene, the freshly detected words replace
 its current words[] entirely (rather than appending), so nothing gets
-duplicated.
+duplicated. It also re-copies the photo from test-photos/ into photos/,
+overwriting whatever's there — so if you swap in a different photo under
+the same filename, force mode picks up the new image too, not just new
+boxes on the old one.
+
+Pass --remove <photo-name-or-scene-id> to delete a scene from scenes.json
+(matched by its photo filename stem or its scene id) and renumber the
+remaining scenes' "Tappa N" eyebrows so the sequence stays contiguous.
+This only edits scenes.json — it does not delete the photo file itself,
+or its line in your word list file, since those may still be wanted.
+
+scenes.json's scene order is just creation order — the order scenes
+happened to get added across every run over time — so it can drift out
+of sync with word_lists.txt (e.g. after removing and re-adding a scene,
+which appends it at the end instead of restoring its old position).
+Pass --reorder <word_list_file> to rewrite scenes.json's photo scenes to
+match that file's current line order. The 5 hand-authored illustrated
+scenes always stay fixed at the front. Any photo scene with no matching
+line in the file is left at the end, in its previous relative order.
+"Tappa N" is renumbered to match the new order.
 
 Usage: python build_scenes.py [-f] <word_list_file>
+       python build_scenes.py --remove <photo-name-or-scene-id>
+       python build_scenes.py --reorder <word_list_file>
 """
 import base64
 import json
@@ -45,24 +71,9 @@ PHOTOS_SRC_DIR = Path("test-photos")
 PHOTOS_DEST_DIR = Path("photos")
 SCENES_JSON = Path("scenes.json")
 MAX_RETRIES_ON_BAD_RESULT = 2
-ARTICLES = ["l'", "lo ", "la ", "il ", "gli ", "le ", "i ", "un ", "una ", "uno "]
-
-
 class SceneResult(BaseModel):
     scene_title: str  # short Italian noun phrase with article, e.g. "La Cucina"
     hotspots: list[Hotspot]
-
-
-def strip_article(phrase: str) -> str:
-    low = phrase.lower()
-    for art in ARTICLES:
-        if low.startswith(art):
-            return phrase[len(art):].strip()
-    return phrase.strip()
-
-
-def slugify(phrase: str) -> str:
-    return strip_article(phrase).lower()
 
 
 def parse_word_list(path: Path) -> list[tuple[str, list[str]]]:
@@ -122,6 +133,13 @@ def detect_scene(client: anthropic.Anthropic, image_bytes: bytes, items: list[st
     )
 
 
+def is_valid_pct_box(hs: Hotspot) -> bool:
+    """A well-formed box is a percentage of the image (0-100), not a raw
+    pixel coordinate — guards against the occasional bad response where the
+    model returns pixel values instead (e.g. w=258, h=910)."""
+    return all(-1 <= v <= 101 for v in (hs.x, hs.y, hs.w, hs.h)) and hs.w > 0 and hs.h > 0
+
+
 def next_tappa_number(scenes: list[dict]) -> int:
     max_n = 0
     for s in scenes:
@@ -140,13 +158,90 @@ def unique_id(base_id: str, existing_ids: set) -> str:
     return f"{base_id}{n}"
 
 
+def renumber_tappas(scenes: list[dict]) -> None:
+    """Reassign "Tappa N" in each scene's eyebrow, in list order, so the
+    sequence stays contiguous (1, 2, 3, ...) after a scene is removed."""
+    n = 1
+    for s in scenes:
+        m = re.match(r"^Tappa \d+:\s*(.*)$", s.get("eyebrow", ""))
+        if m:
+            s["eyebrow"] = f"Tappa {n}: {m.group(1)}"
+            n += 1
+
+
+def remove_scene(target: str) -> None:
+    scenes = json.loads(SCENES_JSON.read_text(encoding="utf-8"))
+    match = next(
+        (s for s in scenes if s.get("id") == target or Path(s.get("image", "")).stem == target),
+        None,
+    )
+    if not match:
+        print(f"No scene found matching '{target}' (checked scene id and photo filename).")
+        sys.exit(1)
+
+    scenes.remove(match)
+    renumber_tappas(scenes)
+    SCENES_JSON.write_text(json.dumps(scenes, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    print(f"Removed scene '{match['id']}' ({match.get('eyebrow', '')}).")
+    print("Remaining scenes renumbered so \"Tappa N\" stays contiguous.")
+    photo = match.get("image", "")
+    if photo:
+        print(f"Note: {photo} was NOT deleted, nor was any matching file under {PHOTOS_SRC_DIR}/ — "
+              f"remove those manually if you no longer need them, and update your word list file "
+              f"so the scene doesn't get re-added on the next run.")
+
+
+def reorder_scenes(word_list_path: Path) -> None:
+    order = [name for name, _items in parse_word_list(word_list_path)]
+    order_index = {name: i for i, name in enumerate(order)}
+
+    scenes = json.loads(SCENES_JSON.read_text(encoding="utf-8"))
+    illustrated = [s for s in scenes if s.get("type") != "photo"]
+    photo_scenes = [s for s in scenes if s.get("type") == "photo"]
+
+    unmatched = [Path(s.get("image", "")).stem for s in photo_scenes
+                 if Path(s.get("image", "")).stem not in order_index]
+    photo_scenes.sort(key=lambda s: order_index.get(Path(s.get("image", "")).stem, len(order)))
+
+    scenes[:] = illustrated + photo_scenes
+    renumber_tappas(scenes)
+    SCENES_JSON.write_text(json.dumps(scenes, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    print(f"Reordered {len(photo_scenes)} photo scene(s) to match {word_list_path}.")
+    print(f"({len(illustrated)} illustrated scene(s) kept fixed at the front.)")
+    if unmatched:
+        print(f"Note: {len(unmatched)} scene(s) with no matching line in the file were left at the "
+              f"end, in their previous relative order: {', '.join(unmatched)}")
+    print("\"Tappa N\" renumbered to match the new order.")
+
+
 def main() -> None:
     args = sys.argv[1:]
+
+    if "--remove" in args:
+        idx = args.index("--remove")
+        if idx + 1 >= len(args):
+            print(f"Usage: python {sys.argv[0]} --remove <photo-name-or-scene-id>")
+            sys.exit(1)
+        remove_scene(args[idx + 1])
+        return
+
+    if "--reorder" in args:
+        idx = args.index("--reorder")
+        if idx + 1 >= len(args):
+            print(f"Usage: python {sys.argv[0]} --reorder <word_list_file>")
+            sys.exit(1)
+        reorder_scenes(Path(args[idx + 1]))
+        return
+
     force = "-f" in args or "--force" in args
     args = [a for a in args if a not in ("-f", "--force")]
 
     if len(args) < 1:
-        print(f"Usage: python {sys.argv[0]} [-f] <word_list_file>")
+        print(f"Usage: python {sys.argv[0]} [-f] <word_list_file>\n"
+              f"       python {sys.argv[0]} --remove <photo-name-or-scene-id>\n"
+              f"       python {sys.argv[0]} --reorder <word_list_file>")
         sys.exit(1)
 
     entries = parse_word_list(Path(args[0]))
@@ -196,6 +291,17 @@ def main() -> None:
             if parsed is None or not parsed.hotspots:
                 print(f"  attempt {attempt}: empty result")
                 continue
+
+            valid = [h for h in parsed.hotspots if is_valid_pct_box(h)]
+            invalid = [h for h in parsed.hotspots if h not in valid]
+            if invalid:
+                bad = ", ".join(f"{h.en} (x={h.x:.0f} y={h.y:.0f} w={h.w:.0f} h={h.h:.0f})" for h in invalid)
+                print(f"  attempt {attempt}: discarding out-of-range box(es): {bad}")
+            parsed.hotspots = valid
+            if not parsed.hotspots:
+                print(f"  attempt {attempt}: no valid boxes left after filtering")
+                continue
+
             missing = [i for i in new_items if i not in {h.en for h in parsed.hotspots}]
             result = parsed  # keep as a fallback even if incomplete
             if missing:
@@ -215,14 +321,24 @@ def main() -> None:
             if force:
                 existing_scene["words"] = [hs.model_dump() for hs in result.hotspots]
                 extended.append((name, existing_scene["id"], [hs.en for hs in result.hotspots]))
-                print(f"[updated] {name}: re-detected {len(result.hotspots)} item(s) for '{existing_scene['id']}'")
+
+                PHOTOS_DEST_DIR.mkdir(exist_ok=True)
+                old_dest_path = PHOTOS_DEST_DIR / Path(existing_scene.get("image", "")).name
+                new_dest_path = PHOTOS_DEST_DIR / f"{name}{photo_path.suffix}"
+                new_dest_path.write_bytes(photo_path.read_bytes())
+                if old_dest_path != new_dest_path and old_dest_path.exists():
+                    old_dest_path.unlink()
+                existing_scene["image"] = f"photos/{new_dest_path.name}"
+
+                print(f"[updated] {name}: re-detected {len(result.hotspots)} item(s) and refreshed "
+                      f"the photo for '{existing_scene['id']}'")
             else:
                 existing_scene["words"].extend([hs.model_dump() for hs in result.hotspots])
                 extended.append((name, existing_scene["id"], [hs.en for hs in result.hotspots]))
                 print(f"[extended] {name}: added {len(result.hotspots)} item(s) to '{existing_scene['id']}'")
             continue
 
-        scene_id = unique_id(slugify(result.scene_title), existing_ids)
+        scene_id = unique_id(name, existing_ids)
         existing_ids.add(scene_id)
         eyebrow = f"Tappa {next_tappa_number(scenes)}: {result.scene_title}"
 
