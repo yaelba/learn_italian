@@ -286,5 +286,843 @@
         "en": "mountain"
       }
     ]
+  },
+  {
+    "id": "living-room-1",
+    "eyebrow": "Tappa 6: Il Soggiorno",
+    "type": "photo",
+    "image": "photos/living-room-1.jpeg",
+    "words": [
+      {
+        "id": "poltrona",
+        "article": "la",
+        "it": "la poltrona",
+        "en": "armchair",
+        "x": 13.0,
+        "y": 44.0,
+        "w": 52.5,
+        "h": 54.5
+      },
+      {
+        "id": "cuscino",
+        "article": "il",
+        "it": "il cuscino",
+        "en": "cushion",
+        "x": 25.0,
+        "y": 55.0,
+        "w": 35.0,
+        "h": 12.0
+      },
+      {
+        "id": "pianta",
+        "article": "la",
+        "it": "la pianta",
+        "en": "plant",
+        "x": 63.5,
+        "y": 24.0,
+        "w": 36.5,
+        "h": 54.5
+      },
+      {
+        "id": "lampada da terra",
+        "article": "la",
+        "it": "la lampada da terra",
+        "en": "standing lamp",
+        "x": 46.0,
+        "y": 22.0,
+        "w": 9.5,
+        "h": 24.5
+      },
+      {
+        "id": "televisore",
+        "article": "il",
+        "it": "il televisore",
+        "en": "tv",
+        "x": 0.0,
+        "y": 27.5,
+        "w": 22.5,
+        "h": 28.5
+      },
+      {
+        "id": "mobile TV",
+        "article": "il",
+        "it": "il mobile TV",
+        "en": "tv chest",
+        "x": 0.0,
+        "y": 55.0,
+        "w": 26.0,
+        "h": 26.5
+      },
+      {
+        "id": "festone di bandierine",
+        "article": "il",
+        "it": "il festone di bandierine",
+        "en": "bunting",
+        "x": 0.0,
+        "y": 0.0,
+        "w": 45.5,
+        "h": 8.5
+      }
+    ]
+  },
+  {
+    "id": "kitchen-1",
+    "eyebrow": "Tappa 7: La Frutta",
+    "type": "photo",
+    "image": "photos/kitchen-1.jpeg",
+    "words": [
+      {
+        "id": "banana",
+        "article": "la",
+        "it": "la banana",
+        "en": "banana",
+        "x": 35.8,
+        "y": 30.3,
+        "w": 42.4,
+        "h": 35.2
+      },
+      {
+        "id": "limone",
+        "article": "il",
+        "it": "il limone",
+        "en": "lemon",
+        "x": 23.2,
+        "y": 8.0,
+        "w": 18.6,
+        "h": 21.3
+      },
+      {
+        "id": "ciotola",
+        "article": "la",
+        "it": "la ciotola",
+        "en": "bowl",
+        "x": 6.2,
+        "y": 0.0,
+        "w": 90.1,
+        "h": 69.8
+      },
+      {
+        "id": "penna",
+        "article": "la",
+        "it": "la penna",
+        "en": "pen",
+        "x": 66.4,
+        "y": 70.6,
+        "w": 24.7,
+        "h": 18.8
+      },
+      {
+        "id": "forbici",
+        "article": "le",
+        "it": "le forbici",
+        "en": "scissors",
+        "x": 30.9,
+        "y": 76.7,
+        "w": 38.8,
+        "h": 11.7
+      }
+    ]
+  },
+  {
+    "id": "kitchen-2",
+    "eyebrow": "Tappa 8: In Cucina",
+    "type": "photo",
+    "image": "photos/kitchen-2.jpeg",
+    "words": [
+      {
+        "id": "radio a transistor",
+        "article": "la",
+        "it": "la radio a transistor",
+        "en": "transistor radio",
+        "x": 3.4,
+        "y": 61.2,
+        "w": 27.8,
+        "h": 31.2
+      },
+      {
+        "id": "bollitore",
+        "article": "il",
+        "it": "il bollitore",
+        "en": "kettle",
+        "x": 53.2,
+        "y": 37.1,
+        "w": 16.1,
+        "h": 32.6
+      },
+      {
+        "id": "tostapane",
+        "article": "il",
+        "it": "il tostapane",
+        "en": "toaster",
+        "x": 32.2,
+        "y": 41.0,
+        "w": 16.6,
+        "h": 31.9
+      },
+      {
+        "id": "macchina da caffè",
+        "article": "la",
+        "it": "la macchina da caffè",
+        "en": "coffee machine",
+        "x": 72.3,
+        "y": 43.0,
+        "w": 12.7,
+        "h": 35.0
+      },
+      {
+        "id": "tagliere",
+        "article": "il",
+        "it": "il tagliere",
+        "en": "cutting board",
+        "x": 61.5,
+        "y": 13.7,
+        "w": 22.0,
+        "h": 46.8
+      },
+      {
+        "id": "ciotola",
+        "article": "la",
+        "it": "la ciotola",
+        "en": "bowl",
+        "x": 44.9,
+        "y": 67.7,
+        "w": 23.0,
+        "h": 27.3
+      }
+    ]
+  },
+  {
+    "id": "pool-1",
+    "eyebrow": "Tappa 9: La Piscina Esterna",
+    "type": "photo",
+    "image": "photos/pool-1.jpeg",
+    "words": [
+      {
+        "id": "piscina",
+        "article": "la",
+        "it": "la piscina",
+        "en": "swimming pool",
+        "x": 12.0,
+        "y": 54.0,
+        "w": 88.0,
+        "h": 25.5
+      },
+      {
+        "id": "ombrellone",
+        "article": "l'",
+        "it": "l'ombrellone",
+        "en": "parasol",
+        "x": 15.4,
+        "y": 37.4,
+        "w": 27.2,
+        "h": 18.0
+      },
+      {
+        "id": "sedia",
+        "article": "la",
+        "it": "la sedia",
+        "en": "chair",
+        "x": 18.9,
+        "y": 67.3,
+        "w": 41.0,
+        "h": 27.8
+      },
+      {
+        "id": "ombra",
+        "article": "l'",
+        "it": "l'ombra",
+        "en": "shadow",
+        "x": 18.3,
+        "y": 85.9,
+        "w": 42.5,
+        "h": 12.9
+      }
+    ]
+  },
+  {
+    "id": "pool-2",
+    "eyebrow": "Tappa 10: La Piscina All'aperto",
+    "type": "photo",
+    "image": "photos/pool-2.jpg",
+    "words": [
+      {
+        "id": "bambino",
+        "article": "il",
+        "it": "il bambino",
+        "en": "boy",
+        "x": 10.4,
+        "y": 6.5,
+        "w": 20.2,
+        "h": 92.5
+      },
+      {
+        "id": "maglietta gialla",
+        "article": "la",
+        "it": "la maglietta gialla",
+        "en": "yellow shirt",
+        "x": 11.0,
+        "y": 16.4,
+        "w": 19.3,
+        "h": 33.0
+      },
+      {
+        "id": "maglietta bianca",
+        "article": "la",
+        "it": "la maglietta bianca",
+        "en": "white shirt",
+        "x": 30.0,
+        "y": 24.8,
+        "w": 18.2,
+        "h": 30.5
+      },
+      {
+        "id": "pantaloni",
+        "article": "i",
+        "it": "i pantaloni",
+        "en": "pants",
+        "x": 33.5,
+        "y": 52.3,
+        "w": 12.6,
+        "h": 11.5
+      },
+      {
+        "id": "sandali",
+        "article": "i",
+        "it": "i sandali",
+        "en": "sandals",
+        "x": 30.0,
+        "y": 88.8,
+        "w": 9.5,
+        "h": 6.0
+      },
+      {
+        "id": "cestino della spazzatura",
+        "article": "il",
+        "it": "il cestino della spazzatura",
+        "en": "trash bin",
+        "x": 0.0,
+        "y": 44.2,
+        "w": 10.4,
+        "h": 28.8
+      }
+    ]
+  },
+  {
+    "id": "library-1",
+    "eyebrow": "Tappa 11: La Biblioteca",
+    "type": "photo",
+    "image": "photos/library-1.jpeg",
+    "words": [
+      {
+        "id": "scaffale",
+        "article": "lo",
+        "it": "lo scaffale",
+        "en": "shelf",
+        "x": 0.0,
+        "y": 52.3,
+        "w": 100.0,
+        "h": 4.0
+      },
+      {
+        "id": "libro rosso",
+        "article": "il",
+        "it": "il libro rosso",
+        "en": "red book",
+        "x": 46.8,
+        "y": 44.2,
+        "w": 10.6,
+        "h": 8.3
+      },
+      {
+        "id": "libro blu",
+        "article": "il",
+        "it": "il libro blu",
+        "en": "blue book",
+        "x": 70.6,
+        "y": 24.5,
+        "w": 8.5,
+        "h": 7.8
+      },
+      {
+        "id": "soffitto",
+        "article": "il",
+        "it": "il soffitto",
+        "en": "ceiling",
+        "x": 0.0,
+        "y": 0.0,
+        "w": 100.0,
+        "h": 13.0
+      },
+      {
+        "id": "pavimento",
+        "article": "il",
+        "it": "il pavimento",
+        "en": "floor",
+        "x": 0.0,
+        "y": 91.5,
+        "w": 100.0,
+        "h": 8.5
+      }
+    ]
+  },
+  {
+    "id": "airport-1",
+    "eyebrow": "Tappa 12: L'aeroporto",
+    "type": "photo",
+    "image": "photos/airport-1.jpg",
+    "words": [
+      {
+        "id": "uomo",
+        "article": "l'",
+        "it": "l'uomo",
+        "en": "man",
+        "x": 28.2,
+        "y": 4.2,
+        "w": 47.5,
+        "h": 95.0
+      },
+      {
+        "id": "valigia",
+        "article": "la",
+        "it": "la valigia",
+        "en": "suitcase",
+        "x": 22.0,
+        "y": 69.0,
+        "w": 22.0,
+        "h": 29.8
+      },
+      {
+        "id": "zaino",
+        "article": "lo",
+        "it": "lo zaino",
+        "en": "backpack",
+        "x": 54.0,
+        "y": 17.3,
+        "w": 28.5,
+        "h": 34.0
+      },
+      {
+        "id": "gamba",
+        "article": "la",
+        "it": "la gamba",
+        "en": "leg",
+        "x": 44.0,
+        "y": 50.0,
+        "w": 20.0,
+        "h": 44.0
+      },
+      {
+        "id": "testa",
+        "article": "la",
+        "it": "la testa",
+        "en": "head",
+        "x": 54.5,
+        "y": 4.3,
+        "w": 13.5,
+        "h": 12.5
+      },
+      {
+        "id": "mano",
+        "article": "la",
+        "it": "la mano",
+        "en": "hand",
+        "x": 33.5,
+        "y": 50.0,
+        "w": 8.5,
+        "h": 8.5
+      },
+      {
+        "id": "scarpa",
+        "article": "la",
+        "it": "la scarpa",
+        "en": "shoe",
+        "x": 44.5,
+        "y": 91.0,
+        "w": 15.5,
+        "h": 8.5
+      },
+      {
+        "id": "aereo",
+        "article": "l'",
+        "it": "l'aereo",
+        "en": "airplane",
+        "x": 2.5,
+        "y": 19.0,
+        "w": 24.0,
+        "h": 8.5
+      },
+      {
+        "id": "ruota",
+        "article": "la",
+        "it": "la ruota",
+        "en": "wheel",
+        "x": 24.5,
+        "y": 92.5,
+        "w": 5.5,
+        "h": 5.5
+      }
+    ]
+  },
+  {
+    "id": "airbnb-1",
+    "eyebrow": "Tappa 13: Il Bagno Moderno",
+    "type": "photo",
+    "image": "photos/airbnb-1.jpg",
+    "words": [
+      {
+        "id": "lavandino",
+        "article": "il",
+        "it": "il lavandino",
+        "en": "sink",
+        "x": 60.0,
+        "y": 68.2,
+        "w": 40.0,
+        "h": 31.6
+      },
+      {
+        "id": "rubinetto",
+        "article": "il",
+        "it": "il rubinetto",
+        "en": "tap",
+        "x": 80.3,
+        "y": 61.5,
+        "w": 17.2,
+        "h": 5.2
+      },
+      {
+        "id": "soffione della doccia",
+        "article": "il",
+        "it": "il soffione della doccia",
+        "en": "shower head",
+        "x": 30.7,
+        "y": 31.2,
+        "w": 8.1,
+        "h": 2.6
+      },
+      {
+        "id": "water",
+        "article": "il",
+        "it": "il water",
+        "en": "toilet",
+        "x": 35.5,
+        "y": 66.4,
+        "w": 20.6,
+        "h": 13.6
+      },
+      {
+        "id": "carta igienica",
+        "article": "la",
+        "it": "la carta igienica",
+        "en": "toilet paper",
+        "x": 43.3,
+        "y": 63.6,
+        "w": 5.0,
+        "h": 2.9
+      }
+    ]
+  },
+  {
+    "id": "airbnb-2",
+    "eyebrow": "Tappa 14: La Camera da Letto",
+    "type": "photo",
+    "image": "photos/airbnb-2.jpg",
+    "words": [
+      {
+        "id": "letto",
+        "article": "il",
+        "it": "il letto",
+        "en": "bed",
+        "x": 0.0,
+        "y": 54.0,
+        "w": 97.0,
+        "h": 46.0
+      },
+      {
+        "id": "cuscino",
+        "article": "il",
+        "it": "il cuscino",
+        "en": "pillow",
+        "x": 2.5,
+        "y": 55.5,
+        "w": 21.0,
+        "h": 8.5
+      },
+      {
+        "id": "asciugamano",
+        "article": "l'",
+        "it": "l'asciugamano",
+        "en": "towel",
+        "x": 63.5,
+        "y": 62.8,
+        "w": 13.2,
+        "h": 5.8
+      },
+      {
+        "id": "quadro",
+        "article": "il",
+        "it": "il quadro",
+        "en": "picture",
+        "x": 30.2,
+        "y": 23.3,
+        "w": 12.4,
+        "h": 8.5
+      },
+      {
+        "id": "specchio",
+        "article": "lo",
+        "it": "lo specchio",
+        "en": "mirror",
+        "x": 86.6,
+        "y": 22.2,
+        "w": 8.6,
+        "h": 21.8
+      },
+      {
+        "id": "tenda",
+        "article": "la",
+        "it": "la tenda",
+        "en": "curtain",
+        "x": 42.8,
+        "y": 1.4,
+        "w": 10.0,
+        "h": 56.5
+      }
+    ]
+  },
+  {
+    "id": "airbnb-3",
+    "eyebrow": "Tappa 15: La Baita di Montagna",
+    "type": "photo",
+    "image": "photos/airbnb-3.jpg",
+    "words": [
+      {
+        "id": "tetto",
+        "article": "il",
+        "it": "il tetto",
+        "en": "roof",
+        "x": 0.0,
+        "y": 0.0,
+        "w": 76.0,
+        "h": 27.0
+      },
+      {
+        "id": "porta",
+        "article": "la",
+        "it": "la porta",
+        "en": "door",
+        "x": 42.3,
+        "y": 58.5,
+        "w": 5.8,
+        "h": 21.5
+      },
+      {
+        "id": "panchina",
+        "article": "la",
+        "it": "la panchina",
+        "en": "bench",
+        "x": 20.8,
+        "y": 69.8,
+        "w": 15.4,
+        "h": 17.5
+      },
+      {
+        "id": "finestra",
+        "article": "la",
+        "it": "la finestra",
+        "en": "window",
+        "x": 25.7,
+        "y": 57.3,
+        "w": 8.2,
+        "h": 12.3
+      },
+      {
+        "id": "erba",
+        "article": "l'",
+        "it": "l'erba",
+        "en": "grass",
+        "x": 0.0,
+        "y": 58.5,
+        "w": 100.0,
+        "h": 41.5
+      },
+      {
+        "id": "pergolato",
+        "article": "il",
+        "it": "il pergolato",
+        "en": "pergola",
+        "x": 65.2,
+        "y": 41.5,
+        "w": 34.8,
+        "h": 54.5
+      },
+      {
+        "id": "fiore",
+        "article": "il",
+        "it": "il fiore",
+        "en": "flower",
+        "x": 50.6,
+        "y": 42.8,
+        "w": 6.2,
+        "h": 6.0
+      },
+      {
+        "id": "sedia",
+        "article": "la",
+        "it": "la sedia",
+        "en": "chair",
+        "x": 74.4,
+        "y": 69.2,
+        "w": 9.3,
+        "h": 16.5
+      }
+    ]
+  },
+  {
+    "id": "airbnb-4",
+    "eyebrow": "Tappa 16: La Cucina Rustica",
+    "type": "photo",
+    "image": "photos/airbnb-4.jpg",
+    "words": [
+      {
+        "id": "frigorifero",
+        "article": "il",
+        "it": "il frigorifero",
+        "en": "refrigerator",
+        "x": 89.0,
+        "y": 45.5,
+        "w": 11.0,
+        "h": 54.5
+      },
+      {
+        "id": "forno a microonde",
+        "article": "il",
+        "it": "il forno a microonde",
+        "en": "microwave oven",
+        "x": 81.2,
+        "y": 64.0,
+        "w": 7.6,
+        "h": 17.5
+      },
+      {
+        "id": "forno",
+        "article": "il",
+        "it": "il forno",
+        "en": "cooking oven",
+        "x": 7.0,
+        "y": 76.5,
+        "w": 9.0,
+        "h": 23.0
+      },
+      {
+        "id": "fuoco",
+        "article": "il",
+        "it": "il fuoco",
+        "en": "fire",
+        "x": 34.6,
+        "y": 87.0,
+        "w": 4.2,
+        "h": 10.0
+      },
+      {
+        "id": "bollitore",
+        "article": "il",
+        "it": "il bollitore",
+        "en": "kettle",
+        "x": 40.3,
+        "y": 62.0,
+        "w": 4.3,
+        "h": 11.5
+      },
+      {
+        "id": "rubinetto",
+        "article": "il",
+        "it": "il rubinetto",
+        "en": "tap",
+        "x": 54.8,
+        "y": 51.5,
+        "w": 3.8,
+        "h": 11.5
+      },
+      {
+        "id": "lavello",
+        "article": "il",
+        "it": "il lavello",
+        "en": "sink",
+        "x": 50.8,
+        "y": 67.5,
+        "w": 9.8,
+        "h": 5.5
+      },
+      {
+        "id": "piatto",
+        "article": "il",
+        "it": "il piatto",
+        "en": "plate",
+        "x": 59.4,
+        "y": 16.5,
+        "w": 4.2,
+        "h": 11.5
+      },
+      {
+        "id": "bicchiere",
+        "article": "il",
+        "it": "il bicchiere",
+        "en": "glass",
+        "x": 60.7,
+        "y": 38.5,
+        "w": 2.0,
+        "h": 5.5
+      },
+      {
+        "id": "tazza",
+        "article": "la",
+        "it": "la tazza",
+        "en": "cup",
+        "x": 53.0,
+        "y": 38.5,
+        "w": 2.6,
+        "h": 5.5
+      },
+      {
+        "id": "lampada",
+        "article": "la",
+        "it": "la lampada",
+        "en": "lamp",
+        "x": 43.8,
+        "y": 0.0,
+        "w": 8.2,
+        "h": 13.5
+      },
+      {
+        "id": "spezie",
+        "article": "le",
+        "it": "le spezie",
+        "en": "spices",
+        "x": 11.2,
+        "y": 28.0,
+        "w": 1.9,
+        "h": 6.5
+      },
+      {
+        "id": "canovaccio",
+        "article": "il",
+        "it": "il canovaccio",
+        "en": "kitchen towel",
+        "x": 1.3,
+        "y": 35.5,
+        "w": 4.3,
+        "h": 27.5
+      },
+      {
+        "id": "pentola",
+        "article": "la",
+        "it": "la pentola",
+        "en": "pot",
+        "x": 32.5,
+        "y": 65.5,
+        "w": 2.8,
+        "h": 7.0
+      }
+    ]
   }
 ]
