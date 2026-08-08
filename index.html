@@ -79,19 +79,6 @@
     background:#F6F0E3;
   }
 
-  .debug-toggle{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    font-size:11px;
-    color:#b3a68f;
-    margin-bottom:14px;
-    cursor:pointer;
-    user-select:none;
-  }
-  .debug-toggle input{ cursor:pointer; }
-
   .eyebrow{
     font-size:19px;
     letter-spacing:0.06em;
@@ -274,6 +261,7 @@
   }
 
   .mode-row{
+    position:relative;
     display:flex;
     justify-content:center;
     gap:10px;
@@ -296,9 +284,37 @@
     color:var(--terracotta-deep);
     border-bottom-color:var(--terracotta-deep);
   }
-  .mode-btn:disabled{
+  .mode-btn:disabled, .mode-btn.locked{
     color:#c9bfae;
     cursor:not-allowed;
+  }
+
+  .mode-tooltip{
+    position:absolute;
+    top:100%;
+    left:0;
+    margin-top:8px;
+    background:var(--ink);
+    color:#F6F0E3;
+    font-size:12px;
+    font-weight:600;
+    text-align:center;
+    padding:6px 12px;
+    border-radius:8px;
+    pointer-events:none;
+    opacity:0;
+    transform:translate(-50%, -4px);
+    transition:opacity 0.15s ease, transform 0.15s ease;
+    z-index:20;
+    box-shadow:0 8px 18px -8px var(--shadow);
+  }
+  .mode-tooltip.show{ opacity:1; transform:translate(-50%, 0); }
+  .mode-tooltip .en{
+    display:block;
+    font-weight:400;
+    font-size:11px;
+    color:rgba(246,240,227,0.7);
+    margin-top:2px;
   }
 
   .stage{
@@ -694,12 +710,10 @@
     </div>
     <div class="mode-row">
       <button class="mode-btn active" data-mode="explore">Esplora — Discover</button>
-      <button class="mode-btn" data-mode="quiz" id="quizModeBtn" disabled>Ascolta e tocca — Listen &amp; tap</button>
-      <button class="mode-btn" data-mode="match" id="matchModeBtn" disabled>Abbina — Match</button>
+      <button class="mode-btn locked" data-mode="quiz" id="quizModeBtn">Ascolta e tocca — Listen &amp; tap</button>
+      <button class="mode-btn locked" data-mode="match" id="matchModeBtn">Abbina — Match</button>
+      <div class="mode-tooltip" id="modeTooltip">Scopri prima tutte le parole della scena.<span class="en">Discover all words in the scene first.</span></div>
     </div>
-    <label class="debug-toggle">
-      <input type="checkbox" id="debugUnlockToggle"> 🛠 Debug: sblocca tutte le tappe / unlock all scenes
-    </label>
     <div class="prompt-bar">
       <div class="prompt-with-replay">
         <div class="prompt-text" id="promptText">
@@ -1367,7 +1381,6 @@
   let voicesReady = false;
   let dragChip = null;
   let autoScrollRAF = null;
-  let debugUnlock = false;
 
   const promptText = document.getElementById('promptText');
   const replayBtn = document.getElementById('replayBtn');
@@ -1383,6 +1396,8 @@
   const toastEl = document.getElementById('toast');
   const quizModeBtn = document.getElementById('quizModeBtn');
   const matchModeBtn = document.getElementById('matchModeBtn');
+  const modeRow = document.querySelector('.mode-row');
+  const modeTooltip = document.getElementById('modeTooltip');
   const stageEl = document.getElementById('stage');
   const chipPool = document.getElementById('chipPool');
   const sceneLabel = document.getElementById('sceneLabel');
@@ -1502,10 +1517,8 @@
 
   function renderSceneNav(){
     sceneLabel.textContent = currentScene().eyebrow;
-    const discoverDone = debugUnlock || currentProgress().learned.size >= currentWords().length;
     scenePrevBtn.disabled = currentSceneIndex === 0;
-    sceneNextBtn.disabled = currentSceneIndex === SCENES.length - 1 ? true : !discoverDone;
-    sceneNextBtn.title = discoverDone ? '' : 'Scopri tutte le parole di questa tappa per continuare';
+    sceneNextBtn.disabled = currentSceneIndex === SCENES.length - 1;
   }
 
   function renderProgress(){
@@ -1524,11 +1537,9 @@
     }
     progressFill.style.width = (count / total * 100) + '%';
     progressLabel.textContent = `${count} / ${total} ${label}`;
-    const allLearned = debugUnlock || p.learned.size >= total;
-    quizModeBtn.disabled = !allLearned;
-    quizModeBtn.title = allLearned ? '' : 'Scopri tutte le parole prima di iniziare il quiz';
-    matchModeBtn.disabled = !allLearned;
-    matchModeBtn.title = allLearned ? '' : "Scopri tutte le parole prima di iniziare l'abbinamento";
+    const allLearned = p.learned.size >= total;
+    quizModeBtn.classList.toggle('locked', !allLearned);
+    matchModeBtn.classList.toggle('locked', !allLearned);
     renderSceneNav();
   }
 
@@ -1952,7 +1963,7 @@
 
   document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      if(btn.disabled) return;
+      if(btn.classList.contains('locked')) return;
       mode = btn.getAttribute('data-mode');
       currentProgress().mode = mode;
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
@@ -1964,14 +1975,22 @@
     });
   });
 
+  [quizModeBtn, matchModeBtn].forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      if(!btn.classList.contains('locked')) return;
+      const btnRect = btn.getBoundingClientRect();
+      const rowRect = modeRow.getBoundingClientRect();
+      modeTooltip.style.left = (btnRect.left - rowRect.left + btnRect.width / 2) + 'px';
+      modeTooltip.classList.add('show');
+    });
+    btn.addEventListener('mouseleave', () => modeTooltip.classList.remove('show'));
+  });
+
   function goToScene(idx){
     if(idx < 0 || idx >= SCENES.length) return;
-    if(!debugUnlock && idx > currentSceneIndex && currentProgress().learned.size < currentWords().length) return;
     currentSceneIndex = idx;
     const p = currentProgress();
-    const unlocked = debugUnlock || p.learned.size >= currentWords().length;
-    mode = unlocked ? p.mode : 'explore';
-    p.mode = mode;
+    mode = p.mode;
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
     document.querySelectorAll('.scene-panel').forEach(el => el.classList.toggle('scene-active', el.id === 'scene-' + currentScene().id));
     stageEl.classList.toggle('mode-match', mode === 'match');
@@ -1980,11 +1999,6 @@
 
   scenePrevBtn.addEventListener('click', () => goToScene(currentSceneIndex - 1));
   sceneNextBtn.addEventListener('click', () => goToScene(currentSceneIndex + 1));
-
-  document.getElementById('debugUnlockToggle').addEventListener('change', (e) => {
-    debugUnlock = e.target.checked;
-    renderProgress();
-  });
 
   // --- Translate mode: standalone multiple-choice quiz over ALL scenes' words ---
   const mainGamePage = document.getElementById('mainGamePage');
