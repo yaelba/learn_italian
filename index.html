@@ -1557,7 +1557,7 @@
       nextQuizWord();
     } else if(mode === 'match'){
       currentQuizWord = null;
-      setPrompt('Trascina ogni parola sul punto giusto del castello.<span class="en">Drag each word onto the matching part of the castle.</span>');
+      setPrompt('Trascina ogni parola sul punto giusto della scena.<span class="en">Drag each word onto the matching part of the scene.</span>');
       renderMatchPool();
       renderPlacedTags();
     }
@@ -1752,7 +1752,7 @@
     }
     currentQuizWord = p.quizOrder[p.quizIdx];
     const w = currentWords().find(x => x.id === currentQuizWord);
-    setPrompt(`Trova: <strong>${w.it}</strong><span class="en">Find the matching part of the castle.</span>`);
+    setPrompt(`Trova: <strong>${w.it}</strong><span class="en">Find the matching part of the scene.</span>`);
     currentSceneEl().querySelectorAll('.hotspot').forEach(el => el.classList.remove('correct-flash','wrong-flash'));
     speak(w.it);
   }
