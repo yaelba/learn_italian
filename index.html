@@ -173,129 +173,6 @@
   }
   .back-btn:hover{ background:rgba(47,72,88,0.08); }
 
-  .new-scene-page{
-    position:relative;
-    display:none;
-    max-width:640px;
-    margin:0 auto;
-    padding:70px 20px 60px;
-  }
-  .new-scene-page.show{ display:block; }
-
-  .new-scene-card{
-    background:#fffaf0;
-    border:1.5px solid var(--parchment-deep);
-    border-radius:20px;
-    padding:32px 28px;
-    box-shadow:0 14px 34px -18px var(--shadow);
-    text-align:left;
-  }
-  .new-scene-card h2{
-    font-family:'Fraunces', serif;
-    font-size:22px;
-    color:var(--terracotta-deep);
-    margin:0 0 6px;
-  }
-  .new-scene-card h2 .en{
-    display:block;
-    font-family:'Source Sans 3', sans-serif;
-    font-weight:400;
-    font-size:13px;
-    color:#8a8071;
-    margin-top:2px;
-  }
-  .new-scene-field{ margin-top:22px; }
-  .new-scene-field label{
-    display:block;
-    font-weight:600;
-    font-size:14px;
-    color:var(--ink);
-    margin-bottom:6px;
-  }
-  .new-scene-field .field-hint{
-    display:block;
-    font-size:12px;
-    color:#8a8071;
-    margin-top:4px;
-  }
-  .new-scene-field input[type="file"]{
-    font-family:'Source Sans 3', sans-serif;
-    font-size:13px;
-  }
-  .new-scene-field textarea{
-    width:100%;
-    box-sizing:border-box;
-    font-family:'Source Sans 3', sans-serif;
-    font-size:14px;
-    padding:10px 12px;
-    border-radius:10px;
-    border:1.5px solid var(--parchment-deep);
-    background:#F6F0E3;
-    color:var(--ink);
-    resize:vertical;
-    min-height:110px;
-  }
-  .new-scene-preview{
-    display:none;
-    max-width:100%;
-    max-height:220px;
-    border-radius:12px;
-    margin-top:10px;
-    border:1.5px solid var(--parchment-deep);
-  }
-  .new-scene-preview.show{ display:block; }
-
-  .new-scene-generate-btn{
-    margin-top:24px;
-    background:var(--terracotta-deep);
-    color:#F6F0E3;
-    border:none;
-    border-radius:999px;
-    padding:12px 22px;
-    font-family:'Source Sans 3', sans-serif;
-    font-weight:700;
-    font-size:14px;
-    cursor:pointer;
-  }
-  .new-scene-generate-btn:hover:not(:disabled){ background:var(--terracotta); }
-  .new-scene-generate-btn:disabled{ opacity:0.45; cursor:not-allowed; }
-
-  .new-scene-output{
-    display:none;
-    margin-top:24px;
-    padding-top:20px;
-    border-top:1.5px dashed var(--parchment-deep);
-  }
-  .new-scene-output.show{ display:block; }
-
-  .new-scene-command{
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
-    background:#2A2420;
-    color:#e8e0d0;
-    border-radius:10px;
-    padding:14px 16px;
-    margin-top:8px;
-    font-family:monospace;
-    font-size:13px;
-    overflow-x:auto;
-    white-space:pre-wrap;
-    word-break:break-word;
-  }
-  .new-scene-copy-btn{
-    flex-shrink:0;
-    border:1.5px solid #e8e0d0;
-    background:none;
-    color:#e8e0d0;
-    border-radius:999px;
-    padding:6px 14px;
-    font-weight:600;
-    font-size:12px;
-    cursor:pointer;
-  }
-  .new-scene-copy-btn:hover{ background:rgba(255,255,255,0.08); }
-
   .translate-direction-row{
     display:flex;
     justify-content:center;
@@ -500,11 +377,17 @@
     fill:transparent;
     stroke:transparent;
     stroke-width:3;
-    transition:stroke 0.15s ease, fill 0.15s ease;
+    transition:stroke 0.15s ease, stroke-width 0.15s ease, fill 0.15s ease, filter 0.15s ease;
   }
   .hotspot:hover .hit-outline{
     stroke: var(--gold);
-    fill: rgba(184,137,43,0.10);
+    stroke-width:5;
+    fill: rgba(184,137,43,0.32);
+    filter:
+      drop-shadow(1px 0 0 rgba(255,255,255,0.9))
+      drop-shadow(-1px 0 0 rgba(255,255,255,0.9))
+      drop-shadow(0 1px 0 rgba(255,255,255,0.9))
+      drop-shadow(0 -1px 0 rgba(255,255,255,0.9));
   }
   .hotspot.learned .hit-outline{
     stroke: rgba(87,98,62,0.55);
@@ -530,11 +413,13 @@
     border-radius:8px;
     border:3px solid transparent;
     background:transparent;
-    transition:border-color 0.15s ease, background 0.15s ease;
+    transition:border-color 0.15s ease, border-width 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   }
   .hotspot.photo-hotspot:hover{
     border-color: var(--gold);
-    background: rgba(184,137,43,0.10);
+    border-width:5px;
+    background: rgba(184,137,43,0.32);
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.85);
   }
   .hotspot.photo-hotspot.learned{
     border-color: rgba(87,98,62,0.55);
@@ -799,7 +684,6 @@
 
   <div class="top-btn-row">
     <button id="openTranslateBtn" class="corner-btn">🔤 Traduci / Translate</button>
-    <button id="openNewSceneBtn" class="corner-btn">🖼️ Nuova scena / New scene</button>
   </div>
 
   <div class="stage" id="stage">
@@ -1433,37 +1317,6 @@
   </div>
 </div>
 
-<div class="new-scene-page" id="newScenePage">
-  <button id="backFromNewSceneBtn" class="back-btn">← Torna alle scene / Back</button>
-  <div class="new-scene-card">
-    <h2>Nuova scena da una foto<span class="en">New scene from a photo</span></h2>
-
-    <div class="new-scene-field">
-      <label for="newSceneFile">📷 Foto / Photo</label>
-      <input type="file" id="newSceneFile" accept="image/*">
-      <img id="newScenePreview" class="new-scene-preview" alt="">
-    </div>
-
-    <div class="new-scene-field">
-      <label for="newSceneWords">🔤 Oggetti nella foto / Objects in the photo</label>
-      <textarea id="newSceneWords" placeholder="one item per line, e.g.&#10;armchair&#10;plant&#10;tv"></textarea>
-      <span class="field-hint">One item per line, in English.</span>
-    </div>
-
-    <button id="newSceneGenerateBtn" class="new-scene-generate-btn" disabled>Genera comando / Generate command</button>
-
-    <div class="new-scene-output" id="newSceneOutput">
-      <span class="field-hint">
-        Save the photo as <code id="newScenePhotoPath">test-photos/…</code>, then run:
-      </span>
-      <div class="new-scene-command">
-        <code id="newSceneCommand"></code>
-        <button id="newSceneCopyBtn" class="new-scene-copy-btn">Copy</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1513,6 +1366,7 @@
   let currentQuizWord = null;
   let voicesReady = false;
   let dragChip = null;
+  let autoScrollRAF = null;
   let debugUnlock = false;
 
   const promptText = document.getElementById('promptText');
@@ -1981,6 +1835,27 @@
     });
   }
 
+  // While dragging a word chip, holding it near the top/bottom edge of the
+  // viewport auto-scrolls the page — needed on tall photo scenes where the
+  // chip pool (always at the bottom) and the target hotspot can't both be
+  // on screen at once.
+  const DRAG_EDGE_ZONE = 70;      // px from the viewport edge where auto-scroll kicks in
+  const DRAG_EDGE_MAX_SPEED = 16; // px scrolled per animation frame at the very edge
+
+  function autoScrollTick(){
+    if(!dragChip){ autoScrollRAF = null; return; }
+    const y = dragChip.lastY;
+    const vh = window.innerHeight;
+    let dy = 0;
+    if(y < DRAG_EDGE_ZONE){
+      dy = -DRAG_EDGE_MAX_SPEED * Math.max(0, Math.min(1, (DRAG_EDGE_ZONE - y) / DRAG_EDGE_ZONE));
+    } else if(y > vh - DRAG_EDGE_ZONE){
+      dy = DRAG_EDGE_MAX_SPEED * Math.max(0, Math.min(1, (y - (vh - DRAG_EDGE_ZONE)) / DRAG_EDGE_ZONE));
+    }
+    if(dy !== 0) window.scrollBy(0, dy);
+    autoScrollRAF = requestAnimationFrame(autoScrollTick);
+  }
+
   function startDrag(e, chipEl, wordId){
     e.preventDefault();
     const floatEl = chipEl.cloneNode(true);
@@ -1989,16 +1864,18 @@
     floatEl.style.top = e.clientY + 'px';
     document.body.appendChild(floatEl);
     chipEl.classList.add('dragging');
-    dragChip = { el: chipEl, wordId, floatEl, startX: e.clientX, startY: e.clientY, moved: false };
+    dragChip = { el: chipEl, wordId, floatEl, startX: e.clientX, startY: e.clientY, lastY: e.clientY, moved: false };
     document.addEventListener('pointermove', onDragMove);
     document.addEventListener('pointerup', onDragEnd);
     document.addEventListener('pointercancel', onDragEnd);
+    autoScrollRAF = requestAnimationFrame(autoScrollTick);
   }
 
   function onDragMove(e){
     if(!dragChip) return;
     dragChip.floatEl.style.left = e.clientX + 'px';
     dragChip.floatEl.style.top = e.clientY + 'px';
+    dragChip.lastY = e.clientY;
     const dx = e.clientX - dragChip.startX;
     const dy = e.clientY - dragChip.startY;
     if(Math.sqrt(dx*dx + dy*dy) > 6){
@@ -2011,6 +1888,7 @@
     document.removeEventListener('pointermove', onDragMove);
     document.removeEventListener('pointerup', onDragEnd);
     document.removeEventListener('pointercancel', onDragEnd);
+    if(autoScrollRAF){ cancelAnimationFrame(autoScrollRAF); autoScrollRAF = null; }
 
     const { el: chipEl, wordId, floatEl, moved } = dragChip;
     const w = currentWords().find(x => x.id === wordId);
@@ -2191,101 +2069,6 @@
 
   backFromTranslateBtn.addEventListener('click', () => {
     translatePage.classList.remove('show');
-    mainGamePage.style.display = '';
-  });
-
-  // --- New scene mode: package a photo + word list into a ready-to-run command
-  // for agent/generate_scene.py. No API calls happen in the browser —
-  // the API key stays server-side, only ever used when the script is run locally. ---
-  const newScenePage = document.getElementById('newScenePage');
-  const openNewSceneBtn = document.getElementById('openNewSceneBtn');
-  const backFromNewSceneBtn = document.getElementById('backFromNewSceneBtn');
-  const newSceneFile = document.getElementById('newSceneFile');
-  const newScenePreview = document.getElementById('newScenePreview');
-  const newSceneWords = document.getElementById('newSceneWords');
-  const newSceneGenerateBtn = document.getElementById('newSceneGenerateBtn');
-  const newSceneOutput = document.getElementById('newSceneOutput');
-  const newScenePhotoPath = document.getElementById('newScenePhotoPath');
-  const newSceneCommand = document.getElementById('newSceneCommand');
-  const newSceneCopyBtn = document.getElementById('newSceneCopyBtn');
-
-  function shellQuote(str){
-    return "'" + str.replace(/'/g, `'\\''`) + "'";
-  }
-
-  function updateNewSceneGenerateEnabled(){
-    const hasFile = newSceneFile.files.length > 0;
-    const hasWords = newSceneWords.value.trim().length > 0;
-    newSceneGenerateBtn.disabled = !(hasFile && hasWords);
-  }
-
-  newSceneFile.addEventListener('change', () => {
-    const file = newSceneFile.files[0];
-    if(file){
-      newScenePreview.src = URL.createObjectURL(file);
-      newScenePreview.classList.add('show');
-    } else {
-      newScenePreview.classList.remove('show');
-    }
-    newSceneOutput.classList.remove('show');
-    updateNewSceneGenerateEnabled();
-  });
-
-  newSceneWords.addEventListener('input', () => {
-    newSceneOutput.classList.remove('show');
-    updateNewSceneGenerateEnabled();
-  });
-
-  newSceneGenerateBtn.addEventListener('click', () => {
-    const file = newSceneFile.files[0];
-    const words = newSceneWords.value.split('\n').map(w => w.trim()).filter(Boolean);
-    if(!file || words.length === 0) return;
-
-    const photoPath = `test-photos/${file.name}`;
-    const args = [photoPath, ...words].map(shellQuote).join(' ');
-    newScenePhotoPath.textContent = photoPath;
-    newSceneCommand.textContent = `conda activate learn_italian\npython agent/generate_scene.py ${args}`;
-    newSceneOutput.classList.add('show');
-  });
-
-  function selectNewSceneCommandText(){
-    const range = document.createRange();
-    range.selectNodeContents(newSceneCommand);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-
-  // Fallback for contexts where the modern async Clipboard API is blocked
-  // (e.g. a page opened via file://, which most browsers treat as insecure).
-  // execCommand('copy') is deprecated but still broadly supported and isn't
-  // subject to the same secure-context restriction.
-  function legacyCopyNewSceneCommand(){
-    selectNewSceneCommandText();
-    let copied = false;
-    try { copied = document.execCommand('copy'); } catch(e) { copied = false; }
-    showToast(copied
-      ? 'Comando copiato ✓ / Command copied ✓'
-      : 'Copia automatica non riuscita: testo selezionato, usa Cmd/Ctrl+C');
-  }
-
-  newSceneCopyBtn.addEventListener('click', () => {
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(newSceneCommand.textContent).then(() => {
-        showToast('Comando copiato ✓ / Command copied ✓');
-      }).catch(legacyCopyNewSceneCommand);
-    } else {
-      legacyCopyNewSceneCommand();
-    }
-  });
-
-  openNewSceneBtn.addEventListener('click', () => {
-    mainGamePage.style.display = 'none';
-    newScenePage.classList.add('show');
-  });
-
-  backFromNewSceneBtn.addEventListener('click', () => {
-    newScenePage.classList.remove('show');
     mainGamePage.style.display = '';
   });
 
