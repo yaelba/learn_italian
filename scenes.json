@@ -1124,5 +1124,201 @@
         "h": 7.0
       }
     ]
+  },
+  {
+    "id": "directions-1",
+    "eyebrow": "Tappa 17: Lo Schema Direzionale",
+    "type": "photo",
+    "image": "photos/directions-1.jpg",
+    "words": [
+      {
+        "id": "su",
+        "article": "",
+        "it": "su",
+        "en": "up",
+        "x": 41.0,
+        "y": 1.0,
+        "w": 11.0,
+        "h": 15.5
+      },
+      {
+        "id": "giù",
+        "article": "",
+        "it": "giù",
+        "en": "down",
+        "x": 37.5,
+        "y": 73.0,
+        "w": 18.5,
+        "h": 27.0
+      },
+      {
+        "id": "sinistra",
+        "article": "",
+        "it": "sinistra",
+        "en": "left",
+        "x": 55.0,
+        "y": 41.0,
+        "w": 27.0,
+        "h": 19.0
+      },
+      {
+        "id": "destra",
+        "article": "",
+        "it": "destra",
+        "en": "right",
+        "x": 2.0,
+        "y": 19.0,
+        "w": 34.0,
+        "h": 16.5
+      },
+      {
+        "id": "avanti",
+        "article": "",
+        "it": "avanti",
+        "en": "forward",
+        "x": 5.0,
+        "y": 37.0,
+        "w": 42.0,
+        "h": 24.0
+      },
+      {
+        "id": "indietro",
+        "article": "",
+        "it": "indietro",
+        "en": "backward",
+        "x": 60.0,
+        "y": 19.0,
+        "w": 40.0,
+        "h": 17.5
+      }
+    ]
+  },
+  {
+    "id": "directions-2",
+    "eyebrow": "Tappa 18: Le Indicazioni Stradali",
+    "type": "photo",
+    "image": "photos/directions-2.jpg",
+    "words": [
+      {
+        "id": "vai dritto",
+        "article": "",
+        "it": "vai dritto",
+        "en": "go straight",
+        "x": 5.2,
+        "y": 3.4,
+        "w": 26.6,
+        "h": 15.6
+      },
+      {
+        "id": "gira a sinistra",
+        "article": "",
+        "it": "gira a sinistra",
+        "en": "turn left",
+        "x": 43.5,
+        "y": 5.4,
+        "w": 18.0,
+        "h": 13.7
+      },
+      {
+        "id": "gira a destra",
+        "article": "",
+        "it": "gira a destra",
+        "en": "turn right",
+        "x": 74.2,
+        "y": 5.4,
+        "w": 19.7,
+        "h": 13.7
+      },
+      {
+        "id": "attraversa la strada",
+        "article": "",
+        "it": "attraversa la strada",
+        "en": "cross the street",
+        "x": 5.2,
+        "y": 28.8,
+        "w": 26.6,
+        "h": 16.1
+      },
+      {
+        "id": "passa oltre",
+        "article": "",
+        "it": "passa oltre",
+        "en": "go past",
+        "x": 41.7,
+        "y": 30.3,
+        "w": 23.2,
+        "h": 11.7
+      },
+      {
+        "id": "all'angolo",
+        "article": "",
+        "it": "all'angolo",
+        "en": "at the corner",
+        "x": 73.0,
+        "y": 28.8,
+        "w": 22.6,
+        "h": 15.6
+      },
+      {
+        "id": "a sinistra",
+        "article": "",
+        "it": "a sinistra",
+        "en": "on the left",
+        "x": 6.4,
+        "y": 52.2,
+        "w": 20.3,
+        "h": 12.2
+      },
+      {
+        "id": "a destra",
+        "article": "",
+        "it": "a destra",
+        "en": "on the right",
+        "x": 44.6,
+        "y": 52.2,
+        "w": 20.3,
+        "h": 12.2
+      },
+      {
+        "id": "accanto a",
+        "article": "",
+        "it": "accanto a",
+        "en": "next to",
+        "x": 74.7,
+        "y": 54.7,
+        "w": 20.3,
+        "h": 10.3
+      },
+      {
+        "id": "di fronte a",
+        "article": "",
+        "it": "di fronte a",
+        "en": "opposite",
+        "x": 7.0,
+        "y": 72.3,
+        "w": 22.0,
+        "h": 18.6
+      },
+      {
+        "id": "tra",
+        "article": "",
+        "it": "tra",
+        "en": "between",
+        "x": 39.4,
+        "y": 74.7,
+        "w": 26.1,
+        "h": 15.6
+      },
+      {
+        "id": "verso",
+        "article": "",
+        "it": "verso",
+        "en": "towards",
+        "x": 72.4,
+        "y": 74.2,
+        "w": 20.3,
+        "h": 14.6
+      }
+    ]
   }
 ]
