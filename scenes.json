@@ -1320,5 +1320,123 @@
         "h": 14.6
       }
     ]
+  },
+  {
+    "id": "family",
+    "eyebrow": "Tappa 19: L'Albero Genealogico",
+    "type": "photo",
+    "image": "photos/family.jpg",
+    "words": [
+      {
+        "id": "nonno",
+        "article": "il",
+        "it": "il nonno",
+        "en": "grandfather",
+        "x": 19.0,
+        "y": 2.0,
+        "w": 24.0,
+        "h": 24.5
+      },
+      {
+        "id": "nonna",
+        "article": "la",
+        "it": "la nonna",
+        "en": "grandmother",
+        "x": 56.8,
+        "y": 1.5,
+        "w": 24.5,
+        "h": 24.5
+      },
+      {
+        "id": "zia",
+        "article": "la",
+        "it": "la zia",
+        "en": "aunt",
+        "x": 9.3,
+        "y": 35.8,
+        "w": 13.5,
+        "h": 25.2
+      },
+      {
+        "id": "zio",
+        "article": "lo",
+        "it": "lo zio",
+        "en": "uncle",
+        "x": 25.6,
+        "y": 36.3,
+        "w": 15.0,
+        "h": 24.7
+      },
+      {
+        "id": "madre",
+        "article": "la",
+        "it": "la madre",
+        "en": "mother",
+        "x": 57.0,
+        "y": 36.0,
+        "w": 15.5,
+        "h": 25.0
+      },
+      {
+        "id": "padre",
+        "article": "il",
+        "it": "il padre",
+        "en": "father",
+        "x": 76.5,
+        "y": 36.3,
+        "w": 15.5,
+        "h": 24.7
+      },
+      {
+        "id": "cugino",
+        "article": "il",
+        "it": "il cugino",
+        "en": "boy cousin",
+        "x": 20.0,
+        "y": 70.0,
+        "w": 17.5,
+        "h": 23.2
+      },
+      {
+        "id": "cugina",
+        "article": "la",
+        "it": "la cugina",
+        "en": "girl cousin",
+        "x": 3.2,
+        "y": 70.0,
+        "w": 15.6,
+        "h": 23.2
+      },
+      {
+        "id": "io",
+        "article": "",
+        "it": "io",
+        "en": "me",
+        "x": 41.5,
+        "y": 70.5,
+        "w": 14.8,
+        "h": 22.8
+      },
+      {
+        "id": "sorella",
+        "article": "la",
+        "it": "la sorella",
+        "en": "sister",
+        "x": 62.8,
+        "y": 70.5,
+        "w": 15.0,
+        "h": 22.8
+      },
+      {
+        "id": "fratello",
+        "article": "il",
+        "it": "il fratello",
+        "en": "brother",
+        "x": 83.2,
+        "y": 70.5,
+        "w": 15.0,
+        "h": 22.8
+      }
+    ]
   }
 ]
