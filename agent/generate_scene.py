@@ -68,6 +68,10 @@ def detect_hotspots(client: anthropic.Anthropic, image_bytes: bytes, items: list
                     "- article: just the article alone (e.g. \"la\")\n"
                     "- id: the Italian noun/phrase from 'it' with the leading article removed "
                     "(e.g. \"la torre\" -> \"torre\"; \"l'albero\" -> \"albero\")\n\n"
+                    "Not every item is a simple noun — some may be directions, actions, or other "
+                    "phrases with no natural article (e.g. \"go straight\" -> \"vai dritto\"). In "
+                    "that case, leave article as an empty string and set id equal to it verbatim. "
+                    "Never force an article onto a phrase that doesn't take one.\n\n"
                     f"Items:\n{items_list}"
                 )},
             ],
