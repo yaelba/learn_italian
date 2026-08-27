@@ -1,0 +1,21 @@
+# Ordered list of scene ids to publish to scenes.json.
+# One id per line. Lines starting with # (like this one) are ignored.
+castello2
+ristorante
+zaino
+gelateria
+#strada
+#living-room-1
+#kitchen-1
+#kitchen-2
+#pool-1
+pool-2
+#library-1
+airport-1
+airbnb-1
+airbnb-2
+airbnb-3
+airbnb-4
+directions-1
+directions-2
+family

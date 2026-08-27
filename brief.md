@@ -92,3 +92,49 @@ rather than silently rendering a blank or broken game. This is a deliberate scop
 oversight — revisit if we ever need true offline support (e.g. a service worker or a reinstated
 inline fallback copy).
 
+**Scene database vs. published site: three files instead of one.** As the content-generation
+agent matured, `scenes.json` started being asked to do two unrelated jobs at once — "every
+scene ever generated" and "what's live on the site right now, in what order." An early version
+of `agent/build_scenes.py` tried to keep those in sync automatically by treating
+`word_lists.txt` as the single source of truth: any run would delete a scene from `scenes.json`
+if its line was missing from the file, and reorder everything to match the file's line order.
+That turned out to be the wrong call — it's destructive by default (running the script against
+a partial/scoped word-list file, e.g. to fix just one scene, would silently wipe out every
+other scene), and it conflates "not currently generating this" with "don't want this anymore,"
+losing real generated data (translations, hand-checked bounding boxes) for no good reason.
+
+The fix: split the one file into three, each with a single job.
+- `scenes_db.json` — the permanent database. Every scene ever generated or hand-authored lives
+  here forever. `build_scenes.py`'s normal add/extend mode only ever adds to or extends this
+  file; a scene missing from the word list on a given run is left completely untouched, and
+  there's no ordering concept here at all (array order is cosmetic).
+- `manifest.txt` — a short, hand-edited, ordered list of scene ids to actually publish, one per
+  line. Lines starting with `#` are comments, so a scene can be temporarily hidden from the
+  site (comment out its line) without losing anything — the data stays in the database either
+  way. This file is intentionally not automated; curating the site's contents and order is a
+  deliberate editorial choice, not something to infer from generation history.
+- `scenes.json` — the file `index.html` actually fetches. It's a generated artifact: `python
+  agent/build_scenes.py --publish manifest.txt` filters and reorders `scenes_db.json` by the
+  manifest, computing each scene's `"Tappa N"` eyebrow fresh from its position. If the manifest
+  references an id that isn't in the database (typo, or removed without updating the manifest),
+  publish aborts and writes nothing, listing every missing id — a broken manifest should never
+  silently produce a half-broken site.
+
+This also meant separating a scene's permanent `id` (= its photo's filename stem, e.g.
+`"library-1"` — never changes, since it's the key used to match `word_lists.txt` lines and
+manifest entries) from its `display_name` (the Italian title shown to the player in-game, e.g.
+`"La Biblioteca"` — defaults to a model-suggested title, but is a separate field precisely so it
+could later be edited without touching the id, the photo file, or anything's matching logic).
+Renaming `display_name` via the CLI is deliberately out of scope for now (revisit later; the
+field split already leaves room for it).
+
+`build_scenes.py` ended up with four modes instead of one implicit behavior: the normal
+add/extend run against a word-list file; `--force <name>` / `--forceall` to force a fresh
+re-detection (of one scene or every scene in the file) even when nothing looks new — also
+re-copying the photo from `source-photos/`, so swapping in a different photo under the same
+filename actually takes effect; `--remove <name>` to permanently delete a scene from the
+database (distinct from hiding it via the manifest); and `--publish <manifest_file>` as
+described above. Also renamed `test-photos/` → `source-photos/`, since that directory stopped
+being about "testing" once it became the permanent source-of-truth folder for the photos the
+whole pipeline is built from.
+

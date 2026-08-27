@@ -1,7 +1,6 @@
 [
   {
     "id": "castello2",
-    "eyebrow": "Tappa 1: Le Difese del Castello",
     "words": [
       {
         "id": "torre",
@@ -57,11 +56,11 @@
         "it": "la feritoia",
         "en": "arrow slit"
       }
-    ]
+    ],
+    "eyebrow": "Tappa 1: Le Difese del Castello"
   },
   {
     "id": "ristorante",
-    "eyebrow": "Tappa 2: Al Ristorante",
     "words": [
       {
         "id": "pizza",
@@ -117,11 +116,11 @@
         "it": "il tovagliolo",
         "en": "napkin"
       }
-    ]
+    ],
+    "eyebrow": "Tappa 2: Al Ristorante"
   },
   {
     "id": "zaino",
-    "eyebrow": "Tappa 3: Lo Zaino",
     "words": [
       {
         "id": "zaino",
@@ -165,11 +164,11 @@
         "it": "il cubo di Rubik",
         "en": "Rubik's cube"
       }
-    ]
+    ],
+    "eyebrow": "Tappa 3: Lo Zaino"
   },
   {
     "id": "gelateria",
-    "eyebrow": "Tappa 4: La Gelateria",
     "words": [
       {
         "id": "cioccolato",
@@ -237,311 +236,11 @@
         "it": "la moneta da cinque centesimi",
         "en": "5 cent coin"
       }
-    ]
-  },
-  {
-    "id": "strada",
-    "eyebrow": "Tappa 5: Sulla Strada",
-    "words": [
-      {
-        "id": "strada",
-        "article": "la",
-        "it": "la strada",
-        "en": "road"
-      },
-      {
-        "id": "macchina",
-        "article": "la",
-        "it": "la macchina",
-        "en": "car"
-      },
-      {
-        "id": "albero",
-        "article": "l'",
-        "it": "l'albero",
-        "en": "tree"
-      },
-      {
-        "id": "cartello",
-        "article": "il",
-        "it": "il cartello",
-        "en": "sign"
-      },
-      {
-        "id": "sole",
-        "article": "il",
-        "it": "il sole",
-        "en": "sun"
-      },
-      {
-        "id": "nuvola",
-        "article": "la",
-        "it": "la nuvola",
-        "en": "cloud"
-      },
-      {
-        "id": "montagna",
-        "article": "la",
-        "it": "la montagna",
-        "en": "mountain"
-      }
-    ]
-  },
-  {
-    "id": "living-room-1",
-    "eyebrow": "Tappa 6: Il Soggiorno",
-    "type": "photo",
-    "image": "photos/living-room-1.jpeg",
-    "words": [
-      {
-        "id": "poltrona",
-        "article": "la",
-        "it": "la poltrona",
-        "en": "armchair",
-        "x": 13.0,
-        "y": 44.0,
-        "w": 52.5,
-        "h": 54.5
-      },
-      {
-        "id": "cuscino",
-        "article": "il",
-        "it": "il cuscino",
-        "en": "cushion",
-        "x": 25.0,
-        "y": 55.0,
-        "w": 35.0,
-        "h": 12.0
-      },
-      {
-        "id": "pianta",
-        "article": "la",
-        "it": "la pianta",
-        "en": "plant",
-        "x": 63.5,
-        "y": 24.0,
-        "w": 36.5,
-        "h": 54.5
-      },
-      {
-        "id": "lampada da terra",
-        "article": "la",
-        "it": "la lampada da terra",
-        "en": "standing lamp",
-        "x": 46.0,
-        "y": 22.0,
-        "w": 9.5,
-        "h": 24.5
-      },
-      {
-        "id": "televisore",
-        "article": "il",
-        "it": "il televisore",
-        "en": "tv",
-        "x": 0.0,
-        "y": 27.5,
-        "w": 22.5,
-        "h": 28.5
-      },
-      {
-        "id": "mobile TV",
-        "article": "il",
-        "it": "il mobile TV",
-        "en": "tv chest",
-        "x": 0.0,
-        "y": 55.0,
-        "w": 26.0,
-        "h": 26.5
-      },
-      {
-        "id": "festone di bandierine",
-        "article": "il",
-        "it": "il festone di bandierine",
-        "en": "bunting",
-        "x": 0.0,
-        "y": 0.0,
-        "w": 45.5,
-        "h": 8.5
-      }
-    ]
-  },
-  {
-    "id": "kitchen-1",
-    "eyebrow": "Tappa 7: La Frutta",
-    "type": "photo",
-    "image": "photos/kitchen-1.jpeg",
-    "words": [
-      {
-        "id": "banana",
-        "article": "la",
-        "it": "la banana",
-        "en": "banana",
-        "x": 35.8,
-        "y": 30.3,
-        "w": 42.4,
-        "h": 35.2
-      },
-      {
-        "id": "limone",
-        "article": "il",
-        "it": "il limone",
-        "en": "lemon",
-        "x": 23.2,
-        "y": 8.0,
-        "w": 18.6,
-        "h": 21.3
-      },
-      {
-        "id": "ciotola",
-        "article": "la",
-        "it": "la ciotola",
-        "en": "bowl",
-        "x": 6.2,
-        "y": 0.0,
-        "w": 90.1,
-        "h": 69.8
-      },
-      {
-        "id": "penna",
-        "article": "la",
-        "it": "la penna",
-        "en": "pen",
-        "x": 66.4,
-        "y": 70.6,
-        "w": 24.7,
-        "h": 18.8
-      },
-      {
-        "id": "forbici",
-        "article": "le",
-        "it": "le forbici",
-        "en": "scissors",
-        "x": 30.9,
-        "y": 76.7,
-        "w": 38.8,
-        "h": 11.7
-      }
-    ]
-  },
-  {
-    "id": "kitchen-2",
-    "eyebrow": "Tappa 8: In Cucina",
-    "type": "photo",
-    "image": "photos/kitchen-2.jpeg",
-    "words": [
-      {
-        "id": "radio a transistor",
-        "article": "la",
-        "it": "la radio a transistor",
-        "en": "transistor radio",
-        "x": 3.4,
-        "y": 61.2,
-        "w": 27.8,
-        "h": 31.2
-      },
-      {
-        "id": "bollitore",
-        "article": "il",
-        "it": "il bollitore",
-        "en": "kettle",
-        "x": 53.2,
-        "y": 37.1,
-        "w": 16.1,
-        "h": 32.6
-      },
-      {
-        "id": "tostapane",
-        "article": "il",
-        "it": "il tostapane",
-        "en": "toaster",
-        "x": 32.2,
-        "y": 41.0,
-        "w": 16.6,
-        "h": 31.9
-      },
-      {
-        "id": "macchina da caffè",
-        "article": "la",
-        "it": "la macchina da caffè",
-        "en": "coffee machine",
-        "x": 72.3,
-        "y": 43.0,
-        "w": 12.7,
-        "h": 35.0
-      },
-      {
-        "id": "tagliere",
-        "article": "il",
-        "it": "il tagliere",
-        "en": "cutting board",
-        "x": 61.5,
-        "y": 13.7,
-        "w": 22.0,
-        "h": 46.8
-      },
-      {
-        "id": "ciotola",
-        "article": "la",
-        "it": "la ciotola",
-        "en": "bowl",
-        "x": 44.9,
-        "y": 67.7,
-        "w": 23.0,
-        "h": 27.3
-      }
-    ]
-  },
-  {
-    "id": "pool-1",
-    "eyebrow": "Tappa 9: La Piscina Esterna",
-    "type": "photo",
-    "image": "photos/pool-1.jpeg",
-    "words": [
-      {
-        "id": "piscina",
-        "article": "la",
-        "it": "la piscina",
-        "en": "swimming pool",
-        "x": 12.0,
-        "y": 54.0,
-        "w": 88.0,
-        "h": 25.5
-      },
-      {
-        "id": "ombrellone",
-        "article": "l'",
-        "it": "l'ombrellone",
-        "en": "parasol",
-        "x": 15.4,
-        "y": 37.4,
-        "w": 27.2,
-        "h": 18.0
-      },
-      {
-        "id": "sedia",
-        "article": "la",
-        "it": "la sedia",
-        "en": "chair",
-        "x": 18.9,
-        "y": 67.3,
-        "w": 41.0,
-        "h": 27.8
-      },
-      {
-        "id": "ombra",
-        "article": "l'",
-        "it": "l'ombra",
-        "en": "shadow",
-        "x": 18.3,
-        "y": 85.9,
-        "w": 42.5,
-        "h": 12.9
-      }
-    ]
+    ],
+    "eyebrow": "Tappa 4: La Gelateria"
   },
   {
     "id": "pool-2",
-    "eyebrow": "Tappa 10: La Piscina All'aperto",
     "type": "photo",
     "image": "photos/pool-2.jpg",
     "words": [
@@ -550,20 +249,20 @@
         "article": "il",
         "it": "il bambino",
         "en": "boy",
-        "x": 10.4,
-        "y": 6.5,
-        "w": 20.2,
-        "h": 92.5
+        "x": 9.5,
+        "y": 6.0,
+        "w": 23.0,
+        "h": 92.0
       },
       {
         "id": "maglietta gialla",
         "article": "la",
         "it": "la maglietta gialla",
         "en": "yellow shirt",
-        "x": 11.0,
-        "y": 16.4,
-        "w": 19.3,
-        "h": 33.0
+        "x": 11.5,
+        "y": 15.0,
+        "w": 20.0,
+        "h": 35.0
       },
       {
         "id": "maglietta bianca",
@@ -571,19 +270,19 @@
         "it": "la maglietta bianca",
         "en": "white shirt",
         "x": 30.0,
-        "y": 24.8,
-        "w": 18.2,
-        "h": 30.5
+        "y": 24.0,
+        "w": 18.0,
+        "h": 27.5
       },
       {
         "id": "pantaloni",
         "article": "i",
         "it": "i pantaloni",
         "en": "pants",
-        "x": 33.5,
-        "y": 52.3,
-        "w": 12.6,
-        "h": 11.5
+        "x": 14.5,
+        "y": 46.5,
+        "w": 14.5,
+        "h": 20.0
       },
       {
         "id": "sandali",
@@ -591,9 +290,9 @@
         "it": "i sandali",
         "en": "sandals",
         "x": 30.0,
-        "y": 88.8,
-        "w": 9.5,
-        "h": 6.0
+        "y": 87.0,
+        "w": 8.5,
+        "h": 6.5
       },
       {
         "id": "cestino della spazzatura",
@@ -601,73 +300,55 @@
         "it": "il cestino della spazzatura",
         "en": "trash bin",
         "x": 0.0,
-        "y": 44.2,
-        "w": 10.4,
-        "h": 28.8
-      }
-    ]
-  },
-  {
-    "id": "library-1",
-    "eyebrow": "Tappa 11: La Biblioteca",
-    "type": "photo",
-    "image": "photos/library-1.jpeg",
-    "words": [
-      {
-        "id": "scaffale",
-        "article": "lo",
-        "it": "lo scaffale",
-        "en": "shelf",
-        "x": 0.0,
-        "y": 52.3,
-        "w": 100.0,
-        "h": 4.0
+        "y": 49.0,
+        "w": 10.5,
+        "h": 33.0
       },
       {
-        "id": "libro rosso",
-        "article": "il",
-        "it": "il libro rosso",
-        "en": "red book",
-        "x": 46.8,
-        "y": 44.2,
-        "w": 10.6,
-        "h": 8.3
+        "id": "piscina",
+        "article": "la",
+        "it": "la piscina",
+        "en": "swimming pool",
+        "x": 46.5,
+        "y": 60.5,
+        "w": 17.5,
+        "h": 7.5
       },
       {
-        "id": "libro blu",
-        "article": "il",
-        "it": "il libro blu",
-        "en": "blue book",
-        "x": 70.6,
-        "y": 24.5,
+        "id": "ombrellone",
+        "article": "l'",
+        "it": "l'ombrellone",
+        "en": "parasol",
+        "x": 56.5,
+        "y": 33.5,
         "w": 8.5,
-        "h": 7.8
+        "h": 4.5
       },
       {
-        "id": "soffitto",
-        "article": "il",
-        "it": "il soffitto",
-        "en": "ceiling",
-        "x": 0.0,
-        "y": 0.0,
-        "w": 100.0,
-        "h": 13.0
+        "id": "altoparlante",
+        "article": "l'",
+        "it": "l'altoparlante",
+        "en": "speaker",
+        "x": 53.5,
+        "y": 10.5,
+        "w": 8.5,
+        "h": 9.0
       },
       {
-        "id": "pavimento",
-        "article": "il",
-        "it": "il pavimento",
-        "en": "floor",
-        "x": 0.0,
-        "y": 91.5,
-        "w": 100.0,
-        "h": 8.5
+        "id": "ciabatta",
+        "article": "la",
+        "it": "la ciabatta",
+        "en": "slides",
+        "x": 75.5,
+        "y": 83.2,
+        "w": 9.2,
+        "h": 4.4
       }
-    ]
+    ],
+    "eyebrow": "Tappa 5: La Piscina All'aperto"
   },
   {
     "id": "airport-1",
-    "eyebrow": "Tappa 12: L'aeroporto",
     "type": "photo",
     "image": "photos/airport-1.jpg",
     "words": [
@@ -761,11 +442,11 @@
         "w": 5.5,
         "h": 5.5
       }
-    ]
+    ],
+    "eyebrow": "Tappa 6: L'aeroporto"
   },
   {
     "id": "airbnb-1",
-    "eyebrow": "Tappa 13: Il Bagno Moderno",
     "type": "photo",
     "image": "photos/airbnb-1.jpg",
     "words": [
@@ -818,12 +499,22 @@
         "y": 63.6,
         "w": 5.0,
         "h": 2.9
+      },
+      {
+        "id": "bidet",
+        "article": "il",
+        "it": "il bidet",
+        "en": "bidet",
+        "x": 40.5,
+        "y": 76.0,
+        "w": 19.5,
+        "h": 24.0
       }
-    ]
+    ],
+    "eyebrow": "Tappa 7: Il Bagno Moderno"
   },
   {
     "id": "airbnb-2",
-    "eyebrow": "Tappa 14: La Camera da Letto",
     "type": "photo",
     "image": "photos/airbnb-2.jpg",
     "words": [
@@ -886,12 +577,42 @@
         "y": 1.4,
         "w": 10.0,
         "h": 56.5
+      },
+      {
+        "id": "lampada da terra",
+        "article": "la",
+        "it": "la lampada da terra",
+        "en": "standing lamp",
+        "x": 20.8,
+        "y": 22.8,
+        "w": 7.2,
+        "h": 37.5
+      },
+      {
+        "id": "fioriera",
+        "article": "la",
+        "it": "la fioriera",
+        "en": "planter",
+        "x": 52.3,
+        "y": 43.4,
+        "w": 6.8,
+        "h": 5.4
+      },
+      {
+        "id": "sedia",
+        "article": "la",
+        "it": "la sedia",
+        "en": "chair",
+        "x": 79.2,
+        "y": 46.5,
+        "w": 16.5,
+        "h": 18.5
       }
-    ]
+    ],
+    "eyebrow": "Tappa 8: La Camera da Letto"
   },
   {
     "id": "airbnb-3",
-    "eyebrow": "Tappa 15: La Baita di Montagna",
     "type": "photo",
     "image": "photos/airbnb-3.jpg",
     "words": [
@@ -975,11 +696,11 @@
         "w": 9.3,
         "h": 16.5
       }
-    ]
+    ],
+    "eyebrow": "Tappa 9: La Baita di Montagna"
   },
   {
     "id": "airbnb-4",
-    "eyebrow": "Tappa 16: La Cucina Rustica",
     "type": "photo",
     "image": "photos/airbnb-4.jpg",
     "words": [
@@ -988,30 +709,30 @@
         "article": "il",
         "it": "il frigorifero",
         "en": "refrigerator",
-        "x": 89.0,
-        "y": 45.5,
-        "w": 11.0,
-        "h": 54.5
+        "x": 88.3,
+        "y": 46.0,
+        "w": 11.7,
+        "h": 54.0
       },
       {
         "id": "forno a microonde",
         "article": "il",
         "it": "il forno a microonde",
         "en": "microwave oven",
-        "x": 81.2,
-        "y": 64.0,
+        "x": 81.4,
+        "y": 63.5,
         "w": 7.6,
-        "h": 17.5
+        "h": 13.5
       },
       {
         "id": "forno",
         "article": "il",
         "it": "il forno",
         "en": "cooking oven",
-        "x": 7.0,
-        "y": 76.5,
-        "w": 9.0,
-        "h": 23.0
+        "x": 6.9,
+        "y": 79.0,
+        "w": 8.4,
+        "h": 21.0
       },
       {
         "id": "fuoco",
@@ -1019,38 +740,38 @@
         "it": "il fuoco",
         "en": "fire",
         "x": 34.6,
-        "y": 87.0,
-        "w": 4.2,
-        "h": 10.0
+        "y": 81.0,
+        "w": 4.6,
+        "h": 10.5
       },
       {
         "id": "bollitore",
         "article": "il",
         "it": "il bollitore",
         "en": "kettle",
-        "x": 40.3,
-        "y": 62.0,
-        "w": 4.3,
-        "h": 11.5
+        "x": 40.4,
+        "y": 57.5,
+        "w": 4.2,
+        "h": 11.0
       },
       {
         "id": "rubinetto",
         "article": "il",
         "it": "il rubinetto",
         "en": "tap",
-        "x": 54.8,
-        "y": 51.5,
-        "w": 3.8,
-        "h": 11.5
+        "x": 55.0,
+        "y": 49.0,
+        "w": 3.7,
+        "h": 12.5
       },
       {
         "id": "lavello",
         "article": "il",
         "it": "il lavello",
         "en": "sink",
-        "x": 50.8,
-        "y": 67.5,
-        "w": 9.8,
+        "x": 50.6,
+        "y": 64.5,
+        "w": 10.2,
         "h": 5.5
       },
       {
@@ -1059,36 +780,36 @@
         "it": "il piatto",
         "en": "plate",
         "x": 59.4,
-        "y": 16.5,
-        "w": 4.2,
-        "h": 11.5
+        "y": 18.5,
+        "w": 3.7,
+        "h": 10.0
       },
       {
         "id": "bicchiere",
         "article": "il",
         "it": "il bicchiere",
         "en": "glass",
-        "x": 60.7,
-        "y": 38.5,
-        "w": 2.0,
-        "h": 5.5
+        "x": 71.6,
+        "y": 41.5,
+        "w": 2.7,
+        "h": 7.0
       },
       {
         "id": "tazza",
         "article": "la",
         "it": "la tazza",
         "en": "cup",
-        "x": 53.0,
-        "y": 38.5,
-        "w": 2.6,
-        "h": 5.5
+        "x": 53.9,
+        "y": 37.5,
+        "w": 1.9,
+        "h": 4.3
       },
       {
         "id": "lampada",
         "article": "la",
         "it": "la lampada",
         "en": "lamp",
-        "x": 43.8,
+        "x": 44.0,
         "y": 0.0,
         "w": 8.2,
         "h": 13.5
@@ -1098,19 +819,19 @@
         "article": "le",
         "it": "le spezie",
         "en": "spices",
-        "x": 11.2,
-        "y": 28.0,
-        "w": 1.9,
-        "h": 6.5
+        "x": 11.3,
+        "y": 27.0,
+        "w": 1.8,
+        "h": 7.0
       },
       {
-        "id": "canovaccio",
-        "article": "il",
-        "it": "il canovaccio",
+        "id": "strofinaccio",
+        "article": "lo",
+        "it": "lo strofinaccio",
         "en": "kitchen towel",
-        "x": 1.3,
-        "y": 35.5,
-        "w": 4.3,
+        "x": 0.9,
+        "y": 28.5,
+        "w": 4.1,
         "h": 27.5
       },
       {
@@ -1118,16 +839,26 @@
         "article": "la",
         "it": "la pentola",
         "en": "pot",
-        "x": 32.5,
-        "y": 65.5,
-        "w": 2.8,
-        "h": 7.0
+        "x": 32.6,
+        "y": 61.5,
+        "w": 3.1,
+        "h": 6.8
+      },
+      {
+        "id": "lavastoviglie",
+        "article": "la",
+        "it": "la lavastoviglie",
+        "en": "dishwasher",
+        "x": 65.5,
+        "y": 70.5,
+        "w": 6.9,
+        "h": 29.5
       }
-    ]
+    ],
+    "eyebrow": "Tappa 10: La Cucina Rustica"
   },
   {
     "id": "directions-1",
-    "eyebrow": "Tappa 17: Lo Schema Direzionale",
     "type": "photo",
     "image": "photos/directions-1.jpg",
     "words": [
@@ -1191,11 +922,11 @@
         "w": 40.0,
         "h": 17.5
       }
-    ]
+    ],
+    "eyebrow": "Tappa 11: Lo Schema Direzionale"
   },
   {
     "id": "directions-2",
-    "eyebrow": "Tappa 18: Le Indicazioni Stradali",
     "type": "photo",
     "image": "photos/directions-2.jpg",
     "words": [
@@ -1319,11 +1050,11 @@
         "w": 20.3,
         "h": 14.6
       }
-    ]
+    ],
+    "eyebrow": "Tappa 12: Le Indicazioni Stradali"
   },
   {
     "id": "family",
-    "eyebrow": "Tappa 19: L'Albero Genealogico",
     "type": "photo",
     "image": "photos/family.jpg",
     "words": [
@@ -1437,6 +1168,7 @@
         "w": 15.0,
         "h": 22.8
       }
-    ]
+    ],
+    "eyebrow": "Tappa 13: L'Albero Genealogico"
   }
 ]
