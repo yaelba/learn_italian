@@ -35,7 +35,7 @@ Retries automatically (a few times) if a result comes back empty/partial,
 or if any box's coordinates fall outside 0-100 (i.e. the model returned
 raw pixels instead of the requested percentages) — the offending box is
 discarded and treated like a missing item, so a bad response never
-silently ends up on disk. See brief.md's note on intermittent empty
+silently ends up on disk. See DESIGN.md's note on intermittent empty
 results on photos with people.
 
 Pass --force <photo-name> to force re-detecting just that one scene from

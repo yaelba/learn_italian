@@ -1404,9 +1404,9 @@
   // type:'photo' scenes have no hand-authored markup (unlike the illustrated
   // SVGs already in the page) — build their DOM once from scene data: a
   // background <img> plus one hotspot <div> per word, positioned by the
-  // word's {x,y,w,h} percentages. Hotspots are appended smallest-area-first
-  // so nested/overlapping ones (e.g. a cushion inside an armchair) stay on
-  // top and stay tappable — see brief.md's "smaller box on top" decision.
+  // word's {x,y,w,h} percentages. Hotspots are appended largest-area first
+  // so nested/overlapping ones (e.g. a cushion inside an armchair) end up on
+  // top and stay tappable — see DESIGN.md's "smaller box on top" decision.
   function buildPhotoScenePanels(){
     SCENES.forEach(scene => {
       if(scene.type !== 'photo') return;
